@@ -4,15 +4,27 @@ services:
   traefik:
     image: traefik:v2.10
     command:
+      # - "--providers.docker=true"
+      # - "--providers.docker.exposedbydefault=false"
+      # - "--entrypoints.web.address=:80"
+      # - "--api.insecure=true"
+      # - "--api.dashboard=true"
+      - "--api.insecure=false"
+      - "--api.dashboard=false"
+      - "--log.level=DEBUG"
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
+      - "--providers.file.filename=/dynamic.yml"
+      - "--providers.docker.network=web"
       - "--entrypoints.web.address=:80"
-      - "--api.insecure=true"
-      - "--api.dashboard=true"
+      - "--entrypoints.websecure.address=:443"
     ports:
       - "80:80"
+      - "443:443"
+      - "8080:8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./dynamic.yml:/dynamic.yml:ro
       - "./traefik/acme.json:/letsencrypt/acme.json"
     networks:
       - traefik-public
