@@ -1,0 +1,22 @@
+version: "3"
+
+services:
+  site2:
+    build: .
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.site2.rule=Host(`site2.localhost`)"
+      - "traefik.http.routers.site2.entrypoints=web"
+      - "traefik.http.services.site2.loadbalancer.server.port=3000"
+      - "traefik.docker.network=traefik-public" # Explicit network for Traefik
+    environment:
+      - DATABASE_URL=postgres://remix_user:supersecret@postgres:5432/remix_db
+    networks:
+      - traefik-public
+      - db-network
+
+networks:
+  traefik-public:
+    external: true
+  db-network:
+    external: true

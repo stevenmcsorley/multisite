@@ -1,0 +1,50 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:14-alpine
+    environment:
+      POSTGRES_USER: remix_user
+      POSTGRES_PASSWORD: supersecret
+      POSTGRES_DB: remix_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./initdb:/docker-entrypoint-initdb.d
+    networks:
+      - db-network
+  harvest:
+    build:
+      context: ./site1/harvest
+      dockerfile: Dockerfile.harvest
+    container_name: harvest_app
+    restart: always
+    depends_on:
+      - postgres # ensures Postgres is up
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_USER: remix_user
+      POSTGRES_PASSWORD: supersecret
+      POSTGRES_DB: baby_names
+    networks:
+      - db-network # <-- add this
+  pgadmin:
+    image: dpage/pgadmin4:6.21
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    networks:
+      - db-network
+
+volumes:
+  postgres_data:
+  pgadmin_data:
+
+networks:
+  db-network:
+    external: true

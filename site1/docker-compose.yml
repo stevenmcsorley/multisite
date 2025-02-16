@@ -1,0 +1,37 @@
+version: "3"
+
+services:
+  site1:
+    build: .
+    labels:
+      # - "traefik.enable=true"
+      # - "traefik.http.routers.site1.rule=Host(`site1.localhost`)"
+      # - "traefik.http.routers.site1.entrypoints=web"
+      # - "traefik.http.services.site1.loadbalancer.server.port=3000"
+      - "traefik.docker.network=traefik-public" # Explicit network for Traefik
+      - "traefik.enable=true"
+      # Primary (canonical) router for baobaonames.com
+      - "traefik.http.routers.site1.rule=Host(`baobaonames.com`)"
+      - "traefik.http.routers.site1.entrypoints=web"
+      - "traefik.http.routers.web-secure.tls=true"
+      - "traefik.http.services.site1.loadbalancer.server.port=3000"
+
+      # Additional router for www.baobaonames.com that applies a 301 redirect
+      - "traefik.http.routers.site1-www.rule=Host(`www.baobaonames.com`)"
+      - "traefik.http.routers.site1-www.entrypoints=web"
+      - "traefik.http.routers.site1-www.middlewares=redirect-to-nonwww"
+
+      # Define the redirect middleware to send a permanent (301) redirect to the canonical domain.
+      - "traefik.http.middlewares.redirect-to-nonwww.redirectregex.regex=^https?://www\\.baobaonames\\.com(.*)"
+      - "traefik.http.middlewares.redirect-to-nonwww.redirectregex.replacement=https://baobaonames.com$1"
+      - "traefik.http.middlewares.redirect-to-nonwww.redirectregex.permanent=true"
+    environment:
+      - DATABASE_URL=postgres://remix_user:supersecret@postgres:5432/remix_db
+    networks:
+      - traefik-public
+      - db-network
+networks:
+  traefik-public:
+    external: true
+  db-network:
+    external: true
