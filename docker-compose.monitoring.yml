@@ -76,4 +76,5 @@ networks:
   traefik-public:
     external: true
   monitoring-network:
+    name: monitoring-network # Explicit name
     driver: bridge
