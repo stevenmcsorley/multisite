@@ -1,51 +1,31 @@
-// app/routes/index.tsx
-import type { LoaderFunction, MetaFunction } from "@remix-run/node";
-
-import { json } from "@remix-run/node";
-import { pool } from "../db.server";
-import { useLoaderData } from "@remix-run/react";
+// app/routes/_index.tsx
+import type { MetaFunction } from "@remix-run/node";
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "Site 3 Remix App" },
-    { name: "description", content: "Welcome to Remix on Site 3!" },
+    { title: "Half a Giraffe" },
+    {
+      name: "description",
+      content:
+        "Exploring ideas, building cool projects, and having fun along the way.",
+    },
   ];
 };
 
-type DataItem = {
-  id: number;
-  title: string;
-  content: string;
-};
-
-export const loader: LoaderFunction = async () => {
-  // Query the test data from the site1_data table.
-  const result = await pool.query("SELECT * FROM site3_data");
-  const items: DataItem[] = result.rows;
-  return json({ items });
-};
-
 export default function Index() {
-  const { items } = useLoaderData<{ items: DataItem[] }>();
-
   return (
-    <div className="flex h-screen items-center justify-center">
-      <div className="flex flex-col gap-6">
-        <header>
-          <h1 className="text-2xl font-bold">Welcome to Site 3 Remix App</h1>
-        </header>
-        <section>
-          <h2 className="text-xl">Test Data from the Database</h2>
-          <ul>
-            {items.map((item) => (
-              <li key={item.id} className="border p-2 my-2">
-                <h3 className="font-semibold">{item.title}</h3>
-                <p>{item.content}</p>
-              </li>
-            ))}
-          </ul>
-        </section>
-        {/* You can keep your original resources section here */}
+    <div
+      className="flex h-screen items-center justify-center bg-cover bg-center"
+      style={{ backgroundImage: 'url("/background.png")' }}
+    >
+      <div className="text-center p-6 bg-white bg-opacity-80 rounded-lg shadow-lg">
+        <h1 className="text-3xl font-bold text-gray-800">Half a Giraffe</h1>
+        <p className="mt-4 text-gray-600">
+          A space for ideas, experiments, and projects.
+        </p>
+        <button className="mt-6 inline-block bg-blue-500 text-white px-6 py-3 rounded-lg shadow hover:bg-blue-600 transition">
+          Explore
+        </button>
       </div>
     </div>
   );

@@ -4,17 +4,32 @@ services:
   site3:
     build: .
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.site3.rule=Host(`site3.localhost`)"
-      - "traefik.http.routers.site3.entrypoints=web"
-      - "traefik.http.services.site3.loadbalancer.server.port=3000"
+      # - "traefik.enable=true"
+      # - "traefik.http.routers.site3.rule=Host(`site3.localhost`)"
+      # - "traefik.http.routers.site3.entrypoints=web"
+      # - "traefik.http.services.site3.loadbalancer.server.port=3000"
       - "traefik.docker.network=traefik-public" # Explicit network for Traefik
+      - "traefik.enable=true"
+      # Primary (canonical) router for domian.com
+      - "traefik.http.routers.site3.rule=Host(`${SITE_DOMAIN}`)"
+      - "traefik.http.routers.site3.entrypoints=web"
+      - "traefik.http.routers.web-secure.tls=true"
+      - "traefik.http.services.site3.loadbalancer.server.port=3000"
+
+      # Additional router for domian that applies a 301 redirect
+      - "traefik.http.routers.site3-www.rule=Host(`www.${SITE_DOMAIN}`)"
+      - "traefik.http.routers.site3-www.entrypoints=web"
+      - "traefik.http.routers.site3-www.middlewares=redirect-to-nonwww"
+
+      # Define the redirect middleware to send a permanent (301) redirect to the canonical domain.
+      - "traefik.http.middlewares.redirect-to-nonwww.redirectregex.regex=^https?://www\\.${SITE_DOMAIN}(.*)"
+      - "traefik.http.middlewares.redirect-to-nonwww.redirectregex.replacement=https://${SITE_DOMAIN}$1"
+      - "traefik.http.middlewares.redirect-to-nonwww.redirectregex.permanent=true"
     environment:
       - DATABASE_URL=${DATABASE_URL}
     networks:
       - traefik-public
       - db-network
-
 networks:
   traefik-public:
     external: true
