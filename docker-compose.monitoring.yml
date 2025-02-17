@@ -39,13 +39,7 @@ services:
   loki:
     image: grafana/loki:2.7.1
     container_name: loki
-    # Remove "user: '0'" so that Loki runs as the default non-root user.
-    command:
-      [
-        "sh",
-        "-c",
-        "mkdir -p /loki/index/uploader /loki/cache /loki/chunks /loki/wal && chown -R 10001:10001 /loki && exec loki --config.file=/etc/loki/local-config.yaml",
-      ]
+    command: -config.file=/etc/loki/local-config.yaml # Directly specify the config
     volumes:
       - ./monitoring/loki-config.yaml:/etc/loki/local-config.yaml:ro
       - loki_chunks:/loki/chunks
