@@ -38,4 +38,4 @@ networks:
   db-network:
     external: true
   monitoring-network:
-    driver: bridge
+    external: true
