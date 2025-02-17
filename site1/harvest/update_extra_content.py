@@ -7,10 +7,11 @@ import requests
 import psycopg2
 
 # Database configuration (adjust as needed)
-DB_HOST = os.getenv("POSTGRES_HOST", "postgres")
-DB_NAME = os.getenv("POSTGRES_DB", "baby_names")
-DB_USER = os.getenv("POSTGRES_USER", "remix_user")
-DB_PASSWORD = os.getenv("POSTGRES_PASSWORD", "supersecret")
+DB_HOST = os.getenv("POSTGRES_HOST")
+DB_NAME = os.getenv("POSTGRES_DB")
+DB_USER = os.getenv("POSTGRES_USER")
+DB_PASSWORD = os.getenv("POSTGRES_PASSWORD")
+API_KEY_3 = os.getenv("API_KEY_3")
 
 # Connect to Postgres
 conn = psycopg2.connect(
@@ -22,7 +23,6 @@ conn = psycopg2.connect(
 cur = conn.cursor()
 
 # New API key for the enrichment process
-NEW_API_KEY = "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"
 MODEL_ID = "llama-3.3-70b-versatile"  # or whichever model you're using
 
 def update_enriched_fields(name, enriched_data):
@@ -117,7 +117,7 @@ def call_enrichment_api(name, meaning, origin, famous_people, historic_figures, 
     }
     headers = {
         "Content-Type": "application/json",
-        "Authorization": f"Bearer {NEW_API_KEY}"
+        "Authorization": f"Bearer {API_KEY_3}"
     }
 
     max_retries = 5

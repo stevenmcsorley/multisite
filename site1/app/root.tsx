@@ -1,5 +1,5 @@
 // app/root.tsx
-import "~/styles/tailwind.css";
+import "./styles/tailwind.css";
 import "./i18n"; // Import and initialize i18next
 
 import {
@@ -10,9 +10,9 @@ import {
   ScrollRestoration,
 } from "@remix-run/react";
 
-import AdScript from "~/components/AdScript";
+import AdScript from "./components/AdScript";
 import { I18nextProvider } from "react-i18next";
-import { LanguageSwitcher } from "~/components/LanguageSwitcher";
+import { LanguageSwitcher } from "./components/LanguageSwitcher";
 import i18n from "./i18n"; // Import the i18next instance
 
 export default function App() {

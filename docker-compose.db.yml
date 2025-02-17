@@ -4,9 +4,9 @@ services:
   postgres:
     image: postgres:14-alpine
     environment:
-      POSTGRES_USER: remix_user
-      POSTGRES_PASSWORD: supersecret
-      POSTGRES_DB: remix_db
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./initdb:/docker-entrypoint-initdb.d
@@ -22,9 +22,12 @@ services:
       - postgres # ensures Postgres is up
     environment:
       POSTGRES_HOST: postgres
-      POSTGRES_USER: remix_user
-      POSTGRES_PASSWORD: supersecret
-      POSTGRES_DB: baby_names
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${HARVEST_POSTGRES_DB}
+      API_KEY_1: ${API_KEY_1}
+      API_KEY_2: ${API_KEY_2}
+      API_KEY_3: ${API_KEY_3}
     networks:
       - db-network # <-- add this
   pgadmin:

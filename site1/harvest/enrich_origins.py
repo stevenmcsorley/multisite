@@ -6,11 +6,12 @@ import random
 import requests
 import psycopg2
 
-# Database configuration (adjust as needed)
-DB_HOST = os.getenv("POSTGRES_HOST", "postgres")
-DB_NAME = os.getenv("POSTGRES_DB", "baby_names")
-DB_USER = os.getenv("POSTGRES_USER", "remix_user")
-DB_PASSWORD = os.getenv("POSTGRES_PASSWORD", "supersecret")
+# Database configuration
+DB_HOST = os.getenv("POSTGRES_HOST")
+DB_NAME = os.getenv("POSTGRES_DB")
+DB_USER = os.getenv("POSTGRES_USER")
+DB_PASSWORD = os.getenv("POSTGRES_PASSWORD")
+API_KEY_2 = os.getenv("API_KEY_2")
 
 # Connect to Postgres
 conn = psycopg2.connect(
@@ -22,8 +23,7 @@ conn = psycopg2.connect(
 cur = conn.cursor()
 
 # API configuration for enrichment
-NEW_API_KEY = "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"
-MODEL_ID = "llama-3.3-70b-versatile"  # Adjust as needed
+MODEL_ID = "llama-3.3-70b-versatile"
 
 def create_origin_enrichment_table():
     """Ensure the origin_enrichment table exists."""
@@ -112,7 +112,7 @@ def call_origin_enrichment_api(origin):
     }
     headers = {
         "Content-Type": "application/json",
-        "Authorization": f"Bearer {NEW_API_KEY}"
+        "Authorization": f"Bearer {API_KEY_2}"
     }
 
     max_retries = 5

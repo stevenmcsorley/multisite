@@ -11,6 +11,7 @@ DB_HOST = os.getenv("POSTGRES_HOST", "postgres")
 DB_NAME = os.getenv("POSTGRES_DB", "baby_names")
 DB_USER = os.getenv("POSTGRES_USER", "remix_user")
 DB_PASSWORD = os.getenv("POSTGRES_PASSWORD", "supersecret")
+API_KEY_1 = os.environ.get("API_KEY_1")
 
 # Connect to Postgres
 conn = psycopg2.connect(
@@ -21,9 +22,7 @@ conn = psycopg2.connect(
 )
 cur = conn.cursor()
 
-# YOUR SINGLE API KEY (no rotation).
-# Replace with your newly acquired valid key:
-API_KEY = "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"
+
 MODEL_ID = "llama-3.3-70b-versatile"
 
 GENDERS = ["any", "male", "female"]
@@ -138,7 +137,7 @@ def request_batch_of_names(num=10):
     }
     headers = {
         "Content-Type": "application/json",
-        "Authorization": f"Bearer {API_KEY}"
+        "Authorization": f"Bearer {API_KEY_1}"
     }
 
     try:

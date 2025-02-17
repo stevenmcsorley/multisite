@@ -130,6 +130,8 @@ export async function getDbStats(): Promise<Stats> {
     "to",
     "a",
     "one",
+    "who",
+    "light",
   ]);
   const freqMap = new Map<string, number>();
   for (const row of allMeanings.rows) {

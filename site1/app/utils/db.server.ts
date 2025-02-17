@@ -15,13 +15,12 @@ declare global {
   var __dbClient: PGClientType | undefined;
 }
 /* eslint-enable no-var */
-
+const connectionString = process.env.DATABASE_URL;
 // Attempt to reuse the existing global client or create a new one
 const client =
   global.__dbClient ??
   (new Client({
-    connectionString:
-      "postgres://remix_user:supersecret@postgres:5432/baby_names",
+    connectionString,
   }) as PGClientType);
 
 if (!global.__dbClient) {

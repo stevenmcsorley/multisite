@@ -26,7 +26,7 @@ services:
       - "traefik.http.middlewares.redirect-to-nonwww.redirectregex.replacement=https://baobaonames.com$1"
       - "traefik.http.middlewares.redirect-to-nonwww.redirectregex.permanent=true"
     environment:
-      - DATABASE_URL=postgres://remix_user:supersecret@postgres:5432/remix_db
+      - DATABASE_URL=${DATABASE_URL}
     networks:
       - traefik-public
       - db-network
