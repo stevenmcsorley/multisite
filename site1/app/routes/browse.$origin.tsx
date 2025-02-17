@@ -43,20 +43,30 @@ export const meta: MetaFunction = ({ data }) => {
     ];
   }
 
-  const { origin, total } = data as { origin: string; total: number };
+  const { origin, total, page } = data as {
+    origin: string;
+    total: number;
+    page: number;
+  };
+
   const title = `Browse: ${origin} Baby Names`;
   const description = `Explore ${total} baby name${
     total === 1 ? "" : "s"
   } from ${origin}. Discover the origins and meanings behind these unique names.`;
-  const canonical = `https://baobaonames.com/browse/${encodeURIComponent(
-    origin
-  )}`;
+
+  // Include the page query param in the canonical URL if we're not on page 1.
+  const canonical =
+    page && page > 1
+      ? `https://baobaonames.com/browse/${encodeURIComponent(
+          origin
+        )}?page=${page}`
+      : `https://baobaonames.com/browse/${encodeURIComponent(origin)}`;
 
   const seo = createSeoMeta({
     title,
     description,
     canonical,
-    image: "https://baobaonames.com/images/og-image.png", // Ensure this image is in your public/images folder
+    image: "https://baobaonames.com/images/og-image.png",
   });
 
   return Object.entries(seo.meta).map(([key, value]) => {
@@ -67,18 +77,32 @@ export const meta: MetaFunction = ({ data }) => {
   });
 };
 
+interface MyLinksArgs {
+  data?: { page?: number };
+  params?: { origin?: string };
+  // We don't need location, so we omit it.
+}
+
+// Provide a default empty object for the argument so that it works
+// even if Remix calls the function with no arguments.
 export const links: LinksFunction = (
-  args: { params: { origin?: string }; location?: Location; data?: unknown } = {
-    params: {},
-  }
+  args: MyLinksArgs = { data: {}, params: {} }
 ) => {
-  const { params } = args;
-  const origin = params.origin;
+  const origin = args.params?.origin;
   if (!origin) return [];
+
+  const page = args.data?.page || 1;
+  const canonical =
+    page > 1
+      ? `https://baobaonames.com/browse/${encodeURIComponent(
+          origin
+        )}?page=${page}`
+      : `https://baobaonames.com/browse/${encodeURIComponent(origin)}`;
+
   return [
     {
       rel: "canonical",
-      href: `https://baobaonames.com/browse/${encodeURIComponent(origin)}`,
+      href: canonical,
     },
   ];
 };
