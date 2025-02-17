@@ -11,9 +11,7 @@ services:
     ports:
       - "9090:9090"
     networks:
-      monitoring-network:
-        aliases:
-          - prometheus
+      - monitoring-network
 
   grafana:
     image: grafana/grafana:latest
