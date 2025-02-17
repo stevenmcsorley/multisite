@@ -44,7 +44,7 @@ services:
       [
         "sh",
         "-c",
-        "mkdir -p /loki/index /loki/cache /loki/chunks /loki/wal && chmod -R 777 /loki && exec loki -config.file=/etc/loki/local-config.yaml",
+        "mkdir -p /loki/index/uploader /loki/cache /loki/chunks /loki/wal && chmod -R 777 /loki && exec loki -config.file=/etc/loki/local-config.yaml",
       ]
     volumes:
       - ./monitoring/loki-config.yaml:/etc/loki/local-config.yaml:ro
