@@ -24,9 +24,11 @@ services:
       - grafana_data:/var/lib/grafana
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.grafana.rule=Host(`grafana.halfagiraf.com`)"
-      - "traefik.http.routers.grafana.entrypoints=websecure"
-      - "traefik.http.routers.grafana.tls=true"
+      - "traefik.docker.network=traefik-public"
+      - "traefik.http.routers.grafana-router.rule=Host(`grafana.halfagiraf.com`)"
+      - "traefik.http.routers.grafana-router.entrypoints=websecure"
+      - "traefik.http.routers.grafana-router.tls=true"
+      - "traefik.http.routers.grafana-router.priority=100"
       - "traefik.http.services.grafana.loadbalancer.server.port=3000"
     networks:
       - traefik-public
