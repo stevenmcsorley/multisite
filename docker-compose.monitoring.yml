@@ -39,7 +39,14 @@ services:
   loki:
     image: grafana/loki:2.7.1
     container_name: loki
-    command: -config.file=/etc/loki/local-config.yaml # Directly specify the config
+    command: [
+        "sh",
+        "-c",
+        # Create directories and set ownership before starting Loki
+        "mkdir -p /loki/index/uploader /loki/cache /loki/chunks /loki/wal &&
+        chown -R 10001:10001 /loki &&
+        exec loki --config.file=/etc/loki/local-config.yaml",
+      ]
     volumes:
       - ./monitoring/loki-config.yaml:/etc/loki/local-config.yaml:ro
       - loki_chunks:/loki/chunks
