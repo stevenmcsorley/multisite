@@ -26,13 +26,11 @@ services:
     environment:
       - DATABASE_URL=${DATABASE_URL}
     networks:
-      traefik-public:
-        external: true
-      db-network:
-        external: true
+      traefik-public: {}
+      db-network: {}
       monitoring-network:
         aliases:
-          - site3  # This alias makes the container reachable as "site3" from within the monitoring network
+          - site3
 
 networks:
   traefik-public:
