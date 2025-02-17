@@ -33,6 +33,7 @@ services:
       - "traefik.http.services.grafana.loadbalancer.server.port=3000"
     networks:
       - traefik-public
+      - monitoring-network
 
   loki:
     image: grafana/loki:2.7.1
