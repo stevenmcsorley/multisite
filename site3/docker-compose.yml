@@ -28,10 +28,11 @@ services:
     networks:
       - traefik-public
       - db-network
+      - monitoring-network 
 networks:
   traefik-public:
     external: true
   db-network:
     external: true
   monitoring-network:
-    external: false   # or specify driver if needed
+    external: true
