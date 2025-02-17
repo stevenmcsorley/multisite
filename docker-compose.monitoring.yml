@@ -39,9 +39,8 @@ services:
   loki:
     image: grafana/loki:2.7.1
     container_name: loki
-    command:
-      - "-config.file=/etc/loki/local-config.yaml" # Explicit config reference
-    user: "10001:10001" # Run as Loki's non-root user
+    command: --config.file=/etc/loki/local-config.yaml # <-- Use double dashes
+    user: "10001:10001"
     volumes:
       - ./monitoring/loki-config.yaml:/etc/loki/local-config.yaml:ro
       - loki_chunks:/loki/chunks
