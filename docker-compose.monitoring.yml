@@ -41,7 +41,9 @@ services:
     command: -config.file=/etc/loki/local-config.yaml
     volumes:
       - ./monitoring/loki-config.yaml:/etc/loki/local-config.yaml:ro
-      - loki_data:/loki
+      - loki_chunks:/loki/chunks
+      - loki_index:/loki/index
+      - loki_wal:/loki/wal
     ports:
       - "3100:3100"
     networks:
@@ -61,7 +63,9 @@ services:
 
 volumes:
   grafana_data:
-  loki_data:
+  loki_chunks:
+  loki_index:
+  loki_wal:
 
 networks:
   traefik-public:
