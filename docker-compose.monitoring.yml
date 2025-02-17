@@ -40,7 +40,12 @@ services:
     image: grafana/loki:2.7.1
     container_name: loki
     user: "0"
-    command: sh -c "mkdir -p /loki/index /loki/cache /loki/chunks /loki/wal && /usr/bin/loki -config.file=/etc/loki/local-config.yaml"
+    command:
+      [
+        "sh",
+        "-c",
+        "mkdir -p /loki/index /loki/cache /loki/chunks /loki/wal && exec loki -config.file=/etc/loki/local-config.yaml",
+      ]
     volumes:
       - ./monitoring/loki-config.yaml:/etc/loki/local-config.yaml:ro
       - loki_chunks:/loki/chunks
