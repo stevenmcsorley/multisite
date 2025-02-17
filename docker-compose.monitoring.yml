@@ -20,7 +20,7 @@ services:
     environment:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD}
-      - GF_SERVER_ROOT_URL=https://grafana.halfagiraf.com/ # Add this line
+      - GF_SERVER_ROOT_URL=https://grafana.halfagiraf.com/
     volumes:
       - grafana_data:/var/lib/grafana
     labels:
@@ -41,6 +41,7 @@ services:
     command: -config.file=/etc/loki/local-config.yaml
     volumes:
       - ./monitoring/loki-config.yaml:/etc/loki/local-config.yaml:ro
+      - loki_data:/loki
     ports:
       - "3100:3100"
     networks:
@@ -52,6 +53,7 @@ services:
     volumes:
       - /var/log:/var/log:ro
       - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./monitoring/promtail-config.yaml:/etc/promtail/promtail.yaml:ro
     command: -config.file=/etc/promtail/promtail.yaml
     networks:
@@ -59,6 +61,7 @@ services:
 
 volumes:
   grafana_data:
+  loki_data:
 
 networks:
   traefik-public:
