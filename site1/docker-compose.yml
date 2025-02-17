@@ -6,18 +6,19 @@ services:
     labels:
       - "traefik.docker.network=traefik-public" # Explicit network for Traefik
       - "traefik.enable=true"
-      # Primary (canonical) router for the domain
+
+      # Primary (canonical) router for the domain using SITE_DOMAIN (e.g. baobaonames.com)
       - "traefik.http.routers.site1-router.rule=Host(`${SITE_DOMAIN}`)"
       - "traefik.http.routers.site1-router.entrypoints=web"
-      - "traefik.http.routers.site1-router.tls=true"
+      - "traefik.http.routers.web-secure.tls=true" # Global TLS flag
       - "traefik.http.services.site1.loadbalancer.server.port=3000"
 
-      # Additional router for the www redirect
+      # Additional router for the www redirect with a unique middleware name
       - "traefik.http.routers.site1-www.rule=Host(`www.${SITE_DOMAIN}`)"
       - "traefik.http.routers.site1-www.entrypoints=web"
       - "traefik.http.routers.site1-www.middlewares=redirect-to-nonwww-site1"
 
-      # Define the redirect middleware with a unique name for site1
+      # Unique redirect middleware for site1
       - "traefik.http.middlewares.redirect-to-nonwww-site1.redirectregex.regex=^https?://www\\.${SITE_DOMAIN}(.*)"
       - "traefik.http.middlewares.redirect-to-nonwww-site1.redirectregex.replacement=https://${SITE_DOMAIN}$1"
       - "traefik.http.middlewares.redirect-to-nonwww-site1.redirectregex.permanent=true"
