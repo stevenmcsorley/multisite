@@ -37,16 +37,11 @@ services:
       - monitoring-network
 
   loki:
-    image: grafana/loki:2.7.1
+    image: grafana/loki:latest
     container_name: loki
+    user: "10001:10001" # Explicitly run as Loki's user
     command:
-      - "sh"
-      - "-c"
-      - |
-        mkdir -p /loki/{wal,chunks,index,cache} 
-        chown -R 10001:10001 /loki 
-        exec loki --config.file=/etc/loki/local-config.yaml
-    user: "10001:10001" # Run as Loki's non-root user
+      - "--config.file=/etc/loki/local-config.yaml"
     volumes:
       - ./monitoring/loki-config.yaml:/etc/loki/local-config.yaml:ro
       - loki_chunks:/loki/chunks
@@ -59,7 +54,7 @@ services:
       - monitoring-network
 
   promtail:
-    image: grafana/promtail:2.7.1
+    image: grafana/promtail:latest
     container_name: promtail
     volumes:
       - /var/log:/var/log:ro
