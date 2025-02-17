@@ -39,12 +39,12 @@ services:
   loki:
     image: grafana/loki:2.7.1
     container_name: loki
-    user: "0" # run as root
+    user: "0" # Run as root to avoid permission issues
     command:
       [
         "sh",
         "-c",
-        "mkdir -p /loki/index/uploader /loki/cache /loki/chunks /loki/wal && chmod -R 777 /loki && exec loki -config.file=/etc/loki/local-config.yaml",
+        "mkdir -p /loki/index/uploader /loki/cache /loki/chunks /loki/wal && chmod -R 777 /loki && exec loki --config.file=/etc/loki/local-config.yaml",
       ]
     volumes:
       - ./monitoring/loki-config.yaml:/etc/loki/local-config.yaml:ro
