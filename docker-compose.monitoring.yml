@@ -46,6 +46,7 @@ services:
       - loki_chunks:/loki/chunks
       - loki_index:/loki/index
       - loki_wal:/loki/wal
+      - loki_cache:/loki/cache
     ports:
       - "3100:3100"
     networks:
@@ -68,6 +69,7 @@ volumes:
   loki_chunks:
   loki_index:
   loki_wal:
+  loki_cache:
 
 networks:
   traefik-public:
