@@ -6,6 +6,17 @@ import { httpRequestsTotal } from "../utils/metrics.server";
 export const loader: LoaderFunction = async ({ request }) => {
   // Increment the counter for this route
   httpRequestsTotal.inc({ method: request.method, path: "/", site: "site3" });
+
+  console.log(
+    JSON.stringify({
+      level: "info",
+      message: "Index route accessed",
+      method: request.method,
+      path: "/",
+      site: "site3",
+    })
+  );
+
   return null;
 };
 
