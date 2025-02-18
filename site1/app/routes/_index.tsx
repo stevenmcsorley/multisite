@@ -6,10 +6,13 @@ import { StatsCard } from "../components/StatsCard";
 import { createSeoMeta } from "../utils/seo";
 import { getDbStats } from "../models/stats.server";
 import { getDistinctOrigins } from "../models/origin.server";
+import { httpRequestsTotal } from "../utils/metrics.server"; // Import our custom metric
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 
-export const loader: LoaderFunction = async () => {
+export const loader: LoaderFunction = async ({ request }) => {
+  // Increment the counter for each request to this route for site1
+  httpRequestsTotal.inc({ method: request.method, path: "/", site: "site1" });
   const origins = await getDistinctOrigins();
   const stats = await getDbStats();
   return json({ origins, stats });

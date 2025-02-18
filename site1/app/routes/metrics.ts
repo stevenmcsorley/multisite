@@ -1,10 +1,6 @@
-// app/routes/metrics.ts
-import { collectDefaultMetrics, register } from "prom-client";
-
 import type { LoaderFunction } from "@remix-run/node";
-
-// Collect default metrics into the default registry
-collectDefaultMetrics();
+// app/routes/metrics.ts
+import { register } from "prom-client"; // No collectDefaultMetrics() here
 
 export const loader: LoaderFunction = async () => {
   const metrics = await register.metrics();
