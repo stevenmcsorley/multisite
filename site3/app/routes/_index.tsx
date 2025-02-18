@@ -1,5 +1,13 @@
 // app/routes/_index.tsx
-import type { MetaFunction } from "@remix-run/node";
+import type { LoaderFunction, MetaFunction } from "@remix-run/node";
+
+import { httpRequestsTotal } from "../utils/metrics.server";
+
+export const loader: LoaderFunction = async ({ request }) => {
+  // Increment the counter for this route
+  httpRequestsTotal.inc({ method: request.method, path: "/" });
+  return null;
+};
 
 export const meta: MetaFunction = () => {
   return [
