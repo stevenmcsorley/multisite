@@ -15,7 +15,11 @@ scrape_configs:
       - targets: ["site3:3000"]
         labels:
           job: site3
-
+  - job_name: "traefik"
+    static_configs:
+      - targets: ["traefik:8080"]
+        labels:
+          job: traefik
   # You can add additional scrape jobs for your services here
   # For example, if you have a node_exporter running on a container:
   # - job_name: 'node_exporter'
