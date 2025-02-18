@@ -26,10 +26,16 @@ services:
     environment:
       - DATABASE_URL=${DATABASE_URL}
     networks:
-      - traefik-public
-      - db-network
+      traefik-public: {}
+      db-network: {}
+      monitoring-network:
+        aliases:
+          - site1
+
 networks:
   traefik-public:
     external: true
   db-network:
+    external: true
+  monitoring-network:
     external: true
