@@ -21,10 +21,28 @@ export async function findNamesByQuery(
   page: number = 1,
   limit: number = 10
 ): Promise<{ results: SearchResult[]; total: number }> {
-  // If the query is empty or only whitespace, return no results.
+  // If the query is empty or only whitespace, log and return no results.
   if (!q || !q.trim()) {
+    console.log(
+      JSON.stringify({
+        level: "info",
+        message: "Empty search query",
+        query: q,
+      })
+    );
     return { results: [], total: 0 };
   }
+
+  // Log the search parameters.
+  console.log(
+    JSON.stringify({
+      level: "info",
+      message: "Search performed",
+      query: q,
+      page,
+      limit,
+    })
+  );
 
   const params: string[] = [];
   let sql = `
