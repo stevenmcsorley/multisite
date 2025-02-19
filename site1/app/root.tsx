@@ -13,7 +13,7 @@ import {
 import AdScript from "./components/AdScript";
 import { I18nextProvider } from "react-i18next";
 import { LanguageSwitcher } from "./components/LanguageSwitcher";
-import i18n from "./i18n"; // Import the i18next instance
+import i18n from "./i18n";
 
 export default function App() {
   return (
@@ -27,7 +27,7 @@ export default function App() {
         </head>
         <body className="bg-base-200 text-base-content min-h-screen flex flex-col">
           <Header />
-          <main className="container mx-auto flex-1 p-4">
+          <main className="w-full flex-1">
             <Outlet />
           </main>
           <Footer />
@@ -42,7 +42,7 @@ export default function App() {
 
 function Header() {
   return (
-    <header className="navbar bg-base-100 shadow mb-6">
+    <header className="navbar bg-base-100 shadow mb-6 w-full">
       <div className="flex w-full items-center justify-between px-4">
         <a
           href="/"
@@ -51,7 +51,6 @@ function Header() {
           <i className="devicon-react-original text-2xl"></i>
           <span>baobaonames.com</span>
         </a>
-        {/* The language switcher is placed on the far right */}
         <LanguageSwitcher />
       </div>
     </header>

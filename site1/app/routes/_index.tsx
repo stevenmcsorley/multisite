@@ -1,3 +1,4 @@
+// app/routes/index.tsx
 import type { LoaderFunction, MetaFunction } from "@remix-run/node";
 
 import { QuickSearch } from "../components/QuickSearch";
@@ -46,24 +47,11 @@ export default function IndexPage() {
   const { origins, stats } = useLoaderData<typeof loader>();
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-100 text-gray-900">
-      {/* Hero Section */}
-      <header className="bg-gradient-to-r from-blue-500 to-purple-600 text-white py-16 text-center shadow-lg">
-        <h1 className="text-5xl font-extrabold">Discover Unique Baby Names</h1>
-        <p className="mt-2 text-lg">
-          Find the perfect name by origin, meaning, and trend.
-        </p>
-      </header>
-
-      {/* Search Section */}
-      <div className="mx-auto w-full max-w-3xl p-6 -mt-10 bg-white shadow-lg rounded-xl relative z-10">
-        <QuickSearch origins={origins} />
-      </div>
-
-      {/* Stats Section */}
-      {/* <section className="container mx-auto mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-6">
+    <div className="w-full">
+      <QuickSearch origins={origins} />
+      <section className="container mx-auto mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-6">
         <StatsCard stats={stats} />
-      </section> */}
+      </section>
     </div>
   );
 }
