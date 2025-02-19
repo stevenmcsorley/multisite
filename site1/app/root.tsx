@@ -45,7 +45,7 @@ export default function App() {
 
 function Header() {
   return (
-    <header className="navbar bg-base-100 shadow mb-6 w-full">
+    <header className="navbar bg-base-100 shadow w-full">
       <div className="flex w-full items-center justify-between px-4">
         <a
           href="/"
