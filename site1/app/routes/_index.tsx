@@ -46,7 +46,7 @@ export default function IndexPage() {
   const { origins, stats } = useLoaderData<typeof loader>();
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-b from-indigo-900 via-purple-700 to-pink-600 text-white">
+    <div className="min-h-screen flex flex-col">
       {/* Hero Section */}
       <header className="py-20 text-center">
         <h1 className="text-5xl font-extrabold drop-shadow-lg">
@@ -59,7 +59,7 @@ export default function IndexPage() {
 
       {/* Search Section */}
       <div className="mx-auto w-full max-w-3xl p-6">
-        <div className="bg-white rounded-xl shadow-lg p-4 flex items-center gap-2">
+        <div className=" rounded-xl shadow-lg p-4 flex items-center gap-2">
           <QuickSearch origins={origins} />
         </div>
       </div>

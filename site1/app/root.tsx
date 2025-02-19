@@ -62,7 +62,7 @@ function Header() {
 
 function Footer() {
   return (
-    <footer className="p-4 text-center bg-base-300 mt-6">
+    <footer className="p-4 text-center bg-base-300">
       <p className="text-sm text-base-content/70">
         &copy; 2025 Baby Names. OHMDESIGN - Steven McSorley
       </p>
