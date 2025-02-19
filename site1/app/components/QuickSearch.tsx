@@ -20,10 +20,10 @@ export const QuickSearch = ({ origins }: QuickSearchProps) => {
 
   return (
     <div className="card-body">
-      <h1 className="text-4xl font-bold">
+      {/* <h1 className="text-4xl font-bold">
         {t("discoverUniqueNames", "Discover Unique Baby Names")}
-      </h1>
-      <h2 className="card-title text-2xl">
+      </h1> */}
+      <h2 className="card-title text-2xl text-color-primary">
         {t("quickSearch", "Quick Search")}
       </h2>
       <form onSubmit={handleSubmit} className="mt-2">
