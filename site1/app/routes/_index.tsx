@@ -58,7 +58,7 @@ export default function IndexPage() {
       </header>
 
       {/* Search Section */}
-      <div className="mx-auto w-full max-w-3xl p-6 bg-base">
+      <div className="mx-auto w-full max-w-3xl p-6 bg-base-100">
         <div className=" rounded-xl shadow-lg p-4 flex items-center gap-2">
           <QuickSearch origins={origins} />
         </div>
