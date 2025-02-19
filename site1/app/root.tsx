@@ -25,7 +25,10 @@ export default function App() {
           <Meta />
           <Links />
         </head>
-        <body className="bg-base-200 text-base-content min-h-screen flex flex-col">
+        <body
+          className="bg-fixed bg-cover bg-center text-base-content min-h-screen flex flex-col"
+          style={{ backgroundImage: "url('/images/babynames-bg.png')" }}
+        >
           <Header />
           <main className="w-full flex-1">
             <Outlet />
