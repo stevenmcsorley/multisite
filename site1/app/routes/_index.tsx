@@ -48,7 +48,7 @@ export default function IndexPage() {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Hero Section */}
-      <header className="py-20 text-center">
+      <header className="py-10 text-center">
         <h1 className="text-5xl font-extrabold drop-shadow-lg">
           Discover Unique Baby Names
         </h1>
