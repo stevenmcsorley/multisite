@@ -65,9 +65,9 @@ export default function IndexPage() {
       </div>
 
       {/* Stats Section */}
-      <section className="container mx-auto mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-6">
+      {/* <section className="container mx-auto mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-6">
         <StatsCard stats={stats} />
-      </section>
+      </section> */}
     </div>
   );
 }
