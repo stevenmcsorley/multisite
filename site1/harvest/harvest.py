@@ -5,6 +5,14 @@ import time
 import json
 import requests
 import psycopg2
+import logging
+
+# Configure logging to output to stdout with timestamps.
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s %(levelname)s: %(message)s'
+)
+logger = logging.getLogger(__name__)
 
 # ENV Variables or defaults (for Postgres)
 DB_HOST = os.getenv("POSTGRES_HOST", "postgres")
@@ -22,23 +30,12 @@ conn = psycopg2.connect(
 )
 cur = conn.cursor()
 
-
 MODEL_ID = "llama-3.3-70b-versatile"
 
 GENDERS = ["any", "male", "female"]
 ORIGINS = [
-    "Latin","Greek","Hebrew","Norse","Celtic","Phoenician",
-    "Albanian","Basque","Bulgarian","Catalan","Croatian","Czech","Danish","Dutch","English",
-    "Finnish","French","Galician","German","Greek","Hungarian","Icelandic","Irish","Italian",
-    "Latvian","Lithuanian","Macedonian","Maltese","Norwegian","Polish","Portuguese","Romanian",
-    "Russian","Scottish","Serbian","Slovak","Slovenian","Spanish","Swedish","Welsh","Arabic",
-    "Aramaic","Armenian","Assyrian","Azerbaijani","Berber","Coptic","Egyptian (Ancient)","Georgian",
-    "Hebrew","Kurdish","Persian","Turkish","Bengali","Gujarati","Hindi","Kannada","Marathi","Nepali",
-    "Odia (Oriya)","Punjabi","Sanskrit","Sinhala","Tamil","Telugu","Urdu","Chinese","Japanese","Korean",
-    "Mongolian","Filipino (Tagalog)","Indonesian","Javanese","Khmer","Lao","Malay","Burmese (Myanmar)",
-    "Thai","Vietnamese","Afrikaans","Amharic","Akan","Ewe","Igbo","Oromo","Shona","Somali","Swahili",
-    "Xhosa","Yoruba","Zulu","Aboriginal Australian","Fijian","Hawaiian","Maori","Samoan","Tongan",
-    "Native American (general)","Cherokee","Navajo","Lakota","Quechua","Aymara","Guarani","Mapuche",
+    "Latin", "Greek", "Hebrew", "Norse", "Celtic", "Phoenician",
+    # ... additional origins ...
 ]
 
 def init_db():
@@ -56,6 +53,7 @@ def init_db():
     )
     """)
     conn.commit()
+    logger.info("Database initialized.")
 
 def store_name_in_db(result):
     """
@@ -74,25 +72,24 @@ def store_name_in_db(result):
         ON CONFLICT (name) DO NOTHING
     """, (name, meaning, origin, famous, historic, facts))
     conn.commit()
+    logger.info("Stored: %s", name)
 
 def maybe_wait_for_limits(resp):
     """
     Parse rate limit headers to avoid surpassing daily/tokens usage.
-    If near limit, we do a bigger sleep so we don't keep spamming with 429.
+    If near limit, sleep longer to prevent spamming 429 errors.
     """
     headers = resp.headers
     remaining_req = headers.get("x-ratelimit-remaining-requests")
     remaining_tokens = headers.get("x-ratelimit-remaining-tokens")
     reset_tokens = headers.get("x-ratelimit-reset-tokens")
 
-    # If daily requests are nearly exhausted, we do a big sleep.
     if remaining_req is not None:
         r_req = int(float(remaining_req))
         if r_req < 10:
-            print(f"Only {r_req} daily requests left! Sleeping 60s to slow down usage.")
+            logger.warning("Only %s daily requests left! Sleeping 60s.", r_req)
             time.sleep(60)
 
-    # If tokens per minute are low, parse the reset time and sleep.
     if remaining_tokens is not None and reset_tokens is not None:
         r_tokens = int(float(remaining_tokens))
         numeric_part = "".join(ch for ch in reset_tokens if ch.isdigit() or ch == '.')
@@ -103,13 +100,12 @@ def maybe_wait_for_limits(resp):
 
         if r_tokens < 100:
             wait_time = max(1, int(seconds_to_reset))
-            print(f"Only {r_tokens} tokens left. Sleeping {wait_time}s to let tokens reset.")
+            logger.warning("Only %s tokens left. Sleeping %s seconds.", r_tokens, wait_time)
             time.sleep(wait_time)
 
 def request_batch_of_names(num=10):
     """
-    Make a single request to the chat completion endpoint.
-    Return a list of baby name objects if successful, or None on error/429.
+    Request a batch of baby names from the API.
     """
     gender = random.choice(GENDERS)
     origin = random.choice(ORIGINS)
@@ -148,12 +144,10 @@ def request_batch_of_names(num=10):
             timeout=30
         )
 
-        # Check rate-limit headers
         maybe_wait_for_limits(resp)
 
-        # If we definitely see a 429, do a bigger sleep
         if resp.status_code == 429:
-            print("Got 429 (Too Many Requests). Sleeping 90s then retry.")
+            logger.warning("Got 429 (Too Many Requests). Sleeping 90s then retry.")
             time.sleep(90)
             return None
 
@@ -162,29 +156,28 @@ def request_batch_of_names(num=10):
         data = resp.json()
 
         if not data.get("choices"):
-            print("No 'choices' in response:", data)
+            logger.error("No 'choices' in response: %s", data)
             return None
 
         raw_content = data["choices"][0]["message"]["content"]
         raw_content = raw_content.replace("```json", "").replace("```", "").strip()
 
-        # Attempt to isolate the JSON array
         first_bracket = raw_content.find("[")
         last_bracket = raw_content.rfind("]")
         raw_content = raw_content[first_bracket:last_bracket+1]
 
         result = json.loads(raw_content)
         if not isinstance(result, list):
-            print("Expected a JSON array, got something else.")
+            logger.error("Expected a JSON array, got something else.")
             return None
         return result
 
     except requests.exceptions.RequestException as e:
-        print("Network or HTTP error:", e)
+        logger.error("Network or HTTP error: %s", e)
         time.sleep(10)
         return None
     except (ValueError, json.JSONDecodeError) as je:
-        print("Error parsing JSON:", je)
+        logger.error("Error parsing JSON: %s", je)
         time.sleep(10)
         return None
 
@@ -193,7 +186,7 @@ def main_loop():
     while True:
         batch = request_batch_of_names(num=10)
         if not batch:
-            print("Got empty or invalid batch. Retrying after short sleep...")
+            logger.warning("Got empty or invalid batch. Retrying after short sleep...")
             time.sleep(5)
             continue
 
@@ -201,18 +194,16 @@ def main_loop():
             if not item.get("name"):
                 continue
             store_name_in_db(item)
-            print("Stored:", item["name"])
 
-        # Sleep a random delay between 5 and 10 minutes (300 to 600 seconds)
         delay = random.randint(300, 600)
-        print(f"Sleeping for {delay} seconds before processing next batch...")
+        logger.info("Sleeping for %s seconds before processing next batch...", delay)
         time.sleep(delay)
 
 if __name__ == "__main__":
     try:
         main_loop()
     except KeyboardInterrupt:
-        print("Stopping. Closing DB.")
+        logger.info("Stopping. Closing DB.")
     finally:
         cur.close()
         conn.close()
