@@ -1,5 +1,7 @@
 import type { LoaderFunction, MetaFunction } from "@remix-run/node";
 
+import OriginsList from "../components/OriginsList";
+import OriginsMap from "../components/OriginsMap";
 import { QuickSearch } from "../components/QuickSearch";
 import { StatsCard } from "../components/StatsCard";
 import { createSeoMeta } from "../utils/seo";
@@ -7,7 +9,8 @@ import { getDbStats } from "../models/stats.server";
 import { getDistinctOrigins } from "../models/origin.server";
 import { httpRequestsTotal } from "../utils/metrics.server";
 import { json } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+
+// import { useLoaderData } from "@remix-run/react";
 
 export const loader: LoaderFunction = async ({ request }) => {
   httpRequestsTotal.inc({ method: request.method, path: "/", site: "site1" });
@@ -43,31 +46,37 @@ export const meta: MetaFunction = () => {
 };
 
 export default function IndexPage() {
-  const { origins, stats } = useLoaderData<typeof loader>();
+  // const { origins, stats } = useLoaderData<typeof loader>();
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen w-ful text-gray-900">
       {/* Hero Section */}
-      <header className="py-10 text-center">
-        <h1 className="text-5xl font-extrabold drop-shadow-lg">
-          Discover Unique Baby Names
-        </h1>
-        <p className="mt-2 text-lg opacity-90">
+      <header className="bg-gradient-to-r  text-base-100 py-16 text-center shadow-lg">
+        <h1 className="text-5xl font-extrabold">Discover Unique Baby Names</h1>
+        <p className="mt-2 text-lg">
           Find the perfect name by origin, meaning, and trend.
         </p>
       </header>
-
-      {/* Search Section */}
-      <div className="mx-auto w-full max-w-3xl p-6 bg-base-100">
-        <div className=" rounded-xl shadow-lg p-4 flex items-center gap-2">
-          <QuickSearch origins={origins} />
+      <div className="w-full bg-gray-900">
+        {/* Search Section */}
+        <div className="mx-auto w-full max-w-3xl p-6 -mt-10 bg-white shadow-lg rounded-xl relative z-10">
+          <QuickSearch />
         </div>
-      </div>
+        {/* World Map of Name Origins */}
+        <section className="w-full p-6">
+          <OriginsMap />
+        </section>
 
-      {/* Stats Section */}
-      {/* <section className="container mx-auto mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-6">
+        {/* Origins List */}
+        {/* <section className="container mx-auto p-6">
+        <OriginsList origins={origins} />
+      </section> */}
+
+        {/* Stats Section */}
+        {/* <section className="mx-auto w-full max-w-3xl p-6 -mt-10 bg-white shadow-lg rounded-xl relative z-10">
         <StatsCard stats={stats} />
       </section> */}
+      </div>
     </div>
   );
 }

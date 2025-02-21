@@ -1,11 +1,7 @@
 import { useNavigate } from "@remix-run/react";
 import { useTranslation } from "react-i18next";
 
-interface QuickSearchProps {
-  origins: string[];
-}
-
-export const QuickSearch = ({ origins }: QuickSearchProps) => {
+export const QuickSearch = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
@@ -20,9 +16,6 @@ export const QuickSearch = ({ origins }: QuickSearchProps) => {
 
   return (
     <div className="card-body">
-      {/* <h1 className="text-4xl font-bold">
-        {t("discoverUniqueNames", "Discover Unique Baby Names")}
-      </h1> */}
       <h2 className="card-title text-2xl text-color-primary">
         {t("quickSearch", "Quick Search")}
       </h2>
@@ -36,7 +29,6 @@ export const QuickSearch = ({ origins }: QuickSearchProps) => {
             aria-label={t("search", "Search")}
           />
           <button type="submit" className="btn btn-primary">
-            {/* Example SVG Icon */}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-6 w-6"
@@ -63,21 +55,6 @@ export const QuickSearch = ({ origins }: QuickSearchProps) => {
         </a>
         .
       </p>
-      <hr className="my-4" />
-      <h2 className="card-title text-2xl">
-        {t("browseByOrigin", "Browse by Origin")}
-      </h2>
-      <div className="flex flex-wrap gap-2 mt-2">
-        {origins.map((origin) => (
-          <a
-            key={origin}
-            href={`/browse/${origin}`}
-            className="badge badge-secondary badge-outline"
-          >
-            {origin}
-          </a>
-        ))}
-      </div>
     </div>
   );
 };
