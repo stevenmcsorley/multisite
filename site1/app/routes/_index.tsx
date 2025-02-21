@@ -57,9 +57,9 @@ export default function IndexPage() {
           Find the perfect name by origin, meaning, and trend.
         </p>
       </header>
-      <div className="w-full bg-gray-900">
+      <div className="w-full bg-gray-900 pt-10">
         {/* Search Section */}
-        <div className="mx-auto w-full max-w-3xl p-6 -mt-10 bg-white shadow-lg rounded-xl relative z-10">
+        <div className="mx-auto w-full max-w-3xl p-6 -mt-20 bg-white shadow-lg rounded-xl relative z-10">
           <QuickSearch />
         </div>
         {/* World Map of Name Origins */}

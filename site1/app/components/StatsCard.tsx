@@ -1,4 +1,4 @@
-import { FaBook, FaChartLine, FaGlobe } from "react-icons/fa";
+// app/components/StatsCard.tsx
 
 import type { Stats } from "~/models/stats.server";
 import { useTranslation } from "react-i18next";
@@ -10,58 +10,169 @@ interface StatsCardProps {
 export function StatsCard({ stats }: StatsCardProps) {
   const { t } = useTranslation();
 
-  const statItems = [
-    {
-      title: t("totalNames", "Total Names"),
-      value: stats.total_names,
-      desc: `${t("averageLength", "Average length")}: ${stats.avg_len.toFixed(
-        2
-      )} ${t("chars", "chars")}`,
-      icon: <FaChartLine className="text-blue-500 text-5xl mb-2" />,
-    },
-    {
-      title: t("distinctOrigins", "Distinct Origins"),
-      value: stats.distinct_origins,
-      desc:
-        stats.top_origins.length > 0 ? (
-          <a
-            href={`/browse/${stats.top_origins[0].origin}`}
-            className="text-blue-500 font-semibold"
-          >
-            {stats.top_origins[0].origin} ({stats.top_origins[0].count})
-          </a>
-        ) : (
-          "n/a"
-        ),
-      icon: <FaGlobe className="text-green-500 text-5xl mb-2" />,
-    },
-    {
-      title: t("withMeaning", "With Meaning"),
-      value: stats.with_meaning,
-      desc: `${t("withoutMeaning", "Without meaning")}: ${stats.no_meaning}`,
-      icon: <FaBook className="text-purple-500 text-5xl mb-2" />,
-    },
-  ];
-
   return (
-    <section className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full p-6 max-w-5xl mx-auto">
-      {statItems.map((item, index) => (
-        <div
-          key={index}
-          className="bg-white shadow-lg rounded-xl p-8 flex flex-col items-center text-center transform transition-all hover:scale-105 hover:shadow-2xl w-full"
-        >
-          {item.icon}
-          <div className="stat-title text-xl font-semibold mt-3">
-            {item.title}
-          </div>
-          <div className="stat-value text-5xl font-extrabold text-gray-800 mt-1">
-            {item.value}
-          </div>
-          <div className="stat-desc text-md text-gray-600 mt-2">
-            {item.desc}
-          </div>
+    <div className="stats stats-vertical shadow bg-base-100 w-full">
+      {/* 1) Total Names */}
+      <div className="stat">
+        <div className="stat-title">{t("totalNames", "Total Names")}</div>
+        <div className="stat-value">{stats.total_names}</div>
+        <div className="stat-desc">
+          {t("averageLength", "Average length")}: {stats.avg_len.toFixed(2)}{" "}
+          {t("chars", "chars")}
         </div>
-      ))}
-    </section>
+      </div>
+
+      {/* 2) Distinct Origins */}
+      <div className="stat">
+        <div className="stat-title">
+          {t("distinctOrigins", "Distinct Origins")}
+        </div>
+        <div className="stat-value">{stats.distinct_origins}</div>
+        <div className="stat-desc">
+          {t("highestCount", "Highest count")}:{" "}
+          {stats.top_origins.length > 0 ? (
+            <a
+              href={`/browse/${stats.top_origins[0].origin}`}
+              className="link link-primary"
+            >
+              {stats.top_origins[0].origin} (
+              <span className="badge badge-info">
+                {stats.top_origins[0].count}
+              </span>
+              )
+            </a>
+          ) : (
+            "n/a"
+          )}
+        </div>
+      </div>
+
+      {/* 3) With / Without Meaning */}
+      <div className="stat">
+        <div className="stat-title">{t("withMeaning", "With Meaning")}</div>
+        <div className="stat-value">{stats.with_meaning}</div>
+        <div className="stat-desc">
+          {t("withoutMeaning", "Without meaning")}: {stats.no_meaning}
+        </div>
+      </div>
+
+      {/* 4) Famous / Historic / Facts */}
+      <div className="stat">
+        <div className="stat-title">
+          {t("famousHistoric", "Famous People / Historic Figures")}
+        </div>
+        <div className="stat-value">
+          {stats.with_famous} / {stats.with_historic}
+        </div>
+        <div className="stat-desc">
+          {t("interestingFacts", "Interesting Facts")}: {stats.with_facts}
+        </div>
+      </div>
+
+      {/* Enriched Records */}
+      <div className="stat place-items-start w-full mt-4">
+        <div className="stat-title text-lg font-semibold">
+          {t("enrichedRecords", "Enriched Records")}
+        </div>
+        <div className="stat-value">{stats.enriched_count}</div>
+        <div className="stat-desc">
+          {stats.last_enriched_names.length > 0 ? (
+            <ul className="list-inside list-disc ml-4 mt-1 text-base">
+              {stats.last_enriched_names.map((name) => (
+                <li key={name}>
+                  <a
+                    href={`/name/${encodeURIComponent(name)}`}
+                    className="link link-primary"
+                  >
+                    {name}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            t("noEnrichedRecords", "No enriched records")
+          )}
+        </div>
+      </div>
+
+      {/* Top 10 Origins */}
+      <div className="stat place-items-start w-full mt-4">
+        <div className="stat-title text-lg font-semibold">
+          {t("top10Origins", "Top 10 Origins")}
+        </div>
+        <ul className="list-inside list-disc ml-4 mt-1">
+          {stats.top_origins.map(({ origin, count }) => (
+            <li key={origin}>
+              <a href={`/browse/${origin}`} className="link link-primary">
+                {origin}
+              </a>
+              : <span className="badge badge-info">{count}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {/* Longest Names (top 3) */}
+      <div className="stat place-items-start w-full mt-2">
+        <div className="stat-title text-lg font-semibold">
+          {t("longestNames", "Longest Names (top 3)")}
+        </div>
+        <ul className="list-inside list-disc ml-4 mt-1">
+          {stats.longest_names.map(({ name, length }) => (
+            <li key={name}>
+              <a
+                href={`/name/${encodeURIComponent(name)}`}
+                className="link link-primary"
+              >
+                {name}
+              </a>{" "}
+              (<span className="badge badge-success">{length}</span>{" "}
+              {t("chars", "chars")})
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {/* Shortest Names (top 3) */}
+      <div className="stat place-items-start w-full mt-2">
+        <div className="stat-title text-lg font-semibold">
+          {t("shortestNames", "Shortest Names (top 3)")}
+        </div>
+        <ul className="list-inside list-disc ml-4 mt-1">
+          {stats.shortest_names.map(({ name, length }) => (
+            <li key={name}>
+              <a
+                href={`/name/${encodeURIComponent(name)}`}
+                className="link link-primary"
+              >
+                {name}
+              </a>{" "}
+              (<span className="badge badge-warning">{length}</span>{" "}
+              {t("chars", "chars")})
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {/* Top 10 Words in Meanings */}
+      <div className="stat place-items-start w-full mt-2">
+        <div className="stat-title text-lg font-semibold">
+          {t("top10WordsInMeanings", "Top 10 Words in Meanings")}
+        </div>
+        <ul className="list-inside list-disc ml-4 mt-1">
+          {stats.common_words.map(({ word, freq }) => (
+            <li key={word}>
+              <a
+                href={`/search/${encodeURIComponent(word)}`}
+                className="link link-primary"
+              >
+                {word}
+              </a>
+              : <span className="badge badge-error">{freq}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
   );
 }
