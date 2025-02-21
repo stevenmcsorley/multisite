@@ -21,7 +21,7 @@ export async function findNamesByQuery(
   page: number = 1,
   limit: number = 10
 ): Promise<{ results: SearchResult[]; total: number }> {
-  // If the query is empty or only whitespace, log and return no results.
+  // [existing implementation...]
   if (!q || !q.trim()) {
     console.log(
       JSON.stringify({
@@ -33,7 +33,6 @@ export async function findNamesByQuery(
     return { results: [], total: 0 };
   }
 
-  // Log the search parameters.
   console.log(
     JSON.stringify({
       level: "info",
@@ -56,7 +55,6 @@ export async function findNamesByQuery(
     WHERE 1=1
   `;
 
-  // Add filter clause if a query is provided.
   if (q) {
     const clause = `
       AND (
@@ -71,14 +69,53 @@ export async function findNamesByQuery(
     params.push(`%${q}%`);
   }
 
-  // Get total count.
   const countResult = await client.query<{ total: string }>(countSql, params);
   const total = parseInt(countResult.rows[0].total, 10);
 
-  // Add ordering, limit, and offset.
   sql += " ORDER BY name ASC LIMIT $2 OFFSET $3";
   params.push(limit.toString(), ((page - 1) * limit).toString());
 
   const result = await client.query<SearchResult>(sql, params);
   return { results: result.rows, total };
+}
+
+/**
+ * Find name suggestions using a prefix match for autosuggest.
+ *
+ * This function only searches the `name` field using a prefix search.
+ *
+ * @param q - The search query.
+ * @param limit - The maximum number of suggestions (default 5).
+ * @returns An array of matching names.
+ */
+export async function findNameSuggestions(
+  q: string,
+  limit: number = 5
+): Promise<string[]> {
+  if (!q || !q.trim()) {
+    console.log(
+      JSON.stringify({
+        level: "info",
+        message: "Empty search query for suggestions",
+        query: q,
+      })
+    );
+    return [];
+  }
+
+  // Use a prefix search to improve performance and relevance.
+  const searchQuery = `${q}%`;
+
+  const sql = `
+    SELECT name
+    FROM baby_names
+    WHERE name ILIKE $1
+    ORDER BY name ASC
+    LIMIT $2
+  `;
+  const result = await client.query<{ name: string }>(sql, [
+    searchQuery,
+    limit.toString(),
+  ]);
+  return result.rows.map((row) => row.name);
 }
