@@ -1,5 +1,6 @@
 // app/routes/name.$name.tsx
 
+import { Link, useLoaderData } from "@remix-run/react";
 import type {
   LinksFunction,
   LoaderFunction,
@@ -9,7 +10,6 @@ import type {
 import { client } from "../utils/db.server";
 import { createSeoMeta } from "../utils/seo";
 import { json } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
 
 // Define a type for the baby name data.
 export type BabyName = {
@@ -57,11 +57,6 @@ export const loader: LoaderFunction = async ({ params }) => {
   return json(row);
 };
 
-/**
- * The meta function casts the incoming data to BabyName so that properties like
- * `name` and `meaning` are recognized. It uses our SEO helper to build meta tags,
- * but omits the canonical key so that it’s not rendered as a meta tag.
- */
 export const meta: MetaFunction = ({ data }) => {
   const babyData = data as BabyName | undefined;
   if (!babyData) {
@@ -79,8 +74,10 @@ export const meta: MetaFunction = ({ data }) => {
     description:
       babyData.meaning ||
       `Learn more about the baby name ${babyData.name}, including its origin and interesting facts.`,
-    canonical: `https://baobaonames.com/name/${babyData.name}`,
-    image: "https://baobaonames.com/images/og-image.png", // Updated image URL
+    canonical: `https://baobaonames.com/name/${encodeURIComponent(
+      babyData.name
+    )}`,
+    image: "https://baobaonames.com/images/og-image.png",
   });
 
   return Object.entries(seo.meta).map(([key, value]) => {
@@ -91,11 +88,6 @@ export const meta: MetaFunction = ({ data }) => {
   });
 };
 
-/**
- * Export a links function so that the canonical URL is rendered as a <link> tag.
- * We explicitly type the argument and provide a default value so that even if
- * the function is called without arguments, it returns an empty array.
- */
 export const links: LinksFunction = (
   args: { params: { name?: string } } = { params: {} }
 ) => {
@@ -111,92 +103,109 @@ export const links: LinksFunction = (
     : [];
 };
 
+// Reusable component for displaying a labeled detail.
+function DetailItem({
+  label,
+  children,
+}: {
+  label: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <p className="mb-2">
+      <strong>{label}:</strong> {children}
+    </p>
+  );
+}
+
+// Component for rendering sections with lists.
+function DetailList({ title, items }: { title: string; items: string[] }) {
+  if (items.length === 0) return null;
+  return (
+    <section className="mt-4">
+      <h2 className="text-xl font-semibold mb-2">{title}</h2>
+      <ul className="list-disc list-inside">
+        {items.map((item) => item && <li key={item}>{item}</li>)}
+      </ul>
+    </section>
+  );
+}
+
+// Component for enriched content sections.
+function EnrichedSection({
+  title,
+  content,
+}: {
+  title: string;
+  content: Record<string, string>;
+}) {
+  if (!content || Object.keys(content).length === 0) return null;
+  return (
+    <section className="mt-6">
+      <h3 className="text-xl font-semibold mb-2">{title}</h3>
+      {Object.entries(content).map(([key, paragraph]) => (
+        <p key={key} className="mb-2 leading-relaxed">
+          {paragraph}
+        </p>
+      ))}
+    </section>
+  );
+}
+
 export default function NameDetailRoute() {
   const data = useLoaderData<BabyName>();
 
-  // Process basic string fields.
+  // Convert comma-separated strings into arrays.
   const famousPeople = data.famous_people?.split(", ") ?? [];
-  const histFigures = data.historic_figures?.split(", ") ?? [];
-
-  // Helper function to render an enriched section.
-  function renderEnrichedSection(
-    title: string,
-    enrichedField: Record<string, string>
-  ) {
-    if (!enrichedField || Object.keys(enrichedField).length === 0) {
-      return null;
-    }
-    return (
-      <div className="mt-4">
-        <h3 className="font-semibold text-xl">{title}</h3>
-        {Object.entries(enrichedField).map(([key, paragraph]) => (
-          <p key={key} className="mb-2">
-            {paragraph}
-          </p>
-        ))}
-      </div>
-    );
-  }
+  const historicalFigures = data.historic_figures?.split(", ") ?? [];
 
   return (
-    <div className="card bg-base-100 shadow">
-      <div className="card-body">
-        {data.name ? (
-          <>
-            <h1 className="card-title text-3xl mb-2">{data.name}</h1>
-            <p className="mb-2">
-              <strong>Meaning:</strong> {data.meaning}
-            </p>
-            <p className="mb-2">
-              <strong>Origin:</strong> {data.origin}
-            </p>
+    <main className="max-w-3xl mx-auto p-6">
+      <article className="card bg-base-100 shadow-lg">
+        <div className="card-body">
+          <header>
+            <h1 className="card-title text-4xl mb-4">{data.name}</h1>
+          </header>
+          <section>
+            <DetailItem label="Meaning">{data.meaning || "N/A"}</DetailItem>
+            <DetailItem label="Origin">{data.origin || "N/A"}</DetailItem>
+          </section>
 
-            <div className="mt-4">
-              <h2 className="font-semibold text-xl">Famous People</h2>
-              <ul className="list-disc list-inside mb-2">
-                {famousPeople.map((fp: string) => fp && <li key={fp}>{fp}</li>)}
-              </ul>
-            </div>
+          <DetailList title="Famous People" items={famousPeople} />
+          <DetailList title="Historical Figures" items={historicalFigures} />
 
-            <div>
-              <h2 className="font-semibold text-xl">Historical Figures</h2>
-              <ul className="list-disc list-inside mb-2">
-                {histFigures.map((hf: string) => hf && <li key={hf}>{hf}</li>)}
-              </ul>
-            </div>
-
-            <div>
-              <h2 className="font-semibold text-xl">Interesting Facts</h2>
+          {data.interesting_facts && (
+            <section className="mt-4">
+              <h2 className="text-xl font-semibold mb-2">Interesting Facts</h2>
               <p>{data.interesting_facts}</p>
-            </div>
+            </section>
+          )}
 
-            {/* Render enriched sections if available */}
-            {renderEnrichedSection("In-Depth Meaning", data.in_depth_meaning)}
-            {renderEnrichedSection(
-              "Historical Background",
-              data.historical_background
-            )}
-            {renderEnrichedSection(
-              "Cultural Significance",
-              data.cultural_significance
-            )}
-            {renderEnrichedSection(
-              "Detailed Interesting Facts",
-              data.detailed_interesting_facts
-            )}
-          </>
-        ) : (
-          <>
-            <h2 className="card-title text-2xl text-error">Name Not Found</h2>
-            <p>Sorry, we couldn’t find that name in our database.</p>
-          </>
-        )}
-        <div className="mt-4">
-          <a href="/" className="btn btn-outline">
-            Back to Home
-          </a>
+          {/* Render enriched sections if available */}
+          <EnrichedSection
+            title="In-Depth Meaning"
+            content={data.in_depth_meaning}
+          />
+          <EnrichedSection
+            title="Historical Background"
+            content={data.historical_background}
+          />
+          <EnrichedSection
+            title="Cultural Significance"
+            content={data.cultural_significance}
+          />
+          <EnrichedSection
+            title="Detailed Interesting Facts"
+            content={data.detailed_interesting_facts}
+          />
+
+          <footer className="mt-6">
+            <Link to="/" className="btn btn-outline">
+              Back to Home
+            </Link>
+          </footer>
         </div>
-      </div>
-    </div>
+      </article>
+    </main>
   );
 }
