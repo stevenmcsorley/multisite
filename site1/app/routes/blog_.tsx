@@ -106,7 +106,7 @@ export default function BlogIndex() {
                 className="w-full h-40 object-cover"
               />
               <div className="p-4">
-                <div className="border-b border-gray-800 pb-2 pt-1"></div>
+                <div className="border-b border-gray-800 mb-2 pt-1"></div>
                 <p className="text-green-600 font-semibold text-xs uppercase">
                   {post.category}
                 </p>
