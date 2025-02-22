@@ -75,7 +75,10 @@ export default function BlogIndex() {
               className="w-full h-96 object-cover"
             />
             <div className="p-6">
-              <h2 className="text-2xl font-bold">{featuredPost.title}</h2>
+              <p className="text-green-600 font-semibold text-xs uppercase">
+                {featuredPost.category}
+              </p>
+              <h2 className="text-2xl font-bold mt-1">{featuredPost.title}</h2>
               <p className="text-gray-600 text-sm mt-2">
                 {featuredPost.excerpt}
               </p>
@@ -98,7 +101,10 @@ export default function BlogIndex() {
                 className="w-full h-48 object-cover"
               />
               <div className="p-4">
-                <h3 className="text-lg font-semibold">{post.title}</h3>
+                <p className="text-green-600 font-semibold text-xs uppercase">
+                  {post.category}
+                </p>
+                <h3 className="text-lg font-semibold mt-1">{post.title}</h3>
                 <p className="text-gray-600 text-xs mt-1">{post.excerpt}</p>
                 <div className="text-gray-500 text-xs mt-1">
                   {formatDate(post.published_at)}
@@ -121,7 +127,10 @@ export default function BlogIndex() {
               className="w-full h-40 object-cover"
             />
             <div className="p-4">
-              <h3 className="text-lg font-semibold">{post.title}</h3>
+              <p className="text-green-600 font-semibold text-xs uppercase">
+                {post.category}
+              </p>
+              <h3 className="text-lg font-semibold mt-1">{post.title}</h3>
               <p className="text-gray-600 text-xs mt-1">{post.excerpt}</p>
               <div className="text-gray-500 text-xs mt-1">
                 {formatDate(post.published_at)}
