@@ -14,7 +14,6 @@ export const loader: LoaderFunction = async ({ request }) => {
   const url = new URL(request.url);
   const page = parseInt(url.searchParams.get("page") || "1", 10);
   const limit = 10;
-  // getAllBlogPosts uses ORDER BY published_at DESC, so the newest come first
   const { rows, total } = await getAllBlogPosts(page, limit);
   return json({ posts: rows, total, page, limit });
 };
@@ -74,16 +73,16 @@ export default function BlogIndex() {
       <section className="px-4 md:px-8 grid grid-cols-1 md:grid-cols-[3fr_2fr] gap-6">
         {/* Featured Post */}
         {featuredPost && (
-          <article className="relative bg-neutral-200 rounded-lg overflow-hidden">
+          <article className="relative aspect-video md:aspect-[3/2] bg-neutral-200 rounded-lg overflow-hidden">
             {/* Featured Image */}
             {featuredPost.thumbnail_url && (
               <img
                 src={featuredPost.thumbnail_url}
                 alt={featuredPost.title}
-                className="w-full h-auto object-cover"
+                className="absolute inset-0 w-full h-full object-cover"
               />
             )}
-            {/* Bordered overlay at the bottom with Title, Category, Date, Excerpt */}
+            {/* Overlay with Title, Category, Date, Excerpt */}
             <div className="absolute bottom-0 left-0 right-0 bg-base-100 bg-opacity-90">
               <div className="border-t border-gray-300 px-4 py-3">
                 <Link to={`/blog/${encodeURIComponent(featuredPost.slug)}`}>
@@ -95,7 +94,6 @@ export default function BlogIndex() {
                   <span>{featuredPost.category || "Uncategorized"}</span>
                   <span>{formatDate(featuredPost.published_at)}</span>
                 </div>
-                {/* Excerpt */}
                 {featuredPost.excerpt && (
                   <p className="text-sm text-gray-600 mt-2">
                     {featuredPost.excerpt}
@@ -111,13 +109,13 @@ export default function BlogIndex() {
           {recentPosts.map((post) => (
             <article
               key={post.id}
-              className="relative bg-neutral-200 rounded-lg overflow-hidden"
+              className="relative aspect-video bg-neutral-200 rounded-lg overflow-hidden"
             >
               {post.thumbnail_url && (
                 <img
                   src={post.thumbnail_url}
                   alt={post.title}
-                  className="w-full h-auto object-cover"
+                  className="absolute inset-0 w-full h-full object-cover"
                 />
               )}
               <div className="absolute bottom-0 left-0 right-0 bg-base-100 bg-opacity-90">
@@ -144,16 +142,15 @@ export default function BlogIndex() {
         {otherPosts.map((post) => (
           <article
             key={post.id}
-            className="relative bg-neutral-200 rounded-lg overflow-hidden"
+            className="relative aspect-video bg-neutral-200 rounded-lg overflow-hidden"
           >
             {post.thumbnail_url && (
               <img
                 src={post.thumbnail_url}
                 alt={post.title}
-                className="w-full h-auto object-cover"
+                className="absolute inset-0 w-full h-full object-cover"
               />
             )}
-
             <div className="absolute bottom-0 left-0 right-0 bg-base-100 bg-opacity-90">
               <div className="border-t border-gray-300 px-4 py-2">
                 <Link to={`/blog/${encodeURIComponent(post.slug)}`}>
