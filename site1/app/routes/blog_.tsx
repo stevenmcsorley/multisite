@@ -51,85 +51,66 @@ export default function BlogIndex() {
     limit: number;
   }>();
 
-  // Identify featured (index 0), recent (index 1..3), rest (index 4+)
   const featuredPost = posts[0];
   const recentPosts = posts.slice(1, 4);
   const otherPosts = posts.slice(4);
 
-  // Simple helper for date formatting
   function formatDate(dateString?: string) {
     if (!dateString) return "";
     return new Date(dateString).toLocaleDateString();
   }
 
   return (
-    <main className="w-full bg-base-100 text-base-content">
-      {/* Page Title */}
-      <section className="px-4 py-8 md:px-8">
-        <h1 className="text-3xl md:text-5xl font-bold leading-tight">Blog</h1>
-      </section>
+    <main className="w-full bg-base-100 text-base-content px-4 md:px-8 py-6">
+      <h1 className="text-3xl md:text-5xl font-bold leading-tight text-center mb-8">
+        Blog
+      </h1>
 
-      {/* Featured + Recent Mosaic */}
-      <section className="px-4 md:px-8 grid grid-cols-1 md:grid-cols-[3fr_2fr] gap-6">
-        {/* Featured Post */}
+      <section className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-6">
         {featuredPost && (
-          <article className="relative aspect-video md:aspect-[3/2] bg-neutral-200 rounded-lg overflow-hidden">
-            {/* Featured Image */}
-            {featuredPost.thumbnail_url && (
-              <img
-                src={featuredPost.thumbnail_url}
-                alt={featuredPost.title}
-                className="absolute inset-0 w-full h-full object-cover"
-              />
-            )}
-            {/* Overlay with Title, Category, Date, Excerpt */}
-            <div className="absolute bottom-0 left-0 right-0 bg-base-100 bg-opacity-90">
-              <div className="border-t border-gray-300 px-4 py-3">
-                <Link to={`/blog/${encodeURIComponent(featuredPost.slug)}`}>
-                  <h2 className="text-lg md:text-2xl font-bold">
-                    {featuredPost.title}
-                  </h2>
-                </Link>
-                <div className="flex justify-between text-sm text-gray-500 mt-1">
-                  <span>{featuredPost.category || "Uncategorized"}</span>
-                  <span>{formatDate(featuredPost.published_at)}</span>
-                </div>
-                {featuredPost.excerpt && (
-                  <p className="text-sm text-gray-600 mt-2">
-                    {featuredPost.excerpt}
-                  </p>
-                )}
+          <article className="relative rounded-lg overflow-hidden shadow-lg">
+            <img
+              src={featuredPost.thumbnail_url}
+              alt={featuredPost.title}
+              className="w-full h-64 md:h-96 object-cover"
+            />
+            <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-70 p-4">
+              <Link to={`/blog/${featuredPost.slug}`}>
+                <h2 className="text-white text-lg md:text-2xl font-bold">
+                  {featuredPost.title}
+                </h2>
+              </Link>
+              <div className="flex justify-between text-sm text-gray-300 mt-1">
+                <span>{featuredPost.category || "Uncategorized"}</span>
+                <span>{formatDate(featuredPost.published_at)}</span>
               </div>
+              <p className="text-gray-300 text-sm mt-2">
+                {featuredPost.excerpt}
+              </p>
             </div>
           </article>
         )}
 
-        {/* Recent Posts (3 smaller blocks stacked) */}
         <div className="grid grid-cols-1 gap-6">
           {recentPosts.map((post) => (
             <article
               key={post.id}
-              className="relative aspect-video bg-neutral-200 rounded-lg overflow-hidden"
+              className="relative rounded-lg overflow-hidden shadow-md"
             >
-              {post.thumbnail_url && (
-                <img
-                  src={post.thumbnail_url}
-                  alt={post.title}
-                  className="absolute inset-0 w-full h-full object-cover"
-                />
-              )}
-              <div className="absolute bottom-0 left-0 right-0 bg-base-100 bg-opacity-90">
-                <div className="border-t border-gray-300 px-4 py-2">
-                  <Link to={`/blog/${encodeURIComponent(post.slug)}`}>
-                    <h3 className="text-sm font-semibold">{post.title}</h3>
-                  </Link>
-                  <div className="flex justify-between text-xs text-gray-500 mt-1">
-                    <span>{post.category || "Uncategorized"}</span>
-                    <span>{formatDate(post.published_at)}</span>
-                  </div>
-                  {post.excerpt && (
-                    <p className="text-xs text-gray-600 mt-1">{post.excerpt}</p>
-                  )}
+              <img
+                src={post.thumbnail_url}
+                alt={post.title}
+                className="w-full h-48 object-cover"
+              />
+              <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-70 p-3">
+                <Link to={`/blog/${post.slug}`}>
+                  <h3 className="text-white text-sm font-semibold">
+                    {post.title}
+                  </h3>
+                </Link>
+                <div className="flex justify-between text-xs text-gray-300 mt-1">
+                  <span>{post.category || "Uncategorized"}</span>
+                  <span>{formatDate(post.published_at)}</span>
                 </div>
               </div>
             </article>
@@ -137,32 +118,26 @@ export default function BlogIndex() {
         </div>
       </section>
 
-      {/* Additional Posts Grid */}
-      <section className="px-4 md:px-8 mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <section className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {otherPosts.map((post) => (
           <article
             key={post.id}
-            className="relative aspect-video bg-neutral-200 rounded-lg overflow-hidden"
+            className="relative rounded-lg overflow-hidden shadow-md"
           >
-            {post.thumbnail_url && (
-              <img
-                src={post.thumbnail_url}
-                alt={post.title}
-                className="absolute inset-0 w-full h-full object-cover"
-              />
-            )}
-            <div className="absolute bottom-0 left-0 right-0 bg-base-100 bg-opacity-90">
-              <div className="border-t border-gray-300 px-4 py-2">
-                <Link to={`/blog/${encodeURIComponent(post.slug)}`}>
-                  <h3 className="text-base font-semibold">{post.title}</h3>
-                </Link>
-                <div className="flex justify-between text-sm text-gray-500 mt-1">
-                  <span>{post.category || "Uncategorized"}</span>
-                  <span>{formatDate(post.published_at)}</span>
-                </div>
-                {post.excerpt && (
-                  <p className="text-sm text-gray-600 mt-2">{post.excerpt}</p>
-                )}
+            <img
+              src={post.thumbnail_url}
+              alt={post.title}
+              className="w-full h-48 object-cover"
+            />
+            <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-70 p-3">
+              <Link to={`/blog/${post.slug}`}>
+                <h3 className="text-white text-base font-semibold">
+                  {post.title}
+                </h3>
+              </Link>
+              <div className="flex justify-between text-sm text-gray-300 mt-1">
+                <span>{post.category || "Uncategorized"}</span>
+                <span>{formatDate(post.published_at)}</span>
               </div>
             </div>
           </article>
