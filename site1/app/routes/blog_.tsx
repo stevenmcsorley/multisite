@@ -52,8 +52,8 @@ export default function BlogIndex() {
   }>();
 
   const featuredPost = posts[0];
-  const recentPosts = posts.slice(1, 3);
-  const otherPosts = posts.slice(3);
+  const recentPosts = posts.slice(2, 4);
+  const otherPosts = posts.slice(5);
 
   function formatDate(dateString?: string) {
     if (!dateString) return "";
@@ -78,7 +78,11 @@ export default function BlogIndex() {
               <p className="text-green-600 font-semibold text-xs uppercase">
                 {featuredPost.category}
               </p>
-              <h2 className="text-2xl font-bold mt-1">{featuredPost.title}</h2>
+              <Link to={`/blog/${encodeURIComponent(featuredPost.slug)}`}>
+                <h2 className="text-2xl font-bold mt-1">
+                  {featuredPost.title}
+                </h2>
+              </Link>
               <p className="text-gray-600 text-sm mt-2">
                 {featuredPost.excerpt}
               </p>
@@ -104,7 +108,9 @@ export default function BlogIndex() {
                 <p className="text-green-600 font-semibold text-xs uppercase">
                   {post.category}
                 </p>
-                <h3 className="text-lg font-semibold mt-1">{post.title}</h3>
+                <Link to={`/blog/${encodeURIComponent(post.slug)}`}>
+                  <h3 className="text-lg font-semibold mt-1">{post.title}</h3>
+                </Link>
                 <p className="text-gray-600 text-xs mt-1">{post.excerpt}</p>
                 <div className="text-gray-500 text-xs mt-1">
                   {formatDate(post.published_at)}
@@ -130,7 +136,9 @@ export default function BlogIndex() {
               <p className="text-green-600 font-semibold text-xs uppercase">
                 {post.category}
               </p>
-              <h3 className="text-lg font-semibold mt-1">{post.title}</h3>
+              <Link to={`/blog/${encodeURIComponent(post.slug)}`}>
+                <h3 className="text-lg font-semibold mt-1">{post.title}</h3>
+              </Link>
               <p className="text-gray-600 text-xs mt-1">{post.excerpt}</p>
               <div className="text-gray-500 text-xs mt-1">
                 {formatDate(post.published_at)}
