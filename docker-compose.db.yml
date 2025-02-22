@@ -21,13 +21,25 @@ services:
     depends_on:
       - postgres # ensures Postgres is up
     environment:
+      # Existing variables for DB
       POSTGRES_HOST: postgres
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${HARVEST_POSTGRES_DB}
+
+      # Any existing API keys
       API_KEY_1: ${API_KEY_1}
       API_KEY_2: ${API_KEY_2}
       API_KEY_3: ${API_KEY_3}
+
+      # NEW Harvest environment variables for the blog script:
+      API_KEY_BLOG: ${API_KEY_BLOG}
+      CLOUDFLARE_ACCOUNT_ID: ${CLOUDFLARE_ACCOUNT_ID}
+      CLOUDFLARE_API_TOKEN: ${CLOUDFLARE_API_TOKEN}
+      FLUX_MODEL: ${FLUX_MODEL}
+      MODEL_ID: ${MODEL_ID}
+      POSTS_PER_DAY: ${POSTS_PER_DAY}
+      POST_CREATION_INTERVAL: ${POST_CREATION_INTERVAL}
     networks:
       - db-network # <-- add this
   pgadmin:
