@@ -6,34 +6,33 @@ import random
 import requests
 import psycopg2
 import logging
+import base64
 from datetime import datetime, timedelta
 
-# Configure logging for better visibility.
+# Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s: %(message)s')
 logger = logging.getLogger(__name__)
 
 # ------------------------------------------------------------------------------
 # Environment / Configuration
 # ------------------------------------------------------------------------------
-
-# Database credentials
 DB_HOST = os.getenv("POSTGRES_HOST")
 DB_NAME = os.getenv("POSTGRES_DB")
 DB_USER = os.getenv("POSTGRES_USER")
 DB_PASSWORD = os.getenv("POSTGRES_PASSWORD")
 
-# Groq model & API key
 API_KEY_BLOG = os.getenv("API_KEY_BLOG")
 MODEL_ID = os.getenv("MODEL_ID")
 
-# Cloudflare text-to-image
 CLOUDFLARE_ACCOUNT_ID = os.getenv("CLOUDFLARE_ACCOUNT_ID")
 CLOUDFLARE_API_TOKEN = os.getenv("CLOUDFLARE_API_TOKEN")
-FLUX_MODEL = os.getenv("FLUX_MODEL")
 
-# Blog creation config
-POSTS_PER_DAY = int(os.getenv("POSTS_PER_DAY"))
-INTERVAL_SECONDS = int(os.getenv("POST_CREATION_INTERVAL"))
+# We hardcode DreamShaper 8 LCM here; you can still override with .env if you want.
+# If you do, remove the hard-coded assignment and rely on FLUX_MODEL = os.getenv("FLUX_MODEL").
+FLUX_MODEL = "@cf/lykon/dreamshaper-8-lcm"
+
+POSTS_PER_DAY = int(os.getenv("POSTS_PER_DAY", "288"))
+INTERVAL_SECONDS = int(os.getenv("POST_CREATION_INTERVAL", "300"))
 
 # ------------------------------------------------------------------------------
 # Database connection
@@ -133,30 +132,19 @@ TOPIC_LIST = [
     "The Evolution of Name Spellings: When Creativity Meets Tradition"
 ]
 
-CATEGORIES = [
-    "Origins & Culture",
-    "Psychology",
-    "Historical Trends",
-    "Modern Trends",
-    "Unconventional Topics"
-]
+CATEGORIES = ["Origins & Culture", "Psychology", "Historical Trends", "Modern Trends", "Unconventional Topics"]
 
-# Define three style/tone pairs.
 STYLE_TONE_PAIRS = [
     {"tone": "conversational", "style": "engaging and storytelling"},
-    {"tone": "witty",         "style": "humorous and light-hearted"},
-    {"tone": "formal",        "style": "academic and analytical"}
+    {"tone": "witty", "style": "humorous and light-hearted"},
+    {"tone": "formal", "style": "academic and analytical"}
 ]
 
 # ------------------------------------------------------------------------------
 # Utility Functions
 # ------------------------------------------------------------------------------
 def generate_slug(title: str) -> str:
-    """
-    Create a simple URL-friendly slug from the title.
-    """
     slug = title.lower().strip().replace(" ", "-")
-    # Optionally, further clean up punctuation if needed
     return slug
 
 def is_duplicate_slug(slug: str) -> bool:
@@ -168,16 +156,20 @@ def is_duplicate_title(title: str) -> bool:
     return cur.fetchone() is not None
 
 # ------------------------------------------------------------------------------
-# Cloudflare AI: Text-to-Image
+# Cloudflare AI: DreamShaper
 # ------------------------------------------------------------------------------
 def call_text_to_image_api(
-         prompt: str,
-        negative_prompt: str = "text, letters, watermark, signature",
-        height: int = 512,
-        width: int = 512,
-        num_steps: int = 12,
-        guidance: float = 7.5
-    ) -> str:
+    prompt: str,
+    negative_prompt: str = "text, letters, watermark, signature",
+    height: int = 512,
+    width: int = 512,
+    num_steps: int = 12,
+    guidance: float = 7.5
+) -> str:
+    """
+    Calls the DreamShaper 8 LCM model, which can return raw binary PNG or base64 JSON.
+    We'll handle raw bytes and convert to data URI base64 so we can store in DB.
+    """
     url = f"https://api.cloudflare.com/client/v4/accounts/{CLOUDFLARE_ACCOUNT_ID}/ai/run/{FLUX_MODEL}"
     headers = {
         "Authorization": f"Bearer {CLOUDFLARE_API_TOKEN}",
@@ -188,40 +180,59 @@ def call_text_to_image_api(
         "negative_prompt": negative_prompt,
         "height": height,
         "width": width,
-        "num_steps": num_steps,     # Up to 20
-        "guidance": guidance,       # Typically between ~4 and 15
-        # "seed": 12345,            # Optionally set a seed for reproducibility
+        "num_steps": num_steps,
+        "guidance": guidance
     }
     try:
         resp = requests.post(url, headers=headers, json=payload, timeout=60)
+        logger.info("Status code: %s", resp.status_code)
+        # If DreamShaper returns raw PNG, it won't be valid JSON => resp.json() will fail.
+        # Let's see if we can detect content type.
+
+        # Check the 'content-type' header:
+        ctype = resp.headers.get("Content-Type", "")
+        logger.info("Content-Type returned: %s", ctype)
+
         resp.raise_for_status()
 
+        # If it's raw PNG or JPEG, ctype might be "image/png" or "image/jpeg".
+        if "image/" in ctype.lower():
+            # We have raw binary image data
+            raw_bytes = resp.content
+            # Convert to base64
+            encoded = base64.b64encode(raw_bytes).decode("utf-8")
+            # Build a data URI
+            # If it's "image/png", we do "data:image/png;base64,..."
+            # If it's "image/jpeg", we do "data:image/jpeg;base64,..."
+            if "png" in ctype.lower():
+                return f"data:image/png;base64,{encoded}"
+            else:
+                return f"data:image/jpeg;base64,{encoded}"
+
+        # Otherwise, maybe we do get JSON with "result.image" base64
         data = resp.json()
-        # The "image" is actually at data["result"]["image"], not data["image"]
         image_b64 = data.get("result", {}).get("image")
-
         if not image_b64:
-            logger.error("No 'image' field in text-to-image response for prompt: %s. Full response: %s", prompt, data)
+            logger.error("No 'image' field in text-to-image response. Full response: %s", data)
             return ""
+        return f"data:image/jpeg;base64,{image_b64}"
 
-        # Wrap it in data URI
-        data_uri = f"data:image/jpeg;base64,{image_b64}"
-        return data_uri
-
-    except Exception as e:
-        logger.error("Error calling flux-1-schnell for prompt '%s': %s", prompt, e)
+    except requests.exceptions.HTTPError as http_err:
+        logger.error("HTTP error calling DreamShaper for prompt '%s': %s", prompt, http_err)
+        logger.error("Response body: %s", resp.text)
         return ""
-
+    except Exception as e:
+        logger.error("Error calling DreamShaper for prompt '%s': %s", prompt, e)
+        return ""
 
 # ------------------------------------------------------------------------------
 # Blog: Text Generation (Groq)
 # ------------------------------------------------------------------------------
 def call_blog_post_api(topic: str):
     """
-    Call the Groq API to generate a complete blog post for a given topic.
-    Then call text-to-image to generate a thumbnail.
+    Call the Groq API to generate a structured blog post,
+    then call the text-to-image function to get a data URI image.
     """
-    # Pick a random style/tone
     selected_pair = random.choice(STYLE_TONE_PAIRS)
     tone = selected_pair["tone"]
     style = selected_pair["style"]
@@ -239,10 +250,10 @@ def call_blog_post_api(topic: str):
     )
 
     user_prompt = (
-        f"Generate a blog post about the following topic as a suggestion. "
-        f"The topic is only a guide; create a dynamic, unique title and content:\n"
+        f"Generate a blog post about the following topic as a suggestion. The topic is only a guide:\n"
         f"Topic: {topic}\n\n"
-        f"Write this blog post in a {tone} tone and {style} style. Ensure the blog post is engaging, unique, and optimized for SEO. "
+        f"Write this blog post in a {tone} tone and {style} style. "
+        "Ensure the blog post is engaging, unique, and optimized for SEO. "
         "Include a compelling title (do not just echo the topic), a URL-friendly slug, SEO meta title, meta description, "
         "and a short excerpt summarizing the post. Also, include a category and relevant tags. "
         "The content should be well-structured with multiple paragraphs. "
@@ -272,13 +283,13 @@ def call_blog_post_api(topic: str):
     }
 
     headers = {
-        "Content-Type": "application/json",
-        "Authorization": f"Bearer {API_KEY_BLOG}"
+        "Authorization": f"Bearer {API_KEY_BLOG}",
+        "Content-Type": "application/json"
     }
 
     max_retries = 5
     attempt = 0
-    backoff = 10  # initial delay in seconds
+    backoff = 10
 
     while attempt < max_retries:
         try:
@@ -296,7 +307,6 @@ def call_blog_post_api(topic: str):
                 return None
 
             raw_content = data["choices"][0]["message"]["content"]
-            # Remove any markdown fences
             raw_content = raw_content.replace("```json", "").replace("```", "").strip()
 
             result = json.loads(raw_content)
@@ -304,25 +314,24 @@ def call_blog_post_api(topic: str):
                 logger.error("Expected JSON object for topic: %s", topic)
                 return None
 
-            # Now let's also generate an AI image from the same topic
-            # or some variation to match the blog post's theme
+            # Generate an AI image for the post
             image_prompt = f"An artistic illustration of {topic}, pastel, abstract"
             negative = "text, letters, watermark, signature, words"
-
             data_uri = call_text_to_image_api(
-                    prompt=image_prompt,
-                    negative_prompt=negative,
-                    height=512,
-                    width=512,
-                    num_steps=12,
-                    guidance=7.5
+                prompt=image_prompt,
+                negative_prompt=negative,
+                height=512,
+                width=512,
+                num_steps=12,
+                guidance=7.5
             )
-            # Overwrite the placeholder empty string with our new image
             result["thumbnail_url"] = data_uri
 
             return result
 
         except requests.exceptions.HTTPError as e:
+            logger.error("HTTP error: %s", e)
+            logger.error("Response text: %s", resp.text)
             if resp.status_code == 429:
                 attempt += 1
                 retry_after = resp.headers.get("Retry-After")
@@ -332,7 +341,7 @@ def call_blog_post_api(topic: str):
                     topic, attempt, max_retries, delay
                 )
                 time.sleep(delay)
-                backoff *= 2  # Exponential backoff
+                backoff *= 2
                 continue
             else:
                 logger.error("HTTP error for topic '%s': %s", topic, e)
@@ -348,9 +357,6 @@ def call_blog_post_api(topic: str):
 # Database Insert
 # ------------------------------------------------------------------------------
 def store_blog_post(blog_post):
-    """
-    Insert the generated blog post into the blog_posts table.
-    """
     cur.execute("""
     INSERT INTO blog_posts (
       title, slug, content,
@@ -365,7 +371,7 @@ def store_blog_post(blog_post):
         blog_post.get("meta_title"),
         blog_post.get("meta_description"),
         blog_post.get("excerpt"),
-        blog_post.get("thumbnail_url"),
+        blog_post.get("thumbnail_url"),  # This is our data URI
         blog_post.get("category"),
         blog_post.get("tags"),
         blog_post.get("published_at")
@@ -379,12 +385,10 @@ def store_blog_post(blog_post):
 def main():
     init_blog_db()
 
-    # Get the current day and initialize our daily counter.
     current_day = datetime.utcnow().date()
     posts_today = 0
 
     while True:
-        # Reset if a new day has started
         now = datetime.utcnow()
         if now.date() != current_day:
             current_day = now.date()
@@ -397,57 +401,47 @@ def main():
 
             blog_post = call_blog_post_api(topic)
             if blog_post:
-                # Generate slug if not provided
+                # Ensure slug
                 if not blog_post.get("slug") and blog_post.get("title"):
                     blog_post["slug"] = generate_slug(blog_post["title"])
 
-                # Ensure slug is unique
                 original_slug = blog_post["slug"]
                 suffix = 1
                 while is_duplicate_slug(blog_post["slug"]):
                     blog_post["slug"] = f"{original_slug}-{suffix}"
                     suffix += 1
 
-                # Ensure title is unique
+                # Ensure title unique
                 original_title = blog_post["title"]
                 suffix = 1
                 while is_duplicate_title(blog_post["title"]):
                     blog_post["title"] = f"{original_title} ({suffix})"
                     suffix += 1
 
-                # If published_at is missing, set it to now
+                # published_at fallback
                 if not blog_post.get("published_at"):
                     blog_post["published_at"] = datetime.utcnow().isoformat() + "Z"
 
-                # If category is missing, pick one
+                # category fallback
                 if not blog_post.get("category"):
                     blog_post["category"] = random.choice(CATEGORIES)
 
-                # Store the finished post
+                # Insert into DB
                 store_blog_post(blog_post)
                 posts_today += 1
                 logger.info("Post #%d published for today.", posts_today)
             else:
                 logger.warning("Skipping topic due to API error: %s", topic)
         else:
-            logger.info(
-                "Daily limit of %d posts reached. Waiting for the next day.",
-                POSTS_PER_DAY
-            )
-            # Sleep until midnight UTC
-            now = datetime.utcnow()
+            logger.info("Daily limit of %d posts reached. Waiting for the next day.", POSTS_PER_DAY)
             tomorrow = datetime.combine(now.date() + timedelta(days=1), datetime.min.time())
             sleep_seconds = (tomorrow - now).total_seconds()
             time.sleep(sleep_seconds)
             continue
 
-        # Sleep before generating the next post
         logger.info("Sleeping for %d seconds before next post...", INTERVAL_SECONDS)
         time.sleep(INTERVAL_SECONDS)
 
-# ------------------------------------------------------------------------------
-# Entry Point
-# ------------------------------------------------------------------------------
 if __name__ == "__main__":
     try:
         main()
