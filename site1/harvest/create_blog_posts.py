@@ -314,8 +314,16 @@ def call_blog_post_api(topic: str):
                 logger.error("Expected JSON object for topic: %s", topic)
                 return None
 
-            # Generate an AI image for the post
-            image_prompt = f"A photorealistic, high-detail image of {topic}"
+            variation_options = [
+                "dramatic lighting",
+                "cinematic atmosphere",
+                "vibrant color palette",
+                "unique perspective",
+                "realistic textures"
+            ]
+
+            random_variation = random.choice(variation_options)
+            image_prompt = f"A photorealistic, high-detail image of {topic} with {random_variation}"
             negative = "text, letters, watermark, signature, words, people, faces, logos, trademarks"
             data_uri = call_text_to_image_api(
                 prompt=image_prompt,
