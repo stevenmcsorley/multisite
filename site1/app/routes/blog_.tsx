@@ -51,7 +51,8 @@ export default function BlogIndex() {
     limit: number;
   }>();
 
-  const featuredPost = posts.slice(0, 1)[0];
+  const featuredPost = posts[0];
+  const featuredPostTwo = posts[1];
   const recentPosts = posts.slice(2, 4);
   const otherPosts = posts.slice(5);
 
@@ -68,7 +69,7 @@ export default function BlogIndex() {
 
       <section className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-8">
         {featuredPost && (
-          <article className="relative rounded-lg overflow-hidden shadow-lg">
+          <article className="relative rounded-lg overflow-hidden shadow-lg flex flex-col flex-start">
             <img
               src={featuredPost.thumbnail_url}
               alt={featuredPost.title}
@@ -92,6 +93,37 @@ export default function BlogIndex() {
             </div>
           </article>
         )}
+
+        {featuredPostTwo && (
+          <article className="relative rounded-lg overflow-hidden shadow-lg flex flex-col flex-start">
+            <img
+              src={featuredPostTwo.thumbnail_url}
+              alt={featuredPostTwo.title}
+              className="w-full h-96 object-cover"
+            />
+            <div className="p-6">
+              <p className="text-green-600 font-semibold text-xs uppercase">
+                {featuredPostTwo.category}
+              </p>
+              <Link to={`/blog/${encodeURIComponent(featuredPostTwo.slug)}`}>
+                <h2 className="text-2xl font-bold mt-1">
+                  {featuredPostTwo.title}
+                </h2>
+              </Link>
+              <p className="text-gray-600 text-sm mt-2">
+                {featuredPostTwo.excerpt}
+              </p>
+              <div className="text-gray-500 text-xs mt-2">
+                {formatDate(featuredPostTwo.published_at)}
+              </div>
+            </div>
+          </article>
+        )}
+      </section>
+
+      <section className="mt-8">
+        <h2 className="text-2xl font-bold mb-4">Recent Posts</h2>
+        <hr className="border-gray-300 mb-6" />
 
         <div className="grid grid-cols-1 gap-6">
           {recentPosts.map((post) => (
