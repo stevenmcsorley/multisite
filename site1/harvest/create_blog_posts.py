@@ -294,8 +294,11 @@ def call_blog_post_api(topic: str):
 
             # Now let's also generate an AI image from the same topic
             # or some variation to match the blog post's theme
-            image_prompt = (f"An artistic, abstract illustration of the following topic: {topic}. ""No text, no letters in the image.")
-            data_uri = call_text_to_image_api(image_prompt, steps=4)
+            image_prompt = (f"An artistic, abstract illustration of the topic: {topic}. "
+                            "Flat vector style, no words, no letters, no text, no watermark, no signature, no disclaimers. "
+                            "Focus on shapes and colors only."
+                            )
+            data_uri = call_text_to_image_api(image_prompt, steps=5)
             # Overwrite the placeholder empty string with our new image
             result["thumbnail_url"] = data_uri
 
