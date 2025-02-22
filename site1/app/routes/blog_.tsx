@@ -13,7 +13,7 @@ import { json } from "@remix-run/node";
 export const loader: LoaderFunction = async ({ request }) => {
   const url = new URL(request.url);
   const page = parseInt(url.searchParams.get("page") || "1", 10);
-  const limit = 18;
+  const limit = 16;
   const { rows, total } = await getAllBlogPosts(page, limit);
   return json({ posts: rows, total, page, limit });
 };
@@ -51,10 +51,9 @@ export default function BlogIndex() {
     limit: number;
   }>();
 
-  // first 2 posts are featured
-  const featuredPost = posts.slice(0, 2);
-  const recentPosts = posts.slice(2, 4);
-  const otherPosts = posts.slice(5);
+  const featuredPosts = posts.slice(0, 2);
+  const recentPosts = posts.slice(2, 8);
+  const otherPosts = posts.slice(8);
 
   function formatDate(dateString?: string) {
     if (!dateString) return "";
@@ -67,12 +66,12 @@ export default function BlogIndex() {
         Blog
       </h1>
 
-      <section className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-8">
-        <div>
-          {featuredPost.map((post) => (
+      <section className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="col-span-2 grid gap-8">
+          {featuredPosts.map((post) => (
             <article
-              className="relative rounded-lg overflow-hidden shadow-lg flex flex-col flex-start"
               key={post.id}
+              className="relative rounded-lg overflow-hidden shadow-lg"
             >
               <img
                 src={post.thumbnail_url}
@@ -94,11 +93,6 @@ export default function BlogIndex() {
             </article>
           ))}
         </div>
-      </section>
-
-      <section className="mt-8">
-        <h2 className="text-3xl font-bold mb-4">Recent Posts</h2>
-        <hr className="border-gray-300" />
 
         <div className="grid grid-cols-1 gap-6">
           {recentPosts.map((post) => (
@@ -109,7 +103,7 @@ export default function BlogIndex() {
               <img
                 src={post.thumbnail_url}
                 alt={post.title}
-                className="w-full h-48 object-cover"
+                className="w-full h-40 object-cover"
               />
               <div className="p-4">
                 <p className="text-green-600 font-semibold text-xs uppercase">
@@ -128,7 +122,7 @@ export default function BlogIndex() {
         </div>
       </section>
 
-      <section className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-8">
+      <section className="mt-8 grid grid-cols-1 md:grid-cols-4 gap-8">
         {otherPosts.map((post) => (
           <article
             key={post.id}
