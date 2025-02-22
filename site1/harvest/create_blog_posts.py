@@ -322,7 +322,7 @@ def call_blog_post_api(topic: str):
                 negative_prompt=negative,
                 height=512,
                 width=512,
-                num_steps=12,
+                num_steps=20,
                 guidance=7.5
             )
             result["thumbnail_url"] = data_uri
