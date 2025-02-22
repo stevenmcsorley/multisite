@@ -51,8 +51,8 @@ export default function BlogIndex() {
     limit: number;
   }>();
 
-  const featuredPost = posts[0];
-  const featuredPostTwo = posts[1];
+  // first 2 posts are featured
+  const featuredPost = posts.slice(0, 2);
   const recentPosts = posts.slice(2, 4);
   const otherPosts = posts.slice(5);
 
@@ -68,62 +68,35 @@ export default function BlogIndex() {
       </h1>
 
       <section className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-8">
-        {featuredPost && (
-          <article className="relative rounded-lg overflow-hidden shadow-lg flex flex-col flex-start">
+        {featuredPost.map((post) => (
+          <article
+            className="relative rounded-lg overflow-hidden shadow-lg flex flex-col flex-start"
+            key={post.id}
+          >
             <img
-              src={featuredPost.thumbnail_url}
-              alt={featuredPost.title}
+              src={post.thumbnail_url}
+              alt={post.title}
               className="w-full h-96 object-cover"
             />
             <div className="p-6">
               <p className="text-green-600 font-semibold text-xs uppercase">
-                {featuredPost.category}
+                {post.category}
               </p>
-              <Link to={`/blog/${encodeURIComponent(featuredPost.slug)}`}>
-                <h2 className="text-2xl font-bold mt-1">
-                  {featuredPost.title}
-                </h2>
+              <Link to={`/blog/${encodeURIComponent(post.slug)}`}>
+                <h2 className="text-2xl font-bold mt-1">{post.title}</h2>
               </Link>
-              <p className="text-gray-600 text-sm mt-2">
-                {featuredPost.excerpt}
-              </p>
+              <p className="text-gray-600 text-sm mt-2">{post.excerpt}</p>
               <div className="text-gray-500 text-xs mt-2">
-                {formatDate(featuredPost.published_at)}
+                {formatDate(post.published_at)}
               </div>
             </div>
           </article>
-        )}
-
-        {featuredPostTwo && (
-          <article className="relative rounded-lg overflow-hidden shadow-lg flex flex-col flex-start">
-            <img
-              src={featuredPostTwo.thumbnail_url}
-              alt={featuredPostTwo.title}
-              className="w-full h-96 object-cover"
-            />
-            <div className="p-6">
-              <p className="text-green-600 font-semibold text-xs uppercase">
-                {featuredPostTwo.category}
-              </p>
-              <Link to={`/blog/${encodeURIComponent(featuredPostTwo.slug)}`}>
-                <h2 className="text-2xl font-bold mt-1">
-                  {featuredPostTwo.title}
-                </h2>
-              </Link>
-              <p className="text-gray-600 text-sm mt-2">
-                {featuredPostTwo.excerpt}
-              </p>
-              <div className="text-gray-500 text-xs mt-2">
-                {formatDate(featuredPostTwo.published_at)}
-              </div>
-            </div>
-          </article>
-        )}
+        ))}
       </section>
 
       <section className="mt-8">
-        <h2 className="text-2xl font-bold mb-4">Recent Posts</h2>
-        <hr className="border-gray-300 mb-6" />
+        <h2 className="text-3xl font-bold mb-4">Recent Posts</h2>
+        <hr className="border-gray-300" />
 
         <div className="grid grid-cols-1 gap-6">
           {recentPosts.map((post) => (
