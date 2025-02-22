@@ -324,7 +324,7 @@ def call_blog_post_api(topic: str):
 
             random_variation = random.choice(variation_options)
             image_prompt = f"A photorealistic, high-detail image of {topic} with {random_variation}"
-            negative = "text, letters, watermark, signature, words, people, faces, logos, trademarks"
+            negative = "text, letters, text, watermark, signature, words, people, faces, logos, trademarks"
             data_uri = call_text_to_image_api(
                 prompt=image_prompt,
                 negative_prompt=negative,
