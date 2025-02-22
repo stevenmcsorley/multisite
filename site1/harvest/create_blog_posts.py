@@ -31,7 +31,7 @@ CLOUDFLARE_API_TOKEN = os.getenv("CLOUDFLARE_API_TOKEN")
 # If you do, remove the hard-coded assignment and rely on FLUX_MODEL = os.getenv("FLUX_MODEL").
 FLUX_MODEL = "@cf/stabilityai/stable-diffusion-xl-base-1.0"
 
-POSTS_PER_DAY = int(os.getenv("POSTS_PER_DAY", "288"))
+POSTS_PER_DAY = int(os.getenv("POSTS_PER_DAY", "70"))
 INTERVAL_SECONDS = int(os.getenv("POST_CREATION_INTERVAL", "300"))
 
 # ------------------------------------------------------------------------------
