@@ -52,8 +52,8 @@ export default function BlogIndex() {
   }>();
 
   const featuredPost = posts[0];
-  const recentPosts = posts.slice(1, 4);
-  const otherPosts = posts.slice(4);
+  const recentPosts = posts.slice(1, 3);
+  const otherPosts = posts.slice(3);
 
   function formatDate(dateString?: string) {
     if (!dateString) return "";
@@ -61,32 +61,27 @@ export default function BlogIndex() {
   }
 
   return (
-    <main className="w-full bg-base-100 text-base-content px-4 md:px-8 py-6">
-      <h1 className="text-3xl md:text-5xl font-bold leading-tight text-center mb-8">
+    <main className="w-full bg-white text-gray-900 px-6 md:px-12 py-6">
+      <h1 className="text-4xl md:text-5xl font-bold leading-tight text-center mb-8">
         Blog
       </h1>
 
-      <section className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-6">
+      <section className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-8">
         {featuredPost && (
           <article className="relative rounded-lg overflow-hidden shadow-lg">
             <img
               src={featuredPost.thumbnail_url}
               alt={featuredPost.title}
-              className="w-full h-64 md:h-96 object-cover"
+              className="w-full h-96 object-cover"
             />
-            <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-70 p-4">
-              <Link to={`/blog/${featuredPost.slug}`}>
-                <h2 className="text-white text-lg md:text-2xl font-bold">
-                  {featuredPost.title}
-                </h2>
-              </Link>
-              <div className="flex justify-between text-sm text-gray-300 mt-1">
-                <span>{featuredPost.category || "Uncategorized"}</span>
-                <span>{formatDate(featuredPost.published_at)}</span>
-              </div>
-              <p className="text-gray-300 text-sm mt-2">
+            <div className="p-6">
+              <h2 className="text-2xl font-bold">{featuredPost.title}</h2>
+              <p className="text-gray-600 text-sm mt-2">
                 {featuredPost.excerpt}
               </p>
+              <div className="text-gray-500 text-xs mt-2">
+                {formatDate(featuredPost.published_at)}
+              </div>
             </div>
           </article>
         )}
@@ -102,15 +97,11 @@ export default function BlogIndex() {
                 alt={post.title}
                 className="w-full h-48 object-cover"
               />
-              <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-70 p-3">
-                <Link to={`/blog/${post.slug}`}>
-                  <h3 className="text-white text-sm font-semibold">
-                    {post.title}
-                  </h3>
-                </Link>
-                <div className="flex justify-between text-xs text-gray-300 mt-1">
-                  <span>{post.category || "Uncategorized"}</span>
-                  <span>{formatDate(post.published_at)}</span>
+              <div className="p-4">
+                <h3 className="text-lg font-semibold">{post.title}</h3>
+                <p className="text-gray-600 text-xs mt-1">{post.excerpt}</p>
+                <div className="text-gray-500 text-xs mt-1">
+                  {formatDate(post.published_at)}
                 </div>
               </div>
             </article>
@@ -118,7 +109,7 @@ export default function BlogIndex() {
         </div>
       </section>
 
-      <section className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <section className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-8">
         {otherPosts.map((post) => (
           <article
             key={post.id}
@@ -127,17 +118,13 @@ export default function BlogIndex() {
             <img
               src={post.thumbnail_url}
               alt={post.title}
-              className="w-full h-48 object-cover"
+              className="w-full h-40 object-cover"
             />
-            <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-70 p-3">
-              <Link to={`/blog/${post.slug}`}>
-                <h3 className="text-white text-base font-semibold">
-                  {post.title}
-                </h3>
-              </Link>
-              <div className="flex justify-between text-sm text-gray-300 mt-1">
-                <span>{post.category || "Uncategorized"}</span>
-                <span>{formatDate(post.published_at)}</span>
+            <div className="p-4">
+              <h3 className="text-lg font-semibold">{post.title}</h3>
+              <p className="text-gray-600 text-xs mt-1">{post.excerpt}</p>
+              <div className="text-gray-500 text-xs mt-1">
+                {formatDate(post.published_at)}
               </div>
             </div>
           </article>
