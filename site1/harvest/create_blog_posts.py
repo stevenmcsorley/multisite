@@ -314,20 +314,37 @@ def call_blog_post_api(topic: str):
                 logger.error("Expected JSON object for topic: %s", topic)
                 return None
 
-            variation_options = [
-                "dramatic lighting",
-                "cinematic atmosphere",
-                "vibrant color palette",
-                "unique perspective",
-                "realistic textures"
+            # Predefined topics for consistency
+            topics = [
+                "a futuristic city skyline at sunset",
+                "an ancient library filled with glowing books",
+                "a mystical forest with floating lanterns",
+                "a cyberpunk street with neon lights",
+                "a surreal dreamscape with floating islands"
             ]
 
-            random_variation = random.choice(variation_options)
-            image_prompt = f"A photorealistic, high-detail image of {topic} with {random_variation}"
-            negative = "text, letters, text, watermark, signature, words, people, faces, logos, trademarks"
+            # Predefined high-quality artistic styles
+            variation_options = [
+                "dramatic cinematic lighting",
+                "hyper-realistic detail",
+                "intricate textures and shading",
+                "a bold, striking color palette",
+                "a fine-art photography aesthetic"
+            ]
+
+            # Ensure consistent topic and variation
+            selected_topic = random.choice(topics)
+            selected_variation = random.choice(variation_options)
+
+            # Generate the final prompt
+            image_prompt = f"A photorealistic, high-detail image of {selected_topic} with {selected_variation}, ultra-sharp focus, professional composition, and perfect contrast."
+
+            # Improved negative prompting
+            negative_prompt = "text, letters, watermark, signature, words, people, faces, logos, trademarks, distorted features, blurry details, unnatural colors"
+
             data_uri = call_text_to_image_api(
                 prompt=image_prompt,
-                negative_prompt=negative,
+                negative_prompt=negative_prompt,
                 height=512,
                 width=512,
                 num_steps=20,
