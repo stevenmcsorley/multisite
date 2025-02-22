@@ -73,11 +73,19 @@ export default function BlogIndex() {
               key={post.id}
               className="relative rounded-lg overflow-hidden shadow-lg"
             >
-              <img
-                src={post.thumbnail_url}
-                alt={post.title}
-                className="w-full h-96 object-cover"
-              />
+              {post.thumbnail_url ? (
+                <img
+                  src={post.thumbnail_url}
+                  alt={post.title}
+                  className="w-full h-96 object-cover"
+                />
+              ) : (
+                <img
+                  src="https://baobaonames.com/images/og-image.png"
+                  alt={post.title}
+                  className="w-full h-96 object-cover"
+                />
+              )}
               <div className="p-6">
                 <p className="text-green-600 font-semibold text-xs uppercase">
                   {post.category}
