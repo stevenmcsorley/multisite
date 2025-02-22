@@ -13,7 +13,7 @@ import { json } from "@remix-run/node";
 export const loader: LoaderFunction = async ({ request }) => {
   const url = new URL(request.url);
   const page = parseInt(url.searchParams.get("page") || "1", 10);
-  const limit = 20;
+  const limit = 21;
   const { rows, total } = await getAllBlogPosts(page, limit);
   return json({ posts: rows, total, page, limit });
 };
@@ -106,6 +106,7 @@ export default function BlogIndex() {
                 className="w-full h-40 object-cover"
               />
               <div className="p-4">
+                <div className="border-b border-gray-800 pb-2 pt-1"></div>
                 <p className="text-green-600 font-semibold text-xs uppercase">
                   {post.category}
                 </p>
