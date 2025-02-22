@@ -20,6 +20,8 @@ COPY create_blog_posts.py ./
 # Copy the Supervisor configuration file
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
+COPY .env /app/.env
+
 # Optionally expose any necessary ports (if applicable)
 # EXPOSE 80
 
