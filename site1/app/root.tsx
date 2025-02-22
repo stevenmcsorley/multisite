@@ -54,7 +54,12 @@ function Header() {
           <i className="devicon-react-original text-2xl"></i>
           <span>baobaonames.com</span>
         </a>
-        <LanguageSwitcher />
+        <nav className="flex items-center space-x-4">
+          <a href="/blog" className="text-base-content hover:underline">
+            Blog
+          </a>
+          <LanguageSwitcher />
+        </nav>
       </div>
     </header>
   );
