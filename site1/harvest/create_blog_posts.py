@@ -29,7 +29,7 @@ CLOUDFLARE_API_TOKEN = os.getenv("CLOUDFLARE_API_TOKEN")
 
 # We hardcode DreamShaper 8 LCM here; you can still override with .env if you want.
 # If you do, remove the hard-coded assignment and rely on FLUX_MODEL = os.getenv("FLUX_MODEL").
-FLUX_MODEL = "@cf/lykon/dreamshaper-8-lcm"
+FLUX_MODEL = "@cf/stabilityai/stable-diffusion-xl-base-1.0"
 
 POSTS_PER_DAY = int(os.getenv("POSTS_PER_DAY", "288"))
 INTERVAL_SECONDS = int(os.getenv("POST_CREATION_INTERVAL", "300"))
