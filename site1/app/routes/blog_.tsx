@@ -1,9 +1,14 @@
-import { json } from "@remix-run/node";
-import type { LoaderFunction, MetaFunction, LinksFunction } from "@remix-run/node";
-import { useLoaderData, Link } from "@remix-run/react";
-import { getAllBlogPosts } from "~/models/blog.server";
+import { Link, useLoaderData } from "@remix-run/react";
+import type {
+  LinksFunction,
+  LoaderFunction,
+  MetaFunction,
+} from "@remix-run/node";
+
 import type { BlogPost } from "~/models/blog.server";
 import { createSeoMeta } from "~/utils/seo";
+import { getAllBlogPosts } from "~/models/blog.server";
+import { json } from "@remix-run/node";
 
 export const loader: LoaderFunction = async ({ request }) => {
   const url = new URL(request.url);
@@ -16,7 +21,8 @@ export const loader: LoaderFunction = async ({ request }) => {
 export const meta: MetaFunction = () => {
   const seo = createSeoMeta({
     title: "Blog - Baby Names",
-    description: "Explore our latest SEO-rich blog posts on baby names, trends, culture, psychology, and more.",
+    description:
+      "Explore our latest SEO-rich blog posts on baby names, trends, culture, psychology, and more.",
     canonical: "https://baobaonames.com/blog",
     image: "https://baobaonames.com/images/og-image.png",
   });
@@ -60,9 +66,7 @@ export default function BlogIndex() {
     <main className="w-full bg-base-100 text-base-content">
       {/* Page Title */}
       <section className="px-4 py-8 md:px-8">
-        <h1 className="text-3xl md:text-5xl font-bold leading-tight">
-          Welcome to Scribe, we write about technology, people and culture
-        </h1>
+        <h1 className="text-3xl md:text-5xl font-bold leading-tight">Blog</h1>
       </section>
 
       {/* Featured + Recent Mosaic */}
@@ -126,9 +130,7 @@ export default function BlogIndex() {
                     <span>{formatDate(post.published_at)}</span>
                   </div>
                   {post.excerpt && (
-                    <p className="text-xs text-gray-600 mt-1">
-                      {post.excerpt}
-                    </p>
+                    <p className="text-xs text-gray-600 mt-1">{post.excerpt}</p>
                   )}
                 </div>
               </div>
@@ -144,13 +146,13 @@ export default function BlogIndex() {
             key={post.id}
             className="relative h-48 bg-neutral-200 rounded-lg overflow-hidden"
           >
-{post.thumbnail_url && (
-  <img
-    src={post.thumbnail_url}
-    alt={post.title}
-    className="w-full h-full object-cover"
-  />
-)}
+            {post.thumbnail_url && (
+              <img
+                src={post.thumbnail_url}
+                alt={post.title}
+                className="w-full h-full object-cover"
+              />
+            )}
 
             <div className="absolute bottom-0 left-0 right-0 bg-base-100 bg-opacity-90">
               <div className="border-t border-gray-300 px-4 py-2">
@@ -162,9 +164,7 @@ export default function BlogIndex() {
                   <span>{formatDate(post.published_at)}</span>
                 </div>
                 {post.excerpt && (
-                  <p className="text-sm text-gray-600 mt-2">
-                    {post.excerpt}
-                  </p>
+                  <p className="text-sm text-gray-600 mt-2">{post.excerpt}</p>
                 )}
               </div>
             </div>
