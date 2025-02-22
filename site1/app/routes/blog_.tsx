@@ -68,30 +68,32 @@ export default function BlogIndex() {
       </h1>
 
       <section className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-8">
-        {featuredPost.map((post) => (
-          <article
-            className="relative rounded-lg overflow-hidden shadow-lg flex flex-col flex-start"
-            key={post.id}
-          >
-            <img
-              src={post.thumbnail_url}
-              alt={post.title}
-              className="w-full h-96 object-cover"
-            />
-            <div className="p-6">
-              <p className="text-green-600 font-semibold text-xs uppercase">
-                {post.category}
-              </p>
-              <Link to={`/blog/${encodeURIComponent(post.slug)}`}>
-                <h2 className="text-2xl font-bold mt-1">{post.title}</h2>
-              </Link>
-              <p className="text-gray-600 text-sm mt-2">{post.excerpt}</p>
-              <div className="text-gray-500 text-xs mt-2">
-                {formatDate(post.published_at)}
+        <div>
+          {featuredPost.map((post) => (
+            <article
+              className="relative rounded-lg overflow-hidden shadow-lg flex flex-col flex-start"
+              key={post.id}
+            >
+              <img
+                src={post.thumbnail_url}
+                alt={post.title}
+                className="w-full h-96 object-cover"
+              />
+              <div className="p-6">
+                <p className="text-green-600 font-semibold text-xs uppercase">
+                  {post.category}
+                </p>
+                <Link to={`/blog/${encodeURIComponent(post.slug)}`}>
+                  <h2 className="text-2xl font-bold mt-1">{post.title}</h2>
+                </Link>
+                <p className="text-gray-600 text-sm mt-2">{post.excerpt}</p>
+                <div className="text-gray-500 text-xs mt-2">
+                  {formatDate(post.published_at)}
+                </div>
               </div>
-            </div>
-          </article>
-        ))}
+            </article>
+          ))}
+        </div>
       </section>
 
       <section className="mt-8">
