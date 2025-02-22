@@ -13,7 +13,7 @@ import { json } from "@remix-run/node";
 export const loader: LoaderFunction = async ({ request }) => {
   const url = new URL(request.url);
   const page = parseInt(url.searchParams.get("page") || "1", 10);
-  const limit = 10;
+  const limit = 16;
   const { rows, total } = await getAllBlogPosts(page, limit);
   return json({ posts: rows, total, page, limit });
 };
@@ -51,7 +51,7 @@ export default function BlogIndex() {
     limit: number;
   }>();
 
-  const featuredPost = posts[0];
+  const featuredPost = posts.slice(0, 1)[0];
   const recentPosts = posts.slice(2, 4);
   const otherPosts = posts.slice(5);
 
