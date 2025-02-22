@@ -70,7 +70,7 @@ export default function BlogIndex() {
       </section>
 
       {/* Featured + Recent Mosaic */}
-      <section className="px-4 md:px-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+      <section className="px-4 md:px-8 grid grid-cols-1 md:grid-cols-[3fr_2fr] gap-6">
         {/* Featured Post */}
         {featuredPost && (
           <article className="relative h-64 md:h-96 bg-neutral-200 rounded-lg overflow-hidden">
