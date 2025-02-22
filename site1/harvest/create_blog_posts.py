@@ -315,14 +315,14 @@ def call_blog_post_api(topic: str):
                 return None
 
             # Generate an AI image for the post
-            image_prompt = f"A photorealistic, high-detail image of {topic} with vibrant lighting, realistic textures, and crisp focus"
-            negative = "text, letters, watermark, signature, words"
+            image_prompt = f"A photorealistic, high-detail image of {topic}"
+            negative = "text, letters, watermark, signature, words, people, faces, logos, trademarks"
             data_uri = call_text_to_image_api(
                 prompt=image_prompt,
                 negative_prompt=negative,
                 height=512,
                 width=512,
-                num_steps=8,
+                num_steps=12,
                 guidance=7.5
             )
             result["thumbnail_url"] = data_uri
