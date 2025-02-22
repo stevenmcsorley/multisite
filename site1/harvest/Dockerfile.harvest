@@ -15,6 +15,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY harvest.py ./
 COPY update_extra_content.py ./
 COPY enrich_origins.py ./
+COPY create_blog_posts.py ./
 
 # Copy the Supervisor configuration file
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
