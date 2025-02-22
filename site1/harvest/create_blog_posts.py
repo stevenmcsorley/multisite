@@ -170,7 +170,14 @@ def is_duplicate_title(title: str) -> bool:
 # ------------------------------------------------------------------------------
 # Cloudflare AI: Text-to-Image
 # ------------------------------------------------------------------------------
-def call_text_to_image_api(prompt: str, steps: int = 4) -> str:
+def call_text_to_image_api(
+         prompt: str,
+        negative_prompt: str = "text, letters, watermark, signature",
+        height: int = 512,
+        width: int = 512,
+        num_steps: int = 12,
+        guidance: float = 7.5
+    ) -> str:
     url = f"https://api.cloudflare.com/client/v4/accounts/{CLOUDFLARE_ACCOUNT_ID}/ai/run/{FLUX_MODEL}"
     headers = {
         "Authorization": f"Bearer {CLOUDFLARE_API_TOKEN}",
@@ -178,7 +185,12 @@ def call_text_to_image_api(prompt: str, steps: int = 4) -> str:
     }
     payload = {
         "prompt": prompt,
-        "steps": steps
+        "negative_prompt": negative_prompt,
+        "height": height,
+        "width": width,
+        "num_steps": num_steps,     # Up to 20
+        "guidance": guidance,       # Typically between ~4 and 15
+        # "seed": 12345,            # Optionally set a seed for reproducibility
     }
     try:
         resp = requests.post(url, headers=headers, json=payload, timeout=60)
@@ -294,11 +306,17 @@ def call_blog_post_api(topic: str):
 
             # Now let's also generate an AI image from the same topic
             # or some variation to match the blog post's theme
-            image_prompt = (f"An artistic, abstract illustration of the topic: {topic}. "
-                            "Flat vector style, no words, no letters, no text, no watermark, no signature, no disclaimers. "
-                            "Focus on shapes and colors only."
-                            )
-            data_uri = call_text_to_image_api(image_prompt, steps=5)
+            image_prompt = f"An artistic illustration of {topic}, pastel, abstract"
+            negative = "text, letters, watermark, signature, words"
+
+            data_uri = call_text_to_image_api(
+                    prompt=image_prompt,
+                    negative_prompt=negative,
+                    height=512,
+                    width=512,
+                    num_steps=12,
+                    guidance=7.5
+            )
             # Overwrite the placeholder empty string with our new image
             result["thumbnail_url"] = data_uri
 
