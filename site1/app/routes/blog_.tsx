@@ -13,7 +13,7 @@ import { json } from "@remix-run/node";
 export const loader: LoaderFunction = async ({ request }) => {
   const url = new URL(request.url);
   const page = parseInt(url.searchParams.get("page") || "1", 10);
-  const limit = 16;
+  const limit = 20;
   const { rows, total } = await getAllBlogPosts(page, limit);
   return json({ posts: rows, total, page, limit });
 };
@@ -51,9 +51,9 @@ export default function BlogIndex() {
     limit: number;
   }>();
 
-  const featuredPosts = posts.slice(0, 2);
-  const recentPosts = posts.slice(2, 8);
-  const otherPosts = posts.slice(8);
+  const featuredPosts = posts.slice(0, 3);
+  const recentPosts = posts.slice(4, 8);
+  const otherPosts = posts.slice(9);
 
   function formatDate(dateString?: string) {
     if (!dateString) return "";
@@ -67,7 +67,7 @@ export default function BlogIndex() {
       </h1>
 
       <section className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div className="col-span-2 grid gap-8">
+        <div className="col-span-2 grid gap-8 align-start">
           {featuredPosts.map((post) => (
             <article
               key={post.id}
