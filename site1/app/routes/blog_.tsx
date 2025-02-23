@@ -67,7 +67,7 @@ export default function BlogIndex() {
       </h1>
 
       <section className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div className="col-span-2 grid gap-8 align-start">
+        <div className="col-span-2 grid gap-8 items-start">
           {featuredPosts.map((post) => (
             <article
               key={post.id}
