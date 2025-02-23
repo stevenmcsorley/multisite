@@ -1,11 +1,14 @@
 import { json } from "@remix-run/node";
-import type { LoaderFunction, MetaFunction, LinksFunction } from "@remix-run/node";
+import type {
+  LoaderFunction,
+  MetaFunction,
+  LinksFunction,
+} from "@remix-run/node";
 import { useLoaderData, Link } from "@remix-run/react";
 import type { BlogPost } from "~/models/blog.server";
 import { getBlogPostBySlug } from "~/models/blog.server";
 import { createSeoMeta } from "~/utils/seo";
 
-// Define our own type for the links function arguments.
 type MyLinksFunctionArgs = {
   params: Record<string, string>;
   location: URL;
@@ -40,7 +43,10 @@ export const meta: MetaFunction = ({ data }) => {
 };
 
 export const links: LinksFunction = (
-  args: MyLinksFunctionArgs = { params: {}, location: new URL("https://baobaonames.com") }
+  args: MyLinksFunctionArgs = {
+    params: {},
+    location: new URL("https://baobaonames.com"),
+  }
 ) => {
   const slug = args.params.slug;
   return slug
@@ -57,22 +63,36 @@ export default function BlogPost() {
   const post = useLoaderData<BlogPost>();
 
   return (
-    <main className="max-w-3xl mx-auto p-4 bg-base-100">
-      <article>
-        <header> 
-          <h1 className="text-4xl font-bold mb-4">{post.title}</h1>
-          <p className="text-sm text-gray-500">
-            Published: {new Date(post.published_at).toLocaleDateString()}
-          </p>
-        </header>
-        <section className="mt-6">
-          {Object.entries(post.content).map(([key, paragraph]) => (
-            <p key={key} className="mb-4 leading-relaxed">
-              {paragraph}
+    <main className="w-full max-w-7xl mx-auto bg-white text-gray-900 px-6 md:px-12 py-6">
+      <article className="max-w-3xl mx-auto">
+        {post.thumbnail_url && (
+          <img
+            src={post.thumbnail_url}
+            alt={post.title}
+            className="w-full h-64 md:h-96 object-cover rounded-lg mb-6"
+          />
+        )}
+        <header className="mb-8">
+          <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-4">
+            {post.title}
+          </h1>
+          <div className="flex items-center space-x-4">
+            <p className="text-sm text-gray-500">
+              Published: {new Date(post.published_at).toLocaleDateString()}
             </p>
+            {post.category && (
+              <span className="text-green-600 font-semibold text-xs uppercase">
+                {post.category}
+              </span>
+            )}
+          </div>
+        </header>
+        <section className="prose prose-lg max-w-none">
+          {Object.entries(post.content).map(([key, paragraph]) => (
+            <p key={key}>{paragraph}</p>
           ))}
         </section>
-        <footer className="mt-8">
+        <footer className="mt-12">
           <Link to="/blog" className="btn btn-outline">
             Back to Blog
           </Link>
