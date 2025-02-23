@@ -512,6 +512,9 @@ FLUX_MODEL = "@cf/stabilityai/stable-diffusion-xl-base-1.0"
 POSTS_PER_DAY = int(os.getenv("POSTS_PER_DAY", "70"))
 INTERVAL_SECONDS = int(os.getenv("POST_CREATION_INTERVAL", "300"))
 
+# Path in the container that maps to site1/public/images on the host
+PUBLIC_IMAGES_DIR = "/app/public/images"
+
 # ------------------------------------------------------------------------------
 # Database connection
 # ------------------------------------------------------------------------------
@@ -632,11 +635,26 @@ def is_duplicate_title(title: str) -> bool:
     cur.execute("SELECT 1 FROM blog_posts WHERE title = %s", (title,))
     return cur.fetchone() is not None
 
+def save_image_locally(slug: str, raw_bytes: bytes, extension: str = "png") -> str:
+    """
+    Saves raw image bytes to /app/public/images/<slug>.<extension> inside the container.
+    Returns the relative URL "/images/<slug>.<extension>" for front-end usage.
+    """
+    filename = f"{slug}.{extension}"
+    file_path = os.path.join(PUBLIC_IMAGES_DIR, filename)
+
+    # Write bytes to disk
+    with open(file_path, "wb") as f:
+        f.write(raw_bytes)
+
+    # The Remix app serves from 'public/', so the final URL is /images/<slug>.<ext>
+    return f"/images/{filename}"
 # ------------------------------------------------------------------------------
 # Cloudflare AI: (Stable Diffusion XL or DreamShaper)
 # ------------------------------------------------------------------------------
 def call_text_to_image_api(
     prompt: str,
+    slug: str,  # We pass slug so we can name the file after it
     negative_prompt: str = "text, letters, watermark, signature",
     height: int = 512,
     width: int = 512,
@@ -668,22 +686,24 @@ def call_text_to_image_api(
 
         resp.raise_for_status()
 
-        # If it's raw image data (PNG/JPEG), handle binary
+       # If it's raw image data (PNG/JPEG), handle binary
         if "image/" in ctype.lower():
             raw_bytes = resp.content
-            encoded = base64.b64encode(raw_bytes).decode("utf-8")
             if "png" in ctype.lower():
-                return f"data:image/png;base64,{encoded}"
+                return save_image_locally(slug, raw_bytes, "png")
             else:
-                return f"data:image/jpeg;base64,{encoded}"
+                return save_image_locally(slug, raw_bytes, "jpg")
 
-        # Otherwise, maybe JSON with "result.image"
+        # Otherwise, parse JSON with base64
         data = resp.json()
         image_b64 = data.get("result", {}).get("image")
         if not image_b64:
             logger.error("No 'image' field in text-to-image response. Full response: %s", data)
             return ""
-        return f"data:image/jpeg;base64,{image_b64}"
+
+        raw_bytes = base64.b64decode(image_b64)
+        # default to jpg if unknown
+        return save_image_locally(slug, raw_bytes, "jpg")
 
     except requests.exceptions.HTTPError as http_err:
         logger.error("HTTP error calling model for prompt '%s': %s", prompt, http_err)
@@ -778,17 +798,20 @@ def call_blog_post_api(topic: str):
             return None
 
         # Generate an image
-        image_prompt = f"A high-detail illustration of {topic}, pastel, abstract"
+        image_prompt = f"A high-detail illustration of {topic}, photorealistic, with a unique artistic style and professional composition."
         negative_prompt = "text, letters, watermark, signature, words, logos"
-        data_uri = call_text_to_image_api(
+
+        final_slug = result.get("slug") or "og-image"
+        image_path = call_text_to_image_api(
             prompt=image_prompt,
+            slug=final_slug,  # so we name the file <slug>.png
             negative_prompt=negative_prompt,
             height=512,
             width=512,
             num_steps=20,
             guidance=7.5
         )
-        result["thumbnail_url"] = data_uri
+        result["thumbnail_url"] = image_path
 
         return result
 
