@@ -87,16 +87,18 @@ export default function BlogIndex() {
                 />
               )}
               <div className="p-6">
-                <p className="text-green-600 font-semibold text-xs uppercase">
-                  {post.category}
-                </p>
+                <div className="flex justify-between items-center border-b border-gray-300 pb-2 mb-2">
+                  <p className="text-green-600 font-semibold text-xs uppercase">
+                    {post.category}
+                  </p>
+                  <p className="text-gray-500 text-xs">
+                    {formatDate(post.published_at)}
+                  </p>
+                </div>
                 <Link to={`/blog/${encodeURIComponent(post.slug)}`}>
                   <h2 className="text-2xl font-bold mt-1">{post.title}</h2>
                 </Link>
                 <p className="text-gray-600 text-sm mt-2">{post.excerpt}</p>
-                <div className="text-gray-500 text-xs mt-2">
-                  {formatDate(post.published_at)}
-                </div>
               </div>
             </article>
           ))}
@@ -114,48 +116,22 @@ export default function BlogIndex() {
                 className="w-full h-40 object-cover"
               />
               <div className="p-4">
-                <div className="border-b border-gray-800 mb-2 pt-1"></div>
-                <p className="text-green-600 font-semibold text-xs uppercase">
-                  {post.category}
-                </p>
+                <div className="flex justify-between items-center border-b border-gray-300 pb-2 mb-2">
+                  <p className="text-green-600 font-semibold text-xs uppercase">
+                    {post.category}
+                  </p>
+                  <p className="text-gray-500 text-xs">
+                    {formatDate(post.published_at)}
+                  </p>
+                </div>
                 <Link to={`/blog/${encodeURIComponent(post.slug)}`}>
                   <h3 className="text-lg font-semibold mt-1">{post.title}</h3>
                 </Link>
                 <p className="text-gray-600 text-xs mt-1">{post.excerpt}</p>
-                <div className="text-gray-500 text-xs mt-1">
-                  {formatDate(post.published_at)}
-                </div>
               </div>
             </article>
           ))}
         </div>
-      </section>
-
-      <section className="mt-8 grid grid-cols-1 md:grid-cols-4 gap-8">
-        {otherPosts.map((post) => (
-          <article
-            key={post.id}
-            className="relative rounded-lg overflow-hidden shadow-md"
-          >
-            <img
-              src={post.thumbnail_url}
-              alt={post.title}
-              className="w-full h-40 object-cover"
-            />
-            <div className="p-4">
-              <p className="text-green-600 font-semibold text-xs uppercase">
-                {post.category}
-              </p>
-              <Link to={`/blog/${encodeURIComponent(post.slug)}`}>
-                <h3 className="text-lg font-semibold mt-1">{post.title}</h3>
-              </Link>
-              <p className="text-gray-600 text-xs mt-1">{post.excerpt}</p>
-              <div className="text-gray-500 text-xs mt-1">
-                {formatDate(post.published_at)}
-              </div>
-            </div>
-          </article>
-        ))}
       </section>
     </main>
   );
