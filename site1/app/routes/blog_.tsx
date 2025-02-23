@@ -108,7 +108,7 @@ export default function BlogIndex() {
           {recentPosts.map((post) => (
             <article
               key={post.id}
-              className="relative rounded-lg overflow-hidden shadow-md"
+              className="relative rounded-lg overflow-hidden shadow-md w-full"
             >
               <img
                 src={post.thumbnail_url}
