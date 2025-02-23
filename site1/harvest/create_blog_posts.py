@@ -798,8 +798,13 @@ def call_blog_post_api(topic: str):
             return None
 
         # Generate an image
-        image_prompt = f"A high-detail illustration of {topic}, photorealistic, with a unique artistic style and professional composition."
-        negative_prompt = "text, letters, watermark, signature, words, logos"
+        image_prompt = (
+        f"An ultra-high-resolution, hyper-realistic photograph of {topic}, "
+        "captured in natural, cinematic lighting with exquisite detail, realistic textures, and a clean, professional composition. "
+        "The scene should look as if it were shot with a high-end camera, with accurate colors and depth, and no artificial elements."
+        )
+        negative_prompt = "text, letters, watermark, signature, logos, symbols, illustration style"
+
 
         final_slug = result.get("slug") or "og-image"
         image_path = call_text_to_image_api(
