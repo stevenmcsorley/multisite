@@ -21,6 +21,8 @@ type LoaderData = {
     slug: string;
     thumbnail_url?: string;
     excerpt?: string;
+    published_at: string;
+    category?: string;
   }[];
 };
 
@@ -59,6 +61,11 @@ export const meta: MetaFunction = () => {
 export default function IndexPage() {
   const { origins, stats, posts } = useLoaderData<LoaderData>();
 
+  function formatDate(dateString?: string) {
+    if (!dateString) return "";
+    return new Date(dateString).toLocaleDateString();
+  }
+
   return (
     <div className="min-h-screen w-full text-gray-900">
       {/* Hero Section */}
@@ -89,22 +96,42 @@ export default function IndexPage() {
             {posts.map((post) => (
               <article
                 key={post.id}
-                className="rounded-lg overflow-hidden shadow-lg bg-white"
+                className="relative rounded-lg overflow-hidden shadow-lg"
               >
-                <img
-                  src={
-                    post.thumbnail_url
-                      ? post.thumbnail_url
-                      : "/images/og-image.png"
-                  }
-                  alt={post.title}
-                  className="w-full h-48 object-cover"
-                />
-                <div className="p-4">
+                {post.thumbnail_url ? (
+                  <img
+                    src={post.thumbnail_url}
+                    alt={post.title}
+                    className="w-full h-96 object-cover"
+                  />
+                ) : (
+                  <img
+                    src="https://baobaonames.com/images/og-image.png"
+                    alt={post.title}
+                    className="w-full h-96 object-cover"
+                  />
+                )}
+                <div className="p-6">
+                  <div className="flex justify-between items-center border-b border-gray-300 pb-2 mb-2">
+                    {/* <p className="text-green-600 font-semibold text-xs uppercase">
+               {post.category}
+             </p> */}
+                    <Link
+                      to={`/blog-category/${encodeURIComponent(
+                        post.category || ""
+                      )}`}
+                      className="text-green-600 font-semibold text-xs uppercase hover:underline"
+                    >
+                      {post.category}
+                    </Link>
+                    <p className="text-gray-500 text-xs">
+                      {formatDate(post.published_at)}
+                    </p>
+                  </div>
                   <Link to={`/blog/${encodeURIComponent(post.slug)}`}>
-                    <h3 className="text-xl font-bold mb-2">{post.title}</h3>
+                    <h2 className="text-2xl font-bold mt-1">{post.title}</h2>
                   </Link>
-                  <p className="text-gray-600 text-sm">{post.excerpt}</p>
+                  <p className="text-gray-600 text-sm mt-2">{post.excerpt}</p>
                 </div>
               </article>
             ))}
