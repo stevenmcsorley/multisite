@@ -47,11 +47,11 @@ export async function getAllBlogPostsByCategory(
 ): Promise<{ rows: BlogPost[]; total: number }> {
   const offset = (page - 1) * limit;
   const data = await client.query(
-    `SELECT * FROM blog_posts WHERE category = $1 ORDER BY id DESC LIMIT $2 OFFSET $3`,
+    `SELECT * FROM blog_posts WHERE LOWER(category) = LOWER($1) ORDER BY id DESC LIMIT $2 OFFSET $3`,
     [category, limit, offset]
   );
   const countResult = await client.query(
-    `SELECT COUNT(*) FROM blog_posts WHERE category = $1`,
+    `SELECT COUNT(*) FROM blog_posts WHERE LOWER(category) = LOWER($1)`,
     [category]
   );
   return { rows: data.rows, total: parseInt(countResult.rows[0].count, 10) };
