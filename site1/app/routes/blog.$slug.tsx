@@ -73,19 +73,19 @@ export default function BlogPost() {
           />
         )}
         <header className="mb-8">
-          <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-4">
-            {post.title}
-          </h1>
-          <div className="flex items-center space-x-4">
-            <p className="text-sm text-gray-500">
-              Published: {new Date(post.published_at).toLocaleDateString()}
-            </p>
+          <div className="flex justify-between items-center border-b border-gray-300 pb-2 mb-4">
             {post.category && (
               <span className="text-green-600 font-semibold text-xs uppercase">
                 {post.category}
               </span>
             )}
+            <span className="text-gray-500 text-xs">
+              {new Date(post.published_at).toLocaleDateString()}
+            </span>
           </div>
+          <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-4">
+            {post.title}
+          </h1>
         </header>
         <section className="prose prose-lg max-w-none space-y-8">
           {Object.entries(post.content).map(([key, paragraph]) => (
