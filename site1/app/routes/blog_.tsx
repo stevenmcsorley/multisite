@@ -61,7 +61,7 @@ export default function BlogIndex() {
   }
 
   return (
-    <main className="w-full bg-white text-gray-900 px-6 md:px-12 py-6">
+    <main className="w-full max-w-7xl mx-auto bg-white text-gray-900 px-6 md:px-12 py-6">
       <h1 className="text-4xl md:text-5xl font-bold leading-tight text-center mb-8">
         Blog
       </h1>
