@@ -39,3 +39,20 @@ export async function getBlogPostBySlug(
   );
   return result.rows.length > 0 ? result.rows[0] : null;
 }
+
+export async function getAllBlogPostsByCategory(
+  category: string,
+  page: number,
+  limit: number
+): Promise<{ rows: BlogPost[]; total: number }> {
+  const offset = (page - 1) * limit;
+  const data = await client.query(
+    `SELECT * FROM blog_posts WHERE category = $1 ORDER BY id DESC LIMIT $2 OFFSET $3`,
+    [category, limit, offset]
+  );
+  const countResult = await client.query(
+    `SELECT COUNT(*) FROM blog_posts WHERE category = $1`,
+    [category]
+  );
+  return { rows: data.rows, total: parseInt(countResult.rows[0].count, 10) };
+}
