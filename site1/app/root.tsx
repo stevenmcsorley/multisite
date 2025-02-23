@@ -24,6 +24,19 @@ export default function App() {
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <Meta />
           <Links />
+          <script type="application/ld+json">
+            {JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              url: "https://baobaonames.com/",
+              name: "BaobaoNames",
+              potentialAction: {
+                "@type": "SearchAction",
+                target: "https://baobaonames.com/?s={search_term_string}",
+                "query-input": "required name=search_term_string",
+              },
+            })}
+          </script>
         </head>
         <body
           className="bg-fixed bg-cover bg-center text-base-content min-h-screen flex flex-col"
