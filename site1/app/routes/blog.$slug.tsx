@@ -75,9 +75,12 @@ export default function BlogPost() {
         <header className="mb-8">
           <div className="flex justify-between items-center border-b border-gray-300 pb-2 mb-4">
             {post.category && (
-              <span className="text-green-600 font-semibold text-xs uppercase">
+              <Link
+                to={`/blog-category/${encodeURIComponent(post.category || "")}`}
+                className="text-green-600 font-semibold text-xs uppercase hover:underline"
+              >
                 {post.category}
-              </span>
+              </Link>
             )}
             <span className="text-gray-500 text-xs">
               {new Date(post.published_at).toLocaleDateString()}

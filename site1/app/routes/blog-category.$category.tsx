@@ -45,10 +45,10 @@ export const meta: MetaFunction = ({ data }) => {
   const description = `Browse ${total} blog posts about ${category}.`;
   const canonical =
     page && page > 1
-      ? `https://baobaonames.com/blog/category/${encodeURIComponent(
+      ? `https://baobaonames.com/blog-category/${encodeURIComponent(
           category
         )}?page=${page}`
-      : `https://baobaonames.com/blog/category/${encodeURIComponent(category)}`;
+      : `https://baobaonames.com/blog-category/${encodeURIComponent(category)}`;
   const seo = createSeoMeta({
     title,
     description,
@@ -74,7 +74,7 @@ export const links: LinksFunction = (
     ? [
         {
           rel: "canonical",
-          href: `https://baobaonames.com/blog/category/${encodeURIComponent(
+          href: `https://baobaonames.com/blog-category/${encodeURIComponent(
             category
           )}`,
         },
@@ -194,9 +194,14 @@ export default function BlogCategory() {
               )}
               <div className="p-6">
                 <div className="flex justify-between items-center border-b border-gray-300 pb-2 mb-2">
-                  <p className="text-green-600 font-semibold text-xs uppercase">
+                  <Link
+                    to={`/blog-category/${encodeURIComponent(
+                      post.category || ""
+                    )}`}
+                    className="text-green-600 font-semibold text-xs uppercase hover:underline"
+                  >
                     {post.category}
-                  </p>
+                  </Link>
                   <p className="text-gray-500 text-xs">
                     {formatDate(post.published_at)}
                   </p>
@@ -224,9 +229,14 @@ export default function BlogCategory() {
               />
               <div className="p-4">
                 <div className="flex justify-between items-center border-b border-gray-300 pb-2 mb-2">
-                  <p className="text-green-600 font-semibold text-xs uppercase">
+                  <Link
+                    to={`/blog-category/${encodeURIComponent(
+                      post.category || ""
+                    )}`}
+                    className="text-green-600 font-semibold text-xs uppercase hover:underline"
+                  >
                     {post.category}
-                  </p>
+                  </Link>
                   <p className="text-gray-500 text-xs">
                     {formatDate(post.published_at)}
                   </p>
@@ -264,9 +274,14 @@ export default function BlogCategory() {
               )}
               <div className="p-4">
                 <div className="flex justify-between items-center border-b border-gray-300 pb-2 mb-2">
-                  <p className="text-green-600 font-semibold text-xs uppercase">
+                  <Link
+                    to={`/blog-category/${encodeURIComponent(
+                      post.category || ""
+                    )}`}
+                    className="text-green-600 font-semibold text-xs uppercase hover:underline"
+                  >
                     {post.category}
-                  </p>
+                  </Link>
                   <p className="text-gray-500 text-xs">
                     {formatDate(post.published_at)}
                   </p>
@@ -287,7 +302,7 @@ export default function BlogCategory() {
           total={total}
           page={page}
           limit={limit}
-          baseUrl={`/blog/${encodeURIComponent(category)}`}
+          baseUrl={`/blog-category/${encodeURIComponent(category)}`}
         />
       </div>
     </main>

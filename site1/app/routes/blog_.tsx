@@ -153,9 +153,17 @@ export default function BlogIndex() {
               )}
               <div className="p-6">
                 <div className="flex justify-between items-center border-b border-gray-300 pb-2 mb-2">
-                  <p className="text-green-600 font-semibold text-xs uppercase">
+                  {/* <p className="text-green-600 font-semibold text-xs uppercase">
                     {post.category}
-                  </p>
+                  </p> */}
+                  <Link
+                    to={`/blog-category/${encodeURIComponent(
+                      post.category || ""
+                    )}`}
+                    className="text-green-600 font-semibold text-xs uppercase hover:underline"
+                  >
+                    {post.category}
+                  </Link>
                   <p className="text-gray-500 text-xs">
                     {formatDate(post.published_at)}
                   </p>
@@ -183,9 +191,14 @@ export default function BlogIndex() {
               />
               <div className="p-4">
                 <div className="flex justify-between items-center border-b border-gray-300 pb-2 mb-2">
-                  <p className="text-green-600 font-semibold text-xs uppercase">
+                  <Link
+                    to={`/blog-category/${encodeURIComponent(
+                      post.category || ""
+                    )}`}
+                    className="text-green-600 font-semibold text-xs uppercase hover:underline"
+                  >
                     {post.category}
-                  </p>
+                  </Link>
                   <p className="text-gray-500 text-xs">
                     {formatDate(post.published_at)}
                   </p>
@@ -223,9 +236,14 @@ export default function BlogIndex() {
               )}
               <div className="p-4">
                 <div className="flex justify-between items-center border-b border-gray-300 pb-2 mb-2">
-                  <p className="text-green-600 font-semibold text-xs uppercase">
+                  <Link
+                    to={`/blog-category/${encodeURIComponent(
+                      post.category || ""
+                    )}`}
+                    className="text-green-600 font-semibold text-xs uppercase hover:underline"
+                  >
                     {post.category}
-                  </p>
+                  </Link>
                   <p className="text-gray-500 text-xs">
                     {formatDate(post.published_at)}
                   </p>
