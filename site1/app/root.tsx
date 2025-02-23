@@ -46,12 +46,8 @@ export default function App() {
 function Header() {
   return (
     <header className="navbar bg-base-100 shadow w-full">
-      <div className="flex w-full items-center justify-between px-4">
-        <a
-          href="/"
-          className="btn btn-ghost normal-case text-xl flex items-center space-x-2"
-        >
-          <i className="devicon-react-original text-2xl"></i>
+      <div className="flex w-full items-center">
+        <a href="/" className="btn btn-ghost normal-case text-xl flex">
           <span>baobaonames.com</span>
         </a>
         <nav className="flex items-center space-x-4">
