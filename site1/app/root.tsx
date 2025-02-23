@@ -24,7 +24,7 @@ export default function App() {
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <Meta />
           <Links />
-          <script type="application/ld+json">
+          {/* <script type="application/ld+json">
             {JSON.stringify({
               "@context": "https://schema.org",
               "@type": "WebSite",
@@ -36,7 +36,7 @@ export default function App() {
                 "query-input": "required name=search_term_string",
               },
             })}
-          </script>
+          </script> */}
         </head>
         <body
           className="bg-fixed bg-cover bg-center text-base-content min-h-screen flex flex-col"
