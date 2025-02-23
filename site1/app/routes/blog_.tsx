@@ -43,8 +43,72 @@ export const links: LinksFunction = () => {
   ];
 };
 
+// Reusable Pagination component
+function Pagination({
+  total,
+  page,
+  limit,
+  baseUrl,
+}: {
+  total: number;
+  page: number;
+  limit: number;
+  baseUrl: string;
+}) {
+  const totalPages = Math.ceil(total / limit);
+  if (totalPages <= 1) return null;
+
+  let pages: (number | string)[] = [];
+  if (totalPages <= 7) {
+    for (let i = 1; i <= totalPages; i++) {
+      pages.push(i);
+    }
+  } else {
+    if (page <= 4) {
+      pages = [1, 2, 3, 4, 5, "...", totalPages];
+    } else if (page >= totalPages - 3) {
+      pages = [
+        1,
+        "...",
+        totalPages - 4,
+        totalPages - 3,
+        totalPages - 2,
+        totalPages - 1,
+        totalPages,
+      ];
+    } else {
+      pages = [1, "...", page - 1, page, page + 1, "...", totalPages];
+    }
+  }
+
+  return (
+    <div className="join mt-4">
+      {pages.map((p, idx) => {
+        if (p === "...") {
+          return (
+            <button key={idx} className="join-item btn btn-disabled">
+              {p}
+            </button>
+          );
+        }
+        return (
+          <a
+            key={idx}
+            href={`${baseUrl}?page=${p}`}
+            className={`join-item btn ${
+              p === page ? "btn-primary" : "btn-outline"
+            }`}
+          >
+            {p}
+          </a>
+        );
+      })}
+    </div>
+  );
+}
+
 export default function BlogIndex() {
-  const { posts } = useLoaderData<{
+  const { posts, total, page, limit } = useLoaderData<{
     posts: BlogPost[];
     total: number;
     page: number;
@@ -175,6 +239,10 @@ export default function BlogIndex() {
           ))}
         </section>
       )}
+      {/* Pagination */}
+      <div className="flex justify-center mt-8">
+        <Pagination total={total} page={page} limit={limit} baseUrl="/blog" />
+      </div>
     </main>
   );
 }
