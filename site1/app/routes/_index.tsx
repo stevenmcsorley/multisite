@@ -29,7 +29,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   const origins = await getDistinctOrigins();
   const stats = await getDbStats();
   // Fetch a preview (first 5) of blog posts to add more content
-  const { rows: posts } = await getAllBlogPosts(1, 5);
+  const { rows: posts } = await getAllBlogPosts(1, 6);
   return json<LoaderData>({ origins, stats, posts });
 };
 
