@@ -67,7 +67,8 @@ export default function BlogIndex() {
       </h1>
 
       <section className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div className="col-span-2 grid gap-8 items-start">
+        {/* Featured Posts */}
+        <div className="md:col-span-2 grid gap-8 items-start">
           {featuredPosts.map((post) => (
             <article
               key={post.id}
@@ -104,11 +105,12 @@ export default function BlogIndex() {
           ))}
         </div>
 
-        <div className="grid grid-cols-1 gap-6">
+        {/* Recent Posts */}
+        <div className="md:col-span-1 grid grid-cols-1 gap-6">
           {recentPosts.map((post) => (
             <article
               key={post.id}
-              className="relative rounded-lg overflow-hidden shadow-md w-full"
+              className="relative rounded-lg overflow-hidden shadow-md"
             >
               <img
                 src={post.thumbnail_url}
@@ -133,6 +135,46 @@ export default function BlogIndex() {
           ))}
         </div>
       </section>
+
+      {/* Other Posts Section */}
+      {otherPosts && otherPosts.length > 0 && (
+        <section className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-8">
+          {otherPosts.map((post) => (
+            <article
+              key={post.id}
+              className="relative rounded-lg overflow-hidden shadow-md"
+            >
+              {post.thumbnail_url ? (
+                <img
+                  src={post.thumbnail_url}
+                  alt={post.title}
+                  className="w-full h-48 object-cover"
+                />
+              ) : (
+                <img
+                  src="https://baobaonames.com/images/og-image.png"
+                  alt={post.title}
+                  className="w-full h-48 object-cover"
+                />
+              )}
+              <div className="p-4">
+                <div className="flex justify-between items-center border-b border-gray-300 pb-2 mb-2">
+                  <p className="text-green-600 font-semibold text-xs uppercase">
+                    {post.category}
+                  </p>
+                  <p className="text-gray-500 text-xs">
+                    {formatDate(post.published_at)}
+                  </p>
+                </div>
+                <Link to={`/blog/${encodeURIComponent(post.slug)}`}>
+                  <h3 className="text-lg font-semibold mt-1">{post.title}</h3>
+                </Link>
+                <p className="text-gray-600 text-xs mt-1">{post.excerpt}</p>
+              </div>
+            </article>
+          ))}
+        </section>
+      )}
     </main>
   );
 }
