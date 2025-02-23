@@ -96,7 +96,7 @@ export default function IndexPage() {
             {posts.map((post) => (
               <article
                 key={post.id}
-                className="relative rounded-lg overflow-hidden shadow-lg"
+                className="relative rounded-lg overflow-hidden shadow-lg bg-white"
               >
                 {post.thumbnail_url ? (
                   <img
