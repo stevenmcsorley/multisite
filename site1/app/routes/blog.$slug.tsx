@@ -87,7 +87,7 @@ export default function BlogPost() {
             )}
           </div>
         </header>
-        <section className="prose prose-lg max-w-none">
+        <section className="prose prose-lg max-w-none space-y-8">
           {Object.entries(post.content).map(([key, paragraph]) => (
             <p key={key}>{paragraph}</p>
           ))}
