@@ -46,9 +46,9 @@ export default function App() {
 function Header() {
   return (
     <header className="navbar bg-base-100 shadow w-full">
-      <div className="flex w-full items-center">
-        <a href="/" className="btn btn-ghost normal-case text-xl flex">
-          <span>baobaonames.com</span>
+      <div className="container mx-auto flex items-center justify-between px-4">
+        <a href="/" className="btn btn-ghost normal-case text-xl">
+          baobaonames.com
         </a>
         <nav className="flex items-center space-x-4">
           <a href="/blog" className="text-base-content hover:underline">
