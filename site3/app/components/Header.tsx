@@ -1,3 +1,14 @@
+function handleSmoothScroll(e: React.MouseEvent<HTMLAnchorElement>) {
+  e.preventDefault();
+  const targetId = e.currentTarget.getAttribute("href")?.replace("#", "");
+  if (!targetId) return;
+
+  const element = document.getElementById(targetId);
+  if (element) {
+    element.scrollIntoView({ behavior: "smooth" });
+  }
+}
+
 export function Header() {
   return (
     <header className="w-full bg-white shadow">
@@ -6,19 +17,39 @@ export function Header() {
         <div className="text-xl font-bold">Half a Giraf</div>
         {/* Nav Links */}
         <nav className="hidden space-x-6 md:flex">
-          <a href="#home" className="hover:text-gray-900">
+          <a
+            href="#home"
+            onClick={handleSmoothScroll}
+            className="hover:text-gray-900"
+          >
             Home
           </a>
-          <a href="#about" className="hover:text-gray-900">
+          <a
+            href="#about"
+            onClick={handleSmoothScroll}
+            className="hover:text-gray-900"
+          >
             About
           </a>
-          <a href="#services" className="hover:text-gray-900">
+          <a
+            href="#services"
+            onClick={handleSmoothScroll}
+            className="hover:text-gray-900"
+          >
             Services
           </a>
-          <a href="#work" className="hover:text-gray-900">
+          <a
+            href="#work"
+            onClick={handleSmoothScroll}
+            className="hover:text-gray-900"
+          >
             Work
           </a>
-          <a href="#clients" className="hover:text-gray-900">
+          <a
+            href="#clients"
+            onClick={handleSmoothScroll}
+            className="hover:text-gray-900"
+          >
             Clients
           </a>
           <a href="#contact" className="hover:text-gray-900">
