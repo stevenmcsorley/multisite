@@ -507,7 +507,7 @@ CLOUDFLARE_ACCOUNT_ID = os.getenv("CLOUDFLARE_ACCOUNT_ID")
 CLOUDFLARE_API_TOKEN = os.getenv("CLOUDFLARE_API_TOKEN")
 
 # We hardcode a text-to-image model (Stable Diffusion XL), but you can override in .env if desired.
-FLUX_MODEL = "@cf/stabilityai/stable-diffusion-xl-base-1.0"
+FLUX_MODEL = "@cf/black-forest-labs/flux-1-schnell"
 
 # Post creation config
 POSTS_PER_DAY = int(os.getenv("POSTS_PER_DAY", "70"))
@@ -656,11 +656,11 @@ def save_image_locally(slug: str, raw_bytes: bytes, extension: str = "png") -> s
 def call_text_to_image_api(
     prompt: str,
     slug: str,  # We pass slug so we can name the file after it
-    negative_prompt: str = "text, letters, watermark, signature",
+    # negative_prompt: str = "text, letters, watermark, signature",
     height: int = 512,
     width: int = 512,
-    num_steps: int = 12,
-    guidance: float = 7.5
+    num_steps: int = 8,
+    # guidance: float = 7.5
 ) -> str:
     """
     Calls a text-to-image model that may return raw binary (PNG) or JSON base64.
@@ -673,11 +673,11 @@ def call_text_to_image_api(
     }
     payload = {
         "prompt": prompt,
-        "negative_prompt": negative_prompt,
+        # "negative_prompt": negative_prompt,
         "height": height,
         "width": width,
         "num_steps": num_steps,
-        "guidance": guidance
+        # "guidance": guidance
     }
 
     max_attempts = 2
@@ -831,11 +831,11 @@ def call_blog_post_api(topic: str):
         image_path = call_text_to_image_api(
             prompt=image_prompt,
             slug=final_slug,  # so we name the file <slug>.png
-            negative_prompt=negative_prompt,
+            # negative_prompt=negative_prompt,
             height=512,
             width=512,
-            num_steps=20,
-            guidance=7.5
+            num_steps=8,
+            # guidance=7.5
         )
         result["thumbnail_url"] = image_path
 
