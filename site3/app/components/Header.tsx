@@ -76,28 +76,20 @@ export function Header() {
 
         {/* HAMBURGER BUTTON: shown on mobile only */}
         <button
-          className="md:hidden text-black focus:outline-none"
+          className="md:hidden focus:outline-none"
           onClick={() => setMobileOpen(!mobileOpen)}
         >
-          <svg
-            className="h-6 w-6"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M4 6h16M4 12h16M4 18h16"
-            />
-          </svg>
+          <div className={`hamburger ${mobileOpen ? "open" : ""}`}>
+            <span className="bar"></span>
+            <span className="bar"></span>
+            <span className="bar"></span>
+          </div>
         </button>
       </div>
 
       {/* MOBILE MENU DROPDOWN */}
       {mobileOpen && (
-        <div className="md:hidden bg-white shadow-lg text-black">
+        <div className="md:hidden bg-white shadow-lg">
           <nav className="flex flex-col space-y-2 p-4">
             <Link
               to={isHomePage ? "#home" : "/#home"}
