@@ -56,3 +56,23 @@ export async function getAllBlogPostsByCategory(
   );
   return { rows: data.rows, total: parseInt(countResult.rows[0].count, 10) };
 }
+
+export async function getAllBlogPostsByTag(
+  tag: string,
+  page: number,
+  limit: number
+): Promise<{ rows: BlogPost[]; total: number }> {
+  const offset = (page - 1) * limit;
+  const data = await client.query(
+    `SELECT * FROM blog_posts 
+     WHERE LOWER(tags) LIKE '%' || LOWER($1) || '%' 
+     ORDER BY id DESC LIMIT $2 OFFSET $3`,
+    [tag, limit, offset]
+  );
+  const countResult = await client.query(
+    `SELECT COUNT(*) FROM blog_posts 
+     WHERE LOWER(tags) LIKE '%' || LOWER($1) || '%'`,
+    [tag]
+  );
+  return { rows: data.rows, total: parseInt(countResult.rows[0].count, 10) };
+}
