@@ -2,8 +2,7 @@
 
 import { Footer } from "./Footer";
 import { Header } from "./Header";
-
-// Reuse these from your site:
+import { Link } from "@remix-run/react";
 
 export function BlogPage() {
   return (
@@ -47,10 +46,14 @@ export function BlogPage() {
                 Professionally leverage client‐centric systems. Interactively
                 orchestrate...
               </p>
-              <button className="text-blue-600 hover:underline">
+              <Link
+                to="/blog/test-slug-for-post"
+                className="text-blue-600 hover:underline"
+              >
                 Read more
-              </button>
+              </Link>
             </div>
+
             {/* Post 2 */}
             <div className="bg-white shadow p-4">
               <img
@@ -65,10 +68,14 @@ export function BlogPage() {
                 Globally provide effective experiences for perspective networks
                 ...
               </p>
-              <button className="text-blue-600 hover:underline">
+              <Link
+                to="/blog/test-slug-for-post"
+                className="text-blue-600 hover:underline"
+              >
                 Read more
-              </button>
+              </Link>
             </div>
+
             {/* Post 3 */}
             <div className="bg-white shadow p-4">
               <img
@@ -83,9 +90,12 @@ export function BlogPage() {
                 Progressively negotiate cross‐media content before emerging
                 leadership...
               </p>
-              <button className="text-blue-600 hover:underline">
+              <Link
+                to="/blog/test-slug-for-post"
+                className="text-blue-600 hover:underline"
+              >
                 Read more
-              </button>
+              </Link>
             </div>
 
             {/* Post 4: YouTube embed example */}
@@ -104,22 +114,18 @@ export function BlogPage() {
                 Enthusiastically embrace turnkey results for user‐friendly
                 interfaces...
               </p>
-              <button className="text-blue-600 hover:underline">
+              <Link
+                to="/blog/test-slug-for-post"
+                className="text-blue-600 hover:underline"
+              >
                 Read more
-              </button>
+              </Link>
             </div>
 
             {/* Post 5: Soundcloud embed */}
             <div className="bg-white shadow p-4">
               <div className="mb-4">
-                {/* <iframe
-                  width="100%"
-                  height="166"
-                  scrolling="no"
-                  frameBorder="no"
-                  allow="autoplay"
-                  src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/209671823&color=%230066cc"
-                /> */}
+                {/* Insert your SoundCloud iframe if desired */}
               </div>
               <h2 className="text-lg font-semibold mb-2">
                 Soundcloud Audio Post
@@ -128,9 +134,12 @@ export function BlogPage() {
                 Distinctively orchestrate visionary customer service without B2C
                 friction...
               </p>
-              <button className="text-blue-600 hover:underline">
+              <Link
+                to="/blog/test-slug-for-post"
+                className="text-blue-600 hover:underline"
+              >
                 Read more
-              </button>
+              </Link>
             </div>
 
             {/* Post 6: Quote */}
@@ -159,9 +168,12 @@ export function BlogPage() {
               <p className="text-sm text-gray-500 mb-2">
                 Seamlessly embrace highly efficient collaborations...
               </p>
-              <button className="text-blue-600 hover:underline">
+              <Link
+                to="/blog/test-slug-for-post"
+                className="text-blue-600 hover:underline"
+              >
                 Read more
-              </button>
+              </Link>
             </div>
 
             {/* Post 8: Plain image */}
@@ -176,9 +188,12 @@ export function BlogPage() {
                 Holisticly maximize 24/7 infrastructures via off‐site valued
                 experts...
               </p>
-              <button className="text-blue-600 hover:underline">
+              <Link
+                to="/blog/test-slug-for-post"
+                className="text-blue-600 hover:underline"
+              >
                 Read more
-              </button>
+              </Link>
             </div>
 
             {/* Post 9: Plain image */}
@@ -195,9 +210,12 @@ export function BlogPage() {
                 Intuitively synergize transparent methodologies after
                 interactive meta-services...
               </p>
-              <button className="text-blue-600 hover:underline">
+              <Link
+                to="/blog/test-slug-for-post"
+                className="text-blue-600 hover:underline"
+              >
                 Read more
-              </button>
+              </Link>
             </div>
 
             {/* Post 10: Audio */}
