@@ -17,7 +17,11 @@ export function Header() {
         <div className="text-xl font-bold">Half a Giraf</div>
         {/* Nav Links */}
         <nav className="hidden space-x-6 md:flex">
-          <a href="#home" className="hover:text-gray-900">
+          <a
+            href="#home"
+            onClick={handleSmoothScroll}
+            className="hover:text-gray-900"
+          >
             Home
           </a>
           <a
