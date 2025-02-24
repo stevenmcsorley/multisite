@@ -62,6 +62,14 @@ export const links: LinksFunction = (
 export default function BlogPost() {
   const post = useLoaderData<BlogPost>();
 
+  // Convert tags string to array (if available)
+  const tags = post.tags
+    ? post.tags
+        .split(",")
+        .map((t) => t.trim())
+        .filter(Boolean)
+    : [];
+
   return (
     <main className="w-full max-w-7xl mx-auto bg-white text-gray-900 px-6 md:px-12 py-6">
       <article className="max-w-3xl mx-auto">
@@ -95,6 +103,25 @@ export default function BlogPost() {
             <p key={key}>{paragraph}</p>
           ))}
         </section>
+
+        {/* Tags Section */}
+        {tags.length > 0 && (
+          <section className="mt-12 border-t border-gray-300 pt-6">
+            <h2 className="text-xl font-bold mb-4">Tags</h2>
+            <div className="flex flex-wrap gap-2">
+              {tags.map((tag) => (
+                <Link
+                  key={tag}
+                  to={`/blog-tag/${encodeURIComponent(tag)}`}
+                  className="btn btn-sm btn-outline"
+                >
+                  {tag}
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
+
         <footer className="mt-12">
           <Link to="/blog" className="btn btn-outline">
             Back to Blog
