@@ -153,7 +153,7 @@ export default function SearchResults() {
   return (
     <main className="w-full max-w-7xl mx-auto bg-white text-gray-900 px-6 md:px-12 py-6">
       <header className="mb-8 text-center">
-        <h2 className="text-4xl font-bold">
+        <h2 className="text-4xl border-b border-gray-800 pb-2 font-bold">
           Search Results for &quot;{q}&quot;
         </h2>
       </header>

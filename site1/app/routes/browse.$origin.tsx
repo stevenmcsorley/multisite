@@ -171,7 +171,7 @@ export default function BrowseOrigin() {
     <main className="w-full max-w-7xl mx-auto bg-white text-gray-900 px-6 md:px-12 py-6">
       <article className="max-w-3xl mx-auto bg-white shadow-lg rounded-lg p-6">
         <header className="mb-6">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 text-center">
+          <h1 className="text-4xl border-b border-gray-800 pb-2 md:text-5xl font-bold mb-4 text-center">
             Browse: {origin}
           </h1>
         </header>
