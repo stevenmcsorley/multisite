@@ -23,7 +23,7 @@ export function Header() {
     <header className="sticky top-0 z-50 bg-white shadow">
       <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
         {/* SITE LOGO / NAME */}
-        <div className="text-xl font-bold text-black">Half a Giraf</div>
+        <div className="text-xl font-bold text-black">HALFAGIRAF</div>
 
         {/* DESKTOP NAV: hidden on mobile */}
         <nav className="hidden md:flex space-x-6 text-black">
