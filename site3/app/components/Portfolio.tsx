@@ -11,7 +11,7 @@ export function Portfolio({ id, ...props }: PortfolioProps) {
           <p className="text-gray-500 mt-2">We build some stuff</p>
         </div>
         {/* Filters (optional) */}
-        <div className="flex space-x-4 justify-center mb-10">
+        <div className="flex space-x-4 justify-center mb-10 flex-wrap">
           <button className="px-4 py-2 bg-black text-white rounded hover:bg-gray-800">
             All
           </button>
