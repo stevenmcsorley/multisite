@@ -4,18 +4,12 @@ import { Link, useLocation } from "@remix-run/react";
 
 function handleSmoothScroll(
   e: React.MouseEvent<HTMLAnchorElement>,
-  isHomePage: boolean
+  targetId: string
 ) {
-  // If we’re not on the homepage, let Remix handle the normal navigation
-  if (!isHomePage) return;
-
   e.preventDefault();
-  const targetHref = e.currentTarget.getAttribute("href") ?? "";
-  // e.g. "#about" => "about"
-  const targetId = targetHref.replace("#", "");
   const element = document.getElementById(targetId);
   if (element) {
-    // Update the URL’s hash so user can see/share it
+    // Update the URL’s hash
     window.history.pushState(null, "", `#${targetId}`);
     // Smoothly scroll to the element
     element.scrollIntoView({ behavior: "smooth" });
@@ -33,42 +27,42 @@ export function Header() {
         <nav className="hidden space-x-6 md:flex">
           <Link
             to={isHomePage ? "#home" : "/#home"}
-            onClick={(e) => handleSmoothScroll(e, isHomePage)}
+            onClick={(e) => isHomePage && handleSmoothScroll(e, "home")}
             className="hover:text-gray-900"
           >
             Home
           </Link>
           <Link
             to={isHomePage ? "#about" : "/#about"}
-            onClick={(e) => handleSmoothScroll(e, isHomePage)}
+            onClick={(e) => isHomePage && handleSmoothScroll(e, "about")}
             className="hover:text-gray-900"
           >
             About
           </Link>
           <Link
             to={isHomePage ? "#services" : "/#services"}
-            onClick={(e) => handleSmoothScroll(e, isHomePage)}
+            onClick={(e) => isHomePage && handleSmoothScroll(e, "services")}
             className="hover:text-gray-900"
           >
             Services
           </Link>
           <Link
             to={isHomePage ? "#work" : "/#work"}
-            onClick={(e) => handleSmoothScroll(e, isHomePage)}
+            onClick={(e) => isHomePage && handleSmoothScroll(e, "work")}
             className="hover:text-gray-900"
           >
             Work
           </Link>
           <Link
             to={isHomePage ? "#clients" : "/#clients"}
-            onClick={(e) => handleSmoothScroll(e, isHomePage)}
+            onClick={(e) => isHomePage && handleSmoothScroll(e, "clients")}
             className="hover:text-gray-900"
           >
             Clients
           </Link>
           <Link
             to={isHomePage ? "#contact" : "/#contact"}
-            onClick={(e) => handleSmoothScroll(e, isHomePage)}
+            onClick={(e) => isHomePage && handleSmoothScroll(e, "contact")}
             className="hover:text-gray-900"
           >
             Contacts
@@ -78,8 +72,6 @@ export function Header() {
             Blog
           </Link>
         </nav>
-
-        {/* Mobile menu toggle... */}
         <button className="md:hidden focus:outline-none">
           <svg className="h-6 w-6 fill-current" viewBox="0 0 24 24">
             <path d="M4 5h16M4 12h16M4 19h16" />

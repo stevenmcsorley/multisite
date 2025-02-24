@@ -1,6 +1,10 @@
-export function About() {
+type AboutProps = React.HTMLAttributes<HTMLDivElement> & {
+  id?: string;
+};
+
+export function About({ id, ...props }: AboutProps) {
   return (
-    <section id="about" className="py-16 bg-white">
+    <section id={id} {...props} className="py-20 bg-gray-100">
       <div className="max-w-7xl mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold uppercase">We are Half a Giraf</h2>

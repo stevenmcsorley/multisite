@@ -1,6 +1,9 @@
-export function Clients() {
+type ClientsProps = React.HTMLAttributes<HTMLDivElement> & {
+  id?: string;
+};
+export function Clients({ id, ...props }: ClientsProps) {
   return (
-    <section id="clients" className="py-16 bg-gray-100">
+    <section id={id} {...props} className="py-20 bg-gray-100">
       <div className="max-w-7xl mx-auto px-4">
         <h2 className="text-center text-3xl font-bold uppercase mb-8">
           Our Clients Feedback

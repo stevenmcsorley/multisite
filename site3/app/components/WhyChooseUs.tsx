@@ -1,6 +1,9 @@
-export function WhyChooseUs() {
+type WhyChooseUsProps = React.HTMLAttributes<HTMLDivElement> & {
+  id?: string;
+};
+export function WhyChooseUs({ id, ...props }: WhyChooseUsProps) {
   return (
-    <section id="services" className="py-16 bg-black text-white relative">
+    <section id={id} {...props} className="py-16 bg-black text-white relative">
       {/* Subtle background texture */}
       <div
         className="absolute inset-0"

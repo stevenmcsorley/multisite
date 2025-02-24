@@ -1,7 +1,12 @@
-export function Hero() {
+type HeroProps = React.HTMLAttributes<HTMLDivElement> & {
+  id?: string;
+};
+
+export function Hero({ id, ...props }: HeroProps) {
   return (
     <section
-      id="home"
+      id={id}
+      {...props}
       className="pt-20 relative h-screen flex items-center justify-center"
       /* 
         Example hero background: 
