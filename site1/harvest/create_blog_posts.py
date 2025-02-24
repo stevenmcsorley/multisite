@@ -407,6 +407,10 @@ def main():
     current_day = datetime.utcnow().date()
     posts_today = 0
 
+    # We'll keep an index to iterate through TOPIC_LIST in order
+    topic_index = 0
+    topic_count = len(TOPIC_LIST)
+
     while True:
         now = datetime.utcnow()
         if now.date() != current_day:
@@ -415,8 +419,12 @@ def main():
             logger.info("New day detected. Resetting daily post counter.")
 
         if posts_today < POSTS_PER_DAY:
-            topic = random.choice(TOPIC_LIST)
+            # Use the topic_index to pick the next topic
+            topic = TOPIC_LIST[topic_index]
             logger.info("Generating blog post for topic: %s", topic)
+
+            # Move to next topic index, wrap around at the end
+            topic_index = (topic_index + 1) % topic_count
 
             blog_post = call_blog_post_api(topic)
             if blog_post:
