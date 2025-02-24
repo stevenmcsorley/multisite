@@ -89,7 +89,7 @@ export function Header() {
 
       {/* MOBILE MENU DROPDOWN */}
       {mobileOpen && (
-        <div className="md:hidden bg-white shadow-lg">
+        <div className="md:hidden bg-white shadow-lg text-black">
           <nav className="flex flex-col space-y-2 p-4">
             <Link
               to={isHomePage ? "#home" : "/#home"}
