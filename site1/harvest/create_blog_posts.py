@@ -342,10 +342,42 @@ def call_blog_post_api(topic: str):
         # Use the post's slug for the image prompt instead of the full topic
         final_slug = result.get("slug") or "og-image"
 
+        # Synonym pools
+        adj_minimal = ["minimal", "simple", "spare", "clean", "uncluttered"]
+        adj_pastel = ["pastel-toned", "softly-colored", "gentle pastel", "delicate pastel"]
+        desc_landscape = ["abstract landscape", "abstract horizon", "abstract terrain", "abstract countryside"]
+        desc_hills = ["rolling hills", "flowing hills", "gentle hills", "soft hills"]
+        desc_curves = ["gentle curves", "smooth contours", "flowing shapes", "subtle arcs"]
+        desc_sky = ["tranquil sky", "serene sky", "peaceful sky", "calm sky"]
+        desc_gradients = ["soft gradients", "subtle gradients", "smooth gradients"]
+        desc_vector = ["clean vector style", "modern vector style", "flat vector style"]
+        desc_ambiance = ["calm, warm ambiance", "serene, comforting ambiance", "tranquil, cozy ambiance"]
+        desc_focus = [
+            "Focus on simple shapes, soothing colors, and a sense of peaceful scenery.",
+            "Focus on basic forms, gentle hues, and a feeling of restful harmony.",
+            "Focus on minimal geometry, tranquil shades, and a calm environment."
+        ]
+
+        # Randomly pick one from each category
+        random_minimal = random.choice(adj_minimal)
+        random_pastel = random.choice(adj_pastel)
+        random_landscape = random.choice(desc_landscape)
+        random_hills = random.choice(desc_hills)
+        random_curves = random.choice(desc_curves)
+        random_sky = random.choice(desc_sky)
+        random_gradients = random.choice(desc_gradients)
+        random_vector = random.choice(desc_vector)
+        random_ambiance = random.choice(desc_ambiance)
+        random_focus = random.choice(desc_focus)
+
         # Generate an image
-        image_prompt = (
-        f"A minimal, pastel-toned abstract landscape with rolling hills, gentle curves, and a tranquil sky. No people, no text, no letters, no watermarks, no signatures. Soft gradients, clean vector style, and a calm, warm ambiance. Focus on simple shapes, soothing colors, and a sense of peaceful scenery"
-        )
+        image_prompt =  (
+        f"A {random_minimal}, {random_pastel} {random_landscape} with {random_hills}, "
+        f"{random_curves}, and a {random_sky}. "
+        "No people, no text, no letters, no watermarks, no signatures. "
+        f"{random_gradients}, {random_vector}, and a {random_ambiance}. "
+        f"{random_focus}"
+    )
         negative_prompt = "text, letters, watermark, signature, logos, symbols, illustration style, artificial elements"
 
         image_path = call_text_to_image_api(
