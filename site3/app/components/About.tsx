@@ -3,7 +3,7 @@ export function About() {
     <section id="about" className="py-16 bg-white">
       <div className="max-w-7xl mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold uppercase">We are Hazel</h2>
+          <h2 className="text-3xl font-bold uppercase">We are Half a Giraf</h2>
           <p className="text-gray-500 mt-2">About Us</p>
         </div>
         <div className="max-w-3xl mx-auto text-center text-gray-600">

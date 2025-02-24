@@ -5,12 +5,12 @@ export function Footer() {
         <div className="grid md:grid-cols-3 gap-8">
           {/* Footer Col 1 */}
           <div>
-            <h3 className="font-bold mb-4">About Hazel</h3>
+            <h3 className="font-bold mb-4">About Half a Giraf</h3>
             <p className="text-gray-600 mb-4">
               Clean minimal layout. A perfect setup to highlight all the
               important points about your company or brand.
             </p>
-            <p className="text-gray-600">&copy; Hazel WordPress 2025</p>
+            <p className="text-gray-600">&copy; Half a Giraf WordPress 2025</p>
           </div>
           {/* Footer Col 2 */}
           <div>
