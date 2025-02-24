@@ -14,8 +14,7 @@ export function Hero({ id, ...props }: HeroProps) {
         style={{ backgroundImage: 'url("/hero-bg.jpg")' }}
       */
       style={{
-        backgroundImage:
-          "url('https://via.placeholder.com/1920x1080?text=Hero+Background')",
+        backgroundImage: "url('/halfagiraf-gb.png')",
         backgroundPosition: "center",
         backgroundSize: "cover",
         backgroundRepeat: "no-repeat",
