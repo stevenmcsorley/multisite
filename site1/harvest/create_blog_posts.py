@@ -478,6 +478,7 @@
 
 #!/usr/bin/env python3
 import os
+import re
 import time
 import json
 import random
@@ -678,40 +679,59 @@ def call_text_to_image_api(
         "num_steps": num_steps,
         "guidance": guidance
     }
-    try:
-        resp = requests.post(url, headers=headers, json=payload, timeout=60)
-        logger.info("Status code: %s", resp.status_code)
-        ctype = resp.headers.get("Content-Type", "")
-        logger.info("Content-Type returned: %s", ctype)
 
-        resp.raise_for_status()
+    max_attempts = 2
+    attempt = 0
+    while attempt < max_attempts:
+        attempt += 1   
+        try:
+            resp = requests.post(url, headers=headers, json=payload, timeout=60)
+            logger.info("Status code: %s", resp.status_code)
+            ctype = resp.headers.get("Content-Type", "")
+            logger.info("Content-Type returned: %s", ctype)
 
-       # If it's raw image data (PNG/JPEG), handle binary
-        if "image/" in ctype.lower():
-            raw_bytes = resp.content
-            if "png" in ctype.lower():
-                return save_image_locally(slug, raw_bytes, "png")
-            else:
-                return save_image_locally(slug, raw_bytes, "jpg")
+            resp.raise_for_status()
 
-        # Otherwise, parse JSON with base64
-        data = resp.json()
-        image_b64 = data.get("result", {}).get("image")
-        if not image_b64:
-            logger.error("No 'image' field in text-to-image response. Full response: %s", data)
+        # If it's raw image data (PNG/JPEG), handle binary
+            if "image/" in ctype.lower():
+                raw_bytes = resp.content
+                if "png" in ctype.lower():
+                    return save_image_locally(slug, raw_bytes, "png")
+                else:
+                    return save_image_locally(slug, raw_bytes, "jpg")
+
+            # Otherwise, parse JSON with base64
+            data = resp.json()
+            image_b64 = data.get("result", {}).get("image")
+            if not image_b64:
+                logger.error("No 'image' field in text-to-image response. Full response: %s", data)
+                return ""
+
+            raw_bytes = base64.b64decode(image_b64)
+            # default to jpg if unknown
+            return save_image_locally(slug, raw_bytes, "jpg")
+
+        except requests.exceptions.HTTPError as http_err:
+            logger.error("HTTP error calling model for prompt '%s': %s", prompt, http_err)
+            logger.error("Response body: %s", resp.text)
+
+            # If we got a 429 rate limit, parse the "Please try again in 14m33.162s"
+            if resp.status_code == 429:
+                # Attempt to extract wait time from the error message
+                match = re.search(r"Please try again in (\d+)m(\d+(\.\d+)?)s", resp.text)
+                if match:
+                    mins = int(match.group(1))
+                    secs = float(match.group(2))
+                    wait_time = mins * 60 + secs
+                    logger.warning(f"Rate-limited. Sleeping for {wait_time} seconds before retry.")
+                    time.sleep(wait_time)
+                    continue  # Retry once
+            return ""
+        except Exception as e:
+            logger.error("Error calling model for prompt '%s': %s", prompt, e)
             return ""
 
-        raw_bytes = base64.b64decode(image_b64)
-        # default to jpg if unknown
-        return save_image_locally(slug, raw_bytes, "jpg")
-
-    except requests.exceptions.HTTPError as http_err:
-        logger.error("HTTP error calling model for prompt '%s': %s", prompt, http_err)
-        logger.error("Response body: %s", resp.text)
-        return ""
-    except Exception as e:
-        logger.error("Error calling model for prompt '%s': %s", prompt, e)
-        return ""
+    return ""
 
 # ------------------------------------------------------------------------------
 # Blog: Text Generation (Groq)
@@ -796,17 +816,18 @@ def call_blog_post_api(topic: str):
         if not isinstance(result, dict):
             logger.error("Expected JSON object for topic: %s", topic)
             return None
+        
+        # Use the post's slug for the image prompt instead of the full topic
+        final_slug = result.get("slug") or "og-image"
 
         # Generate an image
         image_prompt = (
-        f"An ultra-high-resolution, hyper-realistic photograph of {topic}, "
+        f"An ultra-high-resolution, hyper-realistic photograph of {final_slug}, "
         "captured in natural, cinematic lighting with exquisite detail, realistic textures, and a clean, professional composition. "
-        "The scene should look as if it were shot with a high-end camera, with accurate colors and depth, and no artificial elements."
+        "The scene should look as if it were shot with a high-end camera, with accurate colors and depth."
         )
-        negative_prompt = "text, letters, watermark, signature, logos, symbols, illustration style"
+        negative_prompt = "text, letters, watermark, signature, logos, symbols, illustration style, artificial elements"
 
-
-        final_slug = result.get("slug") or "og-image"
         image_path = call_text_to_image_api(
             prompt=image_prompt,
             slug=final_slug,  # so we name the file <slug>.png
