@@ -55,7 +55,7 @@ export function Header() {
           <a href="#contact" className="hover:text-gray-900">
             Contacts
           </a>
-          <a href="#blog" className="hover:text-gray-900">
+          <a href="/blog" className="hover:text-gray-900">
             Blog
           </a>
         </nav>
