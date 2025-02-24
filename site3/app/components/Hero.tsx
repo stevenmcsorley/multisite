@@ -2,7 +2,7 @@ export function Hero() {
   return (
     <section
       id="home"
-      className="relative h-screen flex items-center justify-center"
+      className="pt-20 relative h-screen flex items-center justify-center"
       /* 
         Example hero background: 
         You can store an actual image in /public and reference it as: 

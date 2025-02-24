@@ -1,5 +1,5 @@
 function handleSmoothScroll(e: React.MouseEvent<HTMLAnchorElement>) {
-  e.preventDefault();
+  e.preventDefault(); // prevent instant jump
   const targetId = e.currentTarget.getAttribute("href")?.replace("#", "");
   if (!targetId) return;
 
@@ -11,17 +11,13 @@ function handleSmoothScroll(e: React.MouseEvent<HTMLAnchorElement>) {
 
 export function Header() {
   return (
-    <header className="w-full bg-white shadow">
+    <header className="sticky top-0 z-50 bg-white shadow">
       <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
         {/* Logo */}
         <div className="text-xl font-bold">Half a Giraf</div>
         {/* Nav Links */}
         <nav className="hidden space-x-6 md:flex">
-          <a
-            href="#home"
-            onClick={handleSmoothScroll}
-            className="hover:text-gray-900"
-          >
+          <a href="#home" className="hover:text-gray-900">
             Home
           </a>
           <a
