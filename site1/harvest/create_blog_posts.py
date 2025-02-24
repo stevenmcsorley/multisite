@@ -32,8 +32,8 @@ CLOUDFLARE_API_TOKEN = os.getenv("CLOUDFLARE_API_TOKEN")
 FLUX_MODEL = "@cf/black-forest-labs/flux-1-schnell"
 
 # Post creation config
-POSTS_PER_DAY = int(os.getenv("POSTS_PER_DAY", "70"))
-INTERVAL_SECONDS = int(os.getenv("POST_CREATION_INTERVAL", "300"))
+POSTS_PER_DAY = int(os.getenv("POSTS_PER_DAY", "25"))
+INTERVAL_SECONDS = int(os.getenv("POST_CREATION_INTERVAL", "720"))
 
 # Path in the container that maps to site1/public/images on the host
 PUBLIC_IMAGES_DIR = "/app/public/images"
