@@ -81,18 +81,21 @@ export default function BlogPost() {
           />
         )}
         <header className="mb-8">
-          <div className="flex justify-between items-center border-b border-gray-300 pb-2 mb-4">
-            {post.category && (
-              <Link
-                to={`/blog-category/${encodeURIComponent(post.category || "")}`}
-                className="text-green-600 font-semibold text-xs uppercase hover:underline"
-              >
-                {post.category}
-              </Link>
-            )}
-            <span className="text-gray-500 text-xs">
-              {new Date(post.published_at).toLocaleDateString()}
-            </span>
+          <div className="flex space-x-2">
+            {post.category &&
+              post.category
+                .split(",")
+                .map((cat) => cat.trim())
+                .filter(Boolean)
+                .map((cat) => (
+                  <Link
+                    key={cat}
+                    to={`/blog-category/${encodeURIComponent(cat)}`}
+                    className="text-green-600 font-semibold text-xs uppercase hover:underline"
+                  >
+                    {cat}
+                  </Link>
+                ))}
           </div>
           <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-4">
             {post.title}

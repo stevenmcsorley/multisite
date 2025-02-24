@@ -188,12 +188,28 @@ export default function BlogTagPage() {
               <div className="p-6">
                 <div className="flex justify-between items-center border-b border-gray-300 pb-2 mb-2">
                   {/* Display tag as clickable link */}
-                  <Link
+                  {/* <Link
                     to={`/blog-tag/${encodeURIComponent(post.tags || "")}`}
                     className="text-green-600 font-semibold text-xs uppercase hover:underline"
                   >
                     {post.tags}
-                  </Link>
+                  </Link> */}
+                  <div className="flex space-x-2">
+                    {post.category &&
+                      post.category
+                        .split(",")
+                        .map((cat) => cat.trim())
+                        .filter(Boolean)
+                        .map((cat) => (
+                          <Link
+                            key={cat}
+                            to={`/blog-category/${encodeURIComponent(cat)}`}
+                            className="text-green-600 font-semibold text-xs uppercase hover:underline"
+                          >
+                            {cat}
+                          </Link>
+                        ))}
+                  </div>
                   <p className="text-gray-500 text-xs">
                     {formatDate(post.published_at)}
                   </p>
@@ -221,12 +237,28 @@ export default function BlogTagPage() {
               />
               <div className="p-4">
                 <div className="flex justify-between items-center border-b border-gray-300 pb-2 mb-2">
-                  <Link
+                  {/* <Link
                     to={`/blog-tag/${encodeURIComponent(post.tags || "")}`}
                     className="text-green-600 font-semibold text-xs uppercase hover:underline"
                   >
                     {post.tags}
-                  </Link>
+                  </Link> */}
+                  <div className="flex space-x-2">
+                    {post.category &&
+                      post.category
+                        .split(",")
+                        .map((cat) => cat.trim())
+                        .filter(Boolean)
+                        .map((cat) => (
+                          <Link
+                            key={cat}
+                            to={`/blog-category/${encodeURIComponent(cat)}`}
+                            className="text-green-600 font-semibold text-xs uppercase hover:underline"
+                          >
+                            {cat}
+                          </Link>
+                        ))}
+                  </div>
                   <p className="text-gray-500 text-xs">
                     {formatDate(post.published_at)}
                   </p>
@@ -264,12 +296,28 @@ export default function BlogTagPage() {
               )}
               <div className="p-4">
                 <div className="flex justify-between items-center border-b border-gray-300 pb-2 mb-2">
-                  <Link
+                  {/* <Link
                     to={`/blog-tag/${encodeURIComponent(post.tags || "")}`}
                     className="text-green-600 font-semibold text-xs uppercase hover:underline"
                   >
                     {post.tags}
-                  </Link>
+                  </Link> */}
+                  <div className="flex space-x-2">
+                    {post.category &&
+                      post.category
+                        .split(",")
+                        .map((cat) => cat.trim())
+                        .filter(Boolean)
+                        .map((cat) => (
+                          <Link
+                            key={cat}
+                            to={`/blog-category/${encodeURIComponent(cat)}`}
+                            className="text-green-600 font-semibold text-xs uppercase hover:underline"
+                          >
+                            {cat}
+                          </Link>
+                        ))}
+                  </div>
                   <p className="text-gray-500 text-xs">
                     {formatDate(post.published_at)}
                   </p>
