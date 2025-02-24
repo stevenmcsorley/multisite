@@ -10,7 +10,7 @@ export function Footer() {
               Clean minimal layout. A perfect setup to highlight all the
               important points about your company or brand.
             </p>
-            <p className="text-gray-600">&copy; Half a Giraf WordPress 2025</p>
+            <p className="text-gray-600">&copy; Half a Giraf 2025</p>
           </div>
           {/* Footer Col 2 */}
           <div>
