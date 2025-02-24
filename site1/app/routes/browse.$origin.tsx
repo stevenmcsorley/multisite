@@ -1,5 +1,3 @@
-// app/routes/browse.$origin.tsx
-
 import type {
   LinksFunction,
   LoaderFunction,
@@ -11,8 +9,6 @@ import { getNamesByOrigin } from "../models/browse.server";
 import { getOriginEnrichment } from "../models/origin.server";
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-
-// Import the new function
 
 export const loader: LoaderFunction = async ({ params, request }) => {
   const { origin } = params;
@@ -54,7 +50,6 @@ export const meta: MetaFunction = ({ data }) => {
     total === 1 ? "" : "s"
   } from ${origin}. Discover the origins and meanings behind these unique names.`;
 
-  // Include the page query param in the canonical URL if we're not on page 1.
   const canonical =
     page && page > 1
       ? `https://baobaonames.com/browse/${encodeURIComponent(
@@ -80,11 +75,9 @@ export const meta: MetaFunction = ({ data }) => {
 interface MyLinksArgs {
   data?: { page?: number };
   params?: { origin?: string };
-  // We don't need location, so we omit it.
 }
 
-// Provide a default empty object for the argument so that it works
-// even if Remix calls the function with no arguments.
+// Provide a default empty object for the argument.
 export const links: LinksFunction = (
   args: MyLinksArgs = { data: {}, params: {} }
 ) => {
@@ -175,34 +168,37 @@ export default function BrowseOrigin() {
     useLoaderData<typeof loader>();
 
   return (
-    <main className="w-full max-w-4xl mx-auto p-4">
-      <div className="bg-base-100 p-4 rounded shadow">
-        <h1 className="text-2xl font-bold mb-4">Browse: {origin}</h1>
+    <main className="w-full max-w-7xl mx-auto bg-white text-gray-900 px-6 md:px-12 py-6">
+      <article className="max-w-3xl mx-auto bg-white shadow-lg rounded-lg p-6">
+        <header className="mb-6">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 text-center">
+            Browse: {origin}
+          </h1>
+        </header>
 
-        {/* Render the enriched origin profile if available */}
         {enrichedContent && enrichedContent.origin_overview ? (
-          <div className="mb-6">
+          <section className="mb-6">
             {Object.entries(enrichedContent.origin_overview).map(
               ([key, paragraph]) => (
-                <p key={key} className="mb-2 text-md">
+                <p key={key} className="mb-2 text-lg leading-relaxed">
                   {paragraph as string}
                 </p>
               )
             )}
-          </div>
+          </section>
         ) : (
-          <p className="mb-6 text-sm italic">
+          <p className="mb-6 text-sm italic text-center">
             No enriched information available for {origin}.
           </p>
         )}
 
         {rows.length > 0 ? (
           <>
-            <p>
+            <p className="mb-4 text-lg text-center">
               Found <strong>{total}</strong> name{total !== 1 && "s"} for{" "}
               <strong>{origin}</strong>.
             </p>
-            <div className="divide-y divide-gray-200 mt-4">
+            <div className="divide-y divide-gray-200">
               {rows.map(
                 ({
                   name,
@@ -214,27 +210,27 @@ export default function BrowseOrigin() {
                   origin: string;
                 }) => (
                   <div key={name} className="py-4">
-                    <h3 className="text-xl font-semibold">
+                    <h3 className="text-2xl font-semibold">
                       <a
                         href={`/name/${encodeURIComponent(name)}`}
-                        className="link link-primary hover:underline"
+                        className="text-blue-600 hover:underline"
                       >
                         {name}
                       </a>
                     </h3>
                     {meaning ? (
-                      <p className="text-sm mt-1">
+                      <p className="text-lg mt-1">
                         {meaning.length > 150
                           ? meaning.slice(0, 150) + "..."
                           : meaning}
                       </p>
                     ) : (
-                      <p className="text-sm text-gray-500 italic mt-1">
+                      <p className="text-md italic mt-1 text-gray-500">
                         No meaning available.
                       </p>
                     )}
                     {origin && (
-                      <p className="text-sm mt-1">
+                      <p className="text-md mt-1">
                         <strong>Origin:</strong> {origin}
                       </p>
                     )}
@@ -242,7 +238,7 @@ export default function BrowseOrigin() {
                 )
               )}
             </div>
-            <div className="flex justify-center mt-4">
+            <div className="flex justify-center mt-8">
               <Pagination
                 total={total}
                 page={page}
@@ -252,14 +248,17 @@ export default function BrowseOrigin() {
             </div>
           </>
         ) : (
-          <p className="text-error mt-2">No names found for this origin.</p>
+          <p className="text-red-500 mt-4 text-center">
+            No names found for this origin.
+          </p>
         )}
-        <div className="mt-4">
+
+        <div className="mt-8 text-center">
           <a href="/" className="btn btn-outline">
             Back to Home
           </a>
         </div>
-      </div>
+      </article>
     </main>
   );
 }

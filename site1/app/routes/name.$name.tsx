@@ -1,5 +1,3 @@
-// app/routes/name.$name.tsx
-
 import { Link, useLoaderData } from "@remix-run/react";
 import type {
   LinksFunction,
@@ -52,7 +50,6 @@ export const loader: LoaderFunction = async ({ params }) => {
   if (result.rows.length === 0) {
     throw new Response("Not found", { status: 404 });
   }
-  // Cast the row to BabyName.
   const row = result.rows[0] as BabyName;
   return json(row);
 };
@@ -160,51 +157,47 @@ export default function NameDetailRoute() {
   const historicalFigures = data.historic_figures?.split(", ") ?? [];
 
   return (
-    <main className="max-w-3xl mx-auto p-6">
-      <article className="card bg-base-100 shadow-lg">
-        <div className="card-body">
-          <header>
-            <h1 className="card-title text-4xl mb-4">{data.name}</h1>
-          </header>
-          <section>
-            <DetailItem label="Meaning">{data.meaning || "N/A"}</DetailItem>
-            <DetailItem label="Origin">{data.origin || "N/A"}</DetailItem>
+    <main className="w-full max-w-7xl mx-auto bg-white text-gray-900 px-6 md:px-12 py-6">
+      <article className="max-w-3xl mx-auto bg-white shadow-lg rounded-lg p-6">
+        <header className="mb-6">
+          <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-4">
+            {data.name}
+          </h1>
+        </header>
+        <section className="mb-6">
+          <DetailItem label="Meaning">{data.meaning || "N/A"}</DetailItem>
+          <DetailItem label="Origin">{data.origin || "N/A"}</DetailItem>
+        </section>
+        <DetailList title="Famous People" items={famousPeople} />
+        <DetailList title="Historical Figures" items={historicalFigures} />
+        {data.interesting_facts && (
+          <section className="mt-4">
+            <h2 className="text-xl font-semibold mb-2">Interesting Facts</h2>
+            <p>{data.interesting_facts}</p>
           </section>
-
-          <DetailList title="Famous People" items={famousPeople} />
-          <DetailList title="Historical Figures" items={historicalFigures} />
-
-          {data.interesting_facts && (
-            <section className="mt-4">
-              <h2 className="text-xl font-semibold mb-2">Interesting Facts</h2>
-              <p>{data.interesting_facts}</p>
-            </section>
-          )}
-
-          {/* Render enriched sections if available */}
-          <EnrichedSection
-            title="In-Depth Meaning"
-            content={data.in_depth_meaning}
-          />
-          <EnrichedSection
-            title="Historical Background"
-            content={data.historical_background}
-          />
-          <EnrichedSection
-            title="Cultural Significance"
-            content={data.cultural_significance}
-          />
-          <EnrichedSection
-            title="Detailed Interesting Facts"
-            content={data.detailed_interesting_facts}
-          />
-
-          <footer className="mt-6">
-            <Link to="/" className="btn btn-outline">
-              Back to Home
-            </Link>
-          </footer>
-        </div>
+        )}
+        {/* Render enriched sections if available */}
+        <EnrichedSection
+          title="In-Depth Meaning"
+          content={data.in_depth_meaning}
+        />
+        <EnrichedSection
+          title="Historical Background"
+          content={data.historical_background}
+        />
+        <EnrichedSection
+          title="Cultural Significance"
+          content={data.cultural_significance}
+        />
+        <EnrichedSection
+          title="Detailed Interesting Facts"
+          content={data.detailed_interesting_facts}
+        />
+        <footer className="mt-8">
+          <Link to="/" className="btn btn-outline">
+            Back to Home
+          </Link>
+        </footer>
       </article>
     </main>
   );
