@@ -9,7 +9,7 @@ function handleSmoothScroll(
   e.preventDefault();
   const element = document.getElementById(targetId);
   if (element) {
-    window.history.pushState(null, "", `#${targetId}`); // update hash
+    window.history.pushState(null, "", `#${targetId}`);
     element.scrollIntoView({ behavior: "smooth" });
   }
 }
@@ -23,10 +23,10 @@ export function Header() {
     <header className="sticky top-0 z-50 bg-white shadow">
       <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
         {/* SITE LOGO / NAME */}
-        <div className="text-xl font-bold">Half a Giraf</div>
+        <div className="text-xl font-bold text-black">Half a Giraf</div>
 
-        {/* DESKTOP NAV: hidden on mobile (md: means “≥768px” by default) */}
-        <nav className="hidden md:flex space-x-6">
+        {/* DESKTOP NAV: hidden on mobile */}
+        <nav className="hidden md:flex space-x-6 text-black">
           <Link
             to={isHomePage ? "#home" : "/#home"}
             onClick={(e) => isHomePage && handleSmoothScroll(e, "home")}
@@ -76,7 +76,7 @@ export function Header() {
 
         {/* HAMBURGER BUTTON: shown on mobile only */}
         <button
-          className="md:hidden focus:outline-none"
+          className="md:hidden text-black focus:outline-none"
           onClick={() => setMobileOpen(!mobileOpen)}
         >
           <svg className="h-6 w-6 fill-current" viewBox="0 0 24 24">
@@ -87,8 +87,7 @@ export function Header() {
 
       {/* MOBILE MENU DROPDOWN */}
       {mobileOpen && (
-        <div className="md:hidden bg-white shadow-lg">
-          {/* You can style this container how you like (vertical list, etc.) */}
+        <div className="md:hidden bg-white shadow-lg text-black">
           <nav className="flex flex-col space-y-2 p-4">
             <Link
               to={isHomePage ? "#home" : "/#home"}
