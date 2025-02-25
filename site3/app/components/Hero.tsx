@@ -18,6 +18,7 @@ export function Hero({ id, ...props }: HeroProps) {
         backgroundPosition: "center",
         backgroundSize: "120%",
         backgroundRepeat: "no-repeat",
+        minHeight: "100vh",
       }}
     >
       {/* Dark overlay */}
