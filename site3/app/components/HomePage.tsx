@@ -1,13 +1,15 @@
 import { About } from "./About";
 import { BrandFeatures } from "./BrandFeatures";
-import { Clients } from "./Clients";
 import { Contact } from "./Contact";
 import { Footer } from "./Footer";
 import { Header } from "./Header";
 import { Hero } from "./Hero";
-import { Portfolio } from "./Portfolio";
 import { WhyChooseUs } from "./WhyChooseUs";
 import { useEffect } from "react";
+
+// import { Clients } from "./Clients";
+
+// import { Portfolio } from "./Portfolio";
 
 export function HomePage() {
   useEffect(() => {
@@ -37,9 +39,9 @@ export function HomePage() {
       {/* Brand New Features */}
       <BrandFeatures />
       {/* Portfolio */}
-      <Portfolio id="work" />
+      {/* <Portfolio id="work" /> */}
       {/* Clients */}
-      <Clients id="clients" />
+      {/* <Clients id="clients" /> */}
       {/* Contact Section */}
       <Contact />
       {/* Footer */}

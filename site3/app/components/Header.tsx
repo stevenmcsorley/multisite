@@ -48,7 +48,7 @@ export function Header() {
           >
             Services
           </Link>
-          <Link
+          {/* <Link
             to={isHomePage ? "#work" : "/#work"}
             onClick={(e) => isHomePage && handleSmoothScroll(e, "work")}
             className="hover:text-gray-900"
@@ -61,7 +61,7 @@ export function Header() {
             className="hover:text-gray-900"
           >
             Clients
-          </Link>
+          </Link> */}
           <Link
             to={isHomePage ? "#contact" : "/#contact"}
             onClick={(e) => isHomePage && handleSmoothScroll(e, "contact")}

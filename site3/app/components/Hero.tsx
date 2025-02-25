@@ -7,18 +7,18 @@ export function Hero({ id, ...props }: HeroProps) {
     <section
       id={id}
       {...props}
-      className="pt-20 relative h-screen flex items-center justify-center"
+      className="pt-20 relative h-screen flex items-center justify-center hero-background"
       /* 
         Example hero background: 
         You can store an actual image in /public and reference it as: 
         style={{ backgroundImage: 'url("/hero-bg.jpg")' }}
       */
-      style={{
-        backgroundImage: "url('/halfagiraf-gb.png')",
-        backgroundPosition: "center",
-        backgroundSize: "cover",
-        backgroundRepeat: "no-repeat",
-      }}
+      //   style={{
+      //     backgroundImage: "url('/halfagiraf-gb.png')",
+      //     backgroundPosition: "center",
+      //     backgroundSize: "cover",
+      //     backgroundRepeat: "no-repeat",
+      //   }}
     >
       {/* Dark overlay */}
       <div className="absolute inset-0 bg-black bg-opacity-50" />
@@ -29,7 +29,7 @@ export function Hero({ id, ...props }: HeroProps) {
           Development in Scotland <br />
         </h1>
         <p className="text-lg md:text-xl mb-6">
-          At Half a Giraf, we craft modern, user-friendly websites that help
+          At HalfaGiraf, we craft modern, user-friendly websites that help
           businesses stand out, grow, and succeed.
         </p>
         {/* “Play” Button or CTA */}
