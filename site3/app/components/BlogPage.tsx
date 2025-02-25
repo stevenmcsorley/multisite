@@ -14,8 +14,7 @@ export function BlogPage() {
       <section
         className="relative w-full h-[40vh] flex items-center justify-center"
         style={{
-          backgroundImage:
-            "url('https://via.placeholder.com/1920x700?text=Blog+Hero+Image')",
+          backgroundImage: "url('https://loremflickr.com/1280/720')",
           backgroundPosition: "center",
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
@@ -37,7 +36,7 @@ export function BlogPage() {
             {/* Post 1 */}
             <div className="bg-white shadow p-4">
               <img
-                src="https://via.placeholder.com/600x400?text=Blog+Image+1"
+                src="https://loremflickr.com/1280/720"
                 alt="Post with Gallery"
                 className="mb-4"
               />
@@ -57,7 +56,7 @@ export function BlogPage() {
             {/* Post 2 */}
             <div className="bg-white shadow p-4">
               <img
-                src="https://via.placeholder.com/600x400?text=Blog+Image+2"
+                src="https://loremflickr.com/1280/720"
                 alt="We Love Photography"
                 className="mb-4"
               />
@@ -79,7 +78,7 @@ export function BlogPage() {
             {/* Post 3 */}
             <div className="bg-white shadow p-4">
               <img
-                src="https://via.placeholder.com/600x400?text=Blog+Image+3"
+                src="https://loremflickr.com/1280/720"
                 alt="Woman enjoying ride"
                 className="mb-4"
               />
@@ -179,7 +178,7 @@ export function BlogPage() {
             {/* Post 8: Plain image */}
             <div className="bg-white shadow p-4">
               <img
-                src="https://via.placeholder.com/600x400?text=Coffee"
+                src="https://loremflickr.com/1280/720"
                 alt="Is time to coffee"
                 className="mb-4"
               />
@@ -199,7 +198,7 @@ export function BlogPage() {
             {/* Post 9: Plain image */}
             <div className="bg-white shadow p-4">
               <img
-                src="https://via.placeholder.com/600x400?text=Magazines"
+                src="https://loremflickr.com/1280/720"
                 alt="Magazines on a desk"
                 className="mb-4"
               />
