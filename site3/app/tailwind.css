@@ -61,3 +61,18 @@ body {
     background-size: cover !important;
   }
 }
+
+/* Custom circle pulse */
+@keyframes circle-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+}
+
+.animate-circle-pulse {
+  animation: circle-pulse 1s infinite;
+}
