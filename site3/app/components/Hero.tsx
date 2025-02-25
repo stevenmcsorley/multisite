@@ -7,7 +7,7 @@ export function Hero({ id, ...props }: HeroProps) {
     <section
       id={id}
       {...props}
-      className="pt-20 relative h-screen flex items-center justify-center"
+      className="pt-20 relative h-screen flex items-center justify-center hero-bg-zoom"
       /* 
         Example hero background: 
         You can store an actual image in /public and reference it as: 
@@ -16,7 +16,7 @@ export function Hero({ id, ...props }: HeroProps) {
       style={{
         backgroundImage: "url('/halfagiraf-gb.png')",
         backgroundPosition: "center",
-        backgroundSize: "cover",
+        backgroundSize: "120%",
         backgroundRepeat: "no-repeat",
       }}
     >
