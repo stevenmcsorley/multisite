@@ -5,7 +5,7 @@ export function Contact() {
       <div
         className="absolute inset-0"
         style={{
-          background: `url('https://via.placeholder.com/1920x1080?text=Coffee+Background') center/cover no-repeat`,
+          background: `url('https://picsum.photos/id/42/200/300') center/cover no-repeat`,
           opacity: 0.2,
         }}
       />
