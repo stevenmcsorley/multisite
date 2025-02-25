@@ -20,7 +20,7 @@ export function BrandFeatures() {
         {/* Laptop Image Placeholder */}
         <div className="w-full md:w-1/2">
           <img
-            src="https://via.placeholder.com/600x400?text=Laptop+Mockup"
+            src="https://picsum.photos/1280/720"
             alt="Laptop Mockup"
             className="rounded shadow"
           />
