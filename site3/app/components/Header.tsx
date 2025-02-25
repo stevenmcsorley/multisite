@@ -9,8 +9,17 @@ function handleSmoothScroll(
   e.preventDefault();
   const element = document.getElementById(targetId);
   if (element) {
+    // Check if we're on mobile (adjust breakpoint as needed)
+    const isMobile = window.innerWidth <= 768;
+    const headerOffset = isMobile ? 190 : 0;
+    const elementPosition = element.getBoundingClientRect().top;
+    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
     window.history.pushState(null, "", `#${targetId}`);
-    element.scrollIntoView({ behavior: "smooth", block: "start" });
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: "smooth",
+    });
   }
 }
 
@@ -121,7 +130,7 @@ export function Header() {
             >
               Services
             </Link>
-            <Link
+            {/* <Link
               to={isHomePage ? "#work" : "/#work"}
               onClick={(e) => {
                 setMobileOpen(false);
@@ -140,7 +149,7 @@ export function Header() {
               className="hover:text-gray-900"
             >
               Clients
-            </Link>
+            </Link> */}
             <Link
               to={isHomePage ? "#contact" : "/#contact"}
               onClick={(e) => {
