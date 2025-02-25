@@ -7,7 +7,7 @@ export function Portfolio({ id, ...props }: PortfolioProps) {
     <section id={id} {...props} className="py-20 bg-gray-100">
       <div className="max-w-7xl mx-auto px-4">
         <div className="text-center mb-10">
-          <h2 className="text-3xl font-bold uppercase">Our Portfolio</h2>
+          <h2 className="text-3xl font-bold uppercase text-black">Our Portfolio</h2>
           <p className="text-gray-500 mt-2">We build some stuff</p>
         </div>
         {/* Filters (optional) */}

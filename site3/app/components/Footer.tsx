@@ -7,8 +7,7 @@ export function Footer() {
           <div>
             <h3 className="font-bold mb-4">About Half a Giraf</h3>
             <p className="text-gray-600 mb-4">
-              Clean minimal layout. A perfect setup to highlight all the
-              important points about your company or brand.
+            Let’s collaborate on a website that stands out. If you’re a Scottish business looking to make an impact online, get in touch today.
             </p>
             <p className="text-gray-600">&copy; Half a Giraf 2025</p>
           </div>

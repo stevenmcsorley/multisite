@@ -29,10 +29,9 @@ export function WhyChooseUs({ id, ...props }: WhyChooseUsProps) {
             >
               <path d="M13 7H7v6h6V7z M19 4h-2V2h-2v2H5V2H3v2H1v2h2v7a4 4 0 004 4h6a4 4 0 004-4V6h2V4z" />
             </svg>
-            <h3 className="font-semibold text-lg mb-2">Powerful Features</h3>
+            <h3 className="font-semibold text-lg mb-2">Web Design & Development</h3>
             <p className="text-gray-300">
-              Leverage great UI/UX, advanced functionalities, and seamless user
-              experiences.
+            Responsive and user-friendly websites, Custom builds tailored to your brand, E-commerce solutions for various industries
             </p>
           </div>
           {/* Feature 2 */}
@@ -44,9 +43,9 @@ export function WhyChooseUs({ id, ...props }: WhyChooseUsProps) {
             >
               <path d="M10 3a7 7 0 00-7 7v4l-2 2h18l-2-2v-4a7 7 0 00-7-7z" />
             </svg>
-            <h3 className="font-semibold text-lg mb-2">All Included</h3>
+            <h3 className="font-semibold text-lg mb-2">SEO & Digital Strategy</h3>
             <p className="text-gray-300">
-              From conceptualization to deployment, everything in one package.
+            SEO audits, on-page optimization, and content strategy
             </p>
           </div>
           {/* Feature 3 */}
@@ -58,9 +57,10 @@ export function WhyChooseUs({ id, ...props }: WhyChooseUsProps) {
             >
               <path d="M3 3h14a1 1 0 011 1v12a1 1 0 01-1 1H3a1 1 0 01-1-1V4a1 1 0 011-1zm9 10h3V7h-3v6zM5 7v6h3V7H5z" />
             </svg>
-            <h3 className="font-semibold text-lg mb-2">Minimalist Design</h3>
+            <h3 className="font-semibold text-lg mb-2">Branding & Visual Identity</h3>
             <p className="text-gray-300">
-              Clean layouts that highlight your message, not clutter the page.
+            Logo design and brand guidelines, 
+            Consistent brand messaging across all platforms
             </p>
           </div>
         </div>
