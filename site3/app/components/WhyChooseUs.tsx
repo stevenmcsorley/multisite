@@ -8,8 +8,7 @@ export function WhyChooseUs({ id, ...props }: WhyChooseUsProps) {
       <div
         className="absolute inset-0"
         style={{
-          backgroundImage:
-            "url('https://via.placeholder.com/1920x1080?text=Texture')",
+          backgroundImage: "url('https://picsum.photos/id/114/200/300')",
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
           opacity: 0.2,
@@ -29,9 +28,12 @@ export function WhyChooseUs({ id, ...props }: WhyChooseUsProps) {
             >
               <path d="M13 7H7v6h6V7z M19 4h-2V2h-2v2H5V2H3v2H1v2h2v7a4 4 0 004 4h6a4 4 0 004-4V6h2V4z" />
             </svg>
-            <h3 className="font-semibold text-lg mb-2">Web Design & Development</h3>
+            <h3 className="font-semibold text-lg mb-2">
+              Web Design & Development
+            </h3>
             <p className="text-gray-300">
-            Responsive and user-friendly websites, Custom builds tailored to your brand, E-commerce solutions for various industries
+              Responsive and user-friendly websites, Custom builds tailored to
+              your brand, E-commerce solutions for various industries
             </p>
           </div>
           {/* Feature 2 */}
@@ -43,9 +45,11 @@ export function WhyChooseUs({ id, ...props }: WhyChooseUsProps) {
             >
               <path d="M10 3a7 7 0 00-7 7v4l-2 2h18l-2-2v-4a7 7 0 00-7-7z" />
             </svg>
-            <h3 className="font-semibold text-lg mb-2">SEO & Digital Strategy</h3>
+            <h3 className="font-semibold text-lg mb-2">
+              SEO & Digital Strategy
+            </h3>
             <p className="text-gray-300">
-            SEO audits, on-page optimization, and content strategy
+              SEO audits, on-page optimization, and content strategy
             </p>
           </div>
           {/* Feature 3 */}
@@ -57,10 +61,12 @@ export function WhyChooseUs({ id, ...props }: WhyChooseUsProps) {
             >
               <path d="M3 3h14a1 1 0 011 1v12a1 1 0 01-1 1H3a1 1 0 01-1-1V4a1 1 0 011-1zm9 10h3V7h-3v6zM5 7v6h3V7H5z" />
             </svg>
-            <h3 className="font-semibold text-lg mb-2">Branding & Visual Identity</h3>
+            <h3 className="font-semibold text-lg mb-2">
+              Branding & Visual Identity
+            </h3>
             <p className="text-gray-300">
-            Logo design and brand guidelines, 
-            Consistent brand messaging across all platforms
+              Logo design and brand guidelines, Consistent brand messaging
+              across all platforms
             </p>
           </div>
         </div>
