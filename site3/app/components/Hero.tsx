@@ -30,7 +30,7 @@ export function Hero({ id, ...props }: HeroProps) {
         15 Years of Transforming Businesses Online
         </h1>
         <p className="text-lg md:text-xl mb-6">
-        At Half a Giraf, we craft modern, user-friendly websites that help Scottish businesses stand out, grow, and succeed.
+        At Half a Giraf, we craft modern, user-friendly websites that help businesses stand out, grow, and succeed.
         </p>
         {/* “Play” Button or CTA */}
         <button
@@ -40,7 +40,7 @@ export function Hero({ id, ...props }: HeroProps) {
           <svg className="h-6 w-6 mr-2" fill="currentColor" viewBox="0 0 20 20">
             <path d="M4 4l12 6-12 6z" />
           </svg>
-          Get a Free Consultation or Let’s Build Your Website
+          Get a Free Consultation
         </button>
       </div>
     </section>
