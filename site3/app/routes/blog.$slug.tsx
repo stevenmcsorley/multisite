@@ -10,9 +10,8 @@ import { json } from "@remix-run/node";
 // A fake “post” object for demonstration only
 const fakePost = {
   title: "Magazines on a Desk",
-  heroImageUrl: "https://via.placeholder.com/1920x800?text=Featured+Hero+Image",
-  featuredImage:
-    "https://via.placeholder.com/1000x600?text=Magazines+on+a+Desk",
+  heroImageUrl: "https://picsum.photos/1280/720",
+  featuredImage: "https://picsum.photos/1280/720",
   paragraphs: [
     "Holistically streamline transparent methodologies after team building growth strategies. Interactively productize bleeding‐edge schemas for efficient architectures.",
     "Globally promote vertical portals whereas time‐synchronized. Appropriately strategize 24/7 productized information for frictionless end users. Continually envision best‐in‐class schemas via tactical market‐driven metrics.",
