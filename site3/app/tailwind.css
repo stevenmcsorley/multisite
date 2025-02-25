@@ -54,3 +54,10 @@ body {
   animation: heroZoom 10s ease-out forwards;
   /* 10s is an example; adjust timing as needed */
 }
+
+@media (max-width: 768px) {
+  .hero-bg-zoom {
+    animation: none;
+    background-size: cover !important;
+  }
+}
