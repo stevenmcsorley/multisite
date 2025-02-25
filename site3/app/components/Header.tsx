@@ -10,7 +10,7 @@ function handleSmoothScroll(
   const element = document.getElementById(targetId);
   if (element) {
     window.history.pushState(null, "", `#${targetId}`);
-    element.scrollIntoView({ behavior: "smooth" });
+    element.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 }
 
