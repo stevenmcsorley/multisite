@@ -3,14 +3,29 @@ import { Footer } from "./Footer";
 import { Header } from "./Header";
 
 // Import reusable post components for grid previews
-import { ImagePost } from "./posts/ImagePost";
-import { YouTubePost } from "./posts/YouTubePost";
-import { QuotePost } from "./posts/QuotePost";
-import { SoundcloudPost } from "./posts/SoundcloudPost";
-import { AudioPost } from "./posts/AudioPost";
+import ImagePost from "./posts/ImagePost";
+import YouTubePost from "./posts/YouTubePost";
+import QuotePost from "./posts/QuotePost";
+import SoundcloudPost from "./posts/SoundcloudPost";
+import AudioPost from "./posts/AudioPost";
+export type PostBase = {
+  id: number;
+  slug: string;
+  type: "image" | "youtube" | "soundcloud" | "audio" | "quote";
+  title: string;
+  excerpt?: string;
+  heroImageUrl?: string;
+  featuredImage?: string;
+  youtubeId?: string;
+  soundcloudUrl?: string;
+  quote?: string;
+  author?: string;
+  paragraphs?: string[];
+  date?: string;
+};
 
 // Import the real curated posts
-import {posts} from "../data/blogPosts"; // Make sure this JSON is saved as blogPosts.ts or blogPosts.json
+import {postsData} from "../data/blogPosts"; // Make sure this JSON is saved as blogPosts.ts or blogPosts.json
 
 export function BlogPage() {
   return (
@@ -39,7 +54,7 @@ export function BlogPage() {
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid md:grid-cols-3 gap-8">
-            {posts.map((post) => {
+            {postsData.map((post) => {
               // Render the correct preview component based on post type
               switch (post.type) {
                 case "image":

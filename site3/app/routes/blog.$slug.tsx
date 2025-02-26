@@ -14,12 +14,12 @@ import { SingleAudioPost } from "../components/singlePosts/SingleAudioPost";
 
 // The same array from your blog listing.
 // You may add paragraphs, heroImageUrl, etc. if your Single* components expect them.
-import {posts} from "../data/blogPosts";
+import {postsData} from "../data/blogPosts";
 
 // Loader: find the single post by slug
 export const loader: LoaderFunction = async ({ params }) => {
   const { slug } = params;
-  const post = posts.find((p) => p.slug === slug);
+  const post = postsData.find((p) => p.slug === slug);
   if (!post) {
     throw new Response("Not Found", { status: 404 });
   }
@@ -29,7 +29,7 @@ export const loader: LoaderFunction = async ({ params }) => {
 // This route is for /blog/:slug
 export default function BlogSinglePost() {
   // The loader returns one post object
-  const post = useLoaderData<typeof posts[0]>();
+  const post = useLoaderData<typeof postsData[0]>();
 
   // Decide which single post component to use
   let PostComponent;

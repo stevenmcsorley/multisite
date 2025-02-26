@@ -1,4 +1,4 @@
-export const posts = [
+export const postsData = [
     {
       "id": 1,
       "slug": "5-ux-design-trends-2024",

@@ -1,6 +1,6 @@
 import { Link } from "@remix-run/react";
 
-export function QuotePost({ post }: { post: any }) {
+const QuotePost = ({ post }: { post: any }) => {
     return (
       <div className="bg-white shadow p-4 flex flex-col justify-center">
         <blockquote className="italic text-lg text-gray-600">{post.quote}</blockquote>
@@ -13,4 +13,5 @@ export function QuotePost({ post }: { post: any }) {
       </div>
     );
   }
+export default QuotePost;
   
