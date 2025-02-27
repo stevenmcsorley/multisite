@@ -32,6 +32,7 @@ services:
       # - DRONE_GITEA_CLIENT_SECRET=gto_zaoevpoip36k5c5zxe4iiada6issq6vmyyts4qa4i3la3cu7nnsq
       - DRONE_RPC_SECRET=${POSTGRES_PASSWORD}
       - DRONE_SERVER_HOST=easyfluff.com
+      - DRONE_USER_CREATE=username:Admin,admin:true
       - DRONE_SERVER_PROTO=https
       - DRONE_ALLOW_PRIVILEGED=true
     labels:
