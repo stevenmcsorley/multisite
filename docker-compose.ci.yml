@@ -33,6 +33,7 @@ services:
       - DRONE_RPC_SECRET=${POSTGRES_PASSWORD}
       - DRONE_SERVER_HOST=easyfluff.com
       - DRONE_SERVER_PROTO=https
+      - DRONE_ALLOW_PRIVILEGED=true
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.drone.rule=Host(`easyfluff.com`)"
