@@ -28,8 +28,8 @@ services:
       - ./drone-data:/data
     environment:
       - DRONE_GITEA_SERVER=https://gitea.easyfluff.com
-      # - DRONE_GITEA_CLIENT_ID=4bd51c75-e989-482f-9234-a229a3e64872
-      # - DRONE_GITEA_CLIENT_SECRET=gto_zaoevpoip36k5c5zxe4iiada6issq6vmyyts4qa4i3la3cu7nnsq
+      - DRONE_GITEA_CLIENT_ID=9436e5eb-2fcd-4060-aa8f-d78545837a7b
+      - DRONE_GITEA_CLIENT_SECRET=gto_aw6vkahjnclglh4pcve4dc6rfiyatpubcn2ruk5uabimqsfe6xfq
       - DRONE_RPC_SECRET=${POSTGRES_PASSWORD}
       - DRONE_SERVER_HOST=easyfluff.com
       - DRONE_USER_CREATE=username:Admin,admin:true
